@@ -8,6 +8,7 @@ from .. import search as fts
 from ..colour import normalise_hex
 from ..db import get_session
 from ..models import (
+    BarcodeLink,
     NON_MIXING_TYPES,
     PAINT_TYPES,
     BottleFormat,
@@ -24,6 +25,7 @@ from ..models import (
 from ..seed import ensure_formats, get_or_create_brand, get_or_create_line, import_user_csv, set_oklab
 from ..services import log_colour_request, nearest_owned_mixes, nearest_paints, owned_counts
 from ..web import is_htmx, redirect, render
+from .scan import paint_barcodes
 
 router = APIRouter()
 PAGE_SIZE = 60
@@ -170,6 +172,7 @@ def paint_detail(request: Request, paint_id: int, session: Session = Depends(get
         refs_all=refs_all,
         formats=formats,
         non_mixing=p.type in NON_MIXING_TYPES,
+        barcodes=paint_barcodes(session, p.id),
     )
 
 
@@ -224,6 +227,8 @@ def paint_merge(paint_id: int, into_id: int = Form(...), session: Session = Depe
         it.paint_id = dst.id
     for c in session.scalars(select(MixComponent).where(MixComponent.paint_id == src.id)).all():
         c.paint_id = dst.id
+    for bl in session.scalars(select(BarcodeLink).where(BarcodeLink.paint_id == src.id)).all():
+        bl.paint_id = dst.id
     from ..models import Attachment, Note
 
     for model in (Note, Attachment, ReferenceLink):

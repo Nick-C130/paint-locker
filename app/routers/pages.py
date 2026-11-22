@@ -28,7 +28,13 @@ def load_results(session: Session, q: str, types=fts.INDEXED, limit: int = 40) -
     for t, i in hits:
         ids.setdefault(t, []).append(i)
     # Exact code matches first (e.g. "70.950"), even if FTS ranks them lower.
-    exact = session.scalars(select(Paint.id).where(func.lower(Paint.code) == q.strip().lower())).all()
+    exact = list(session.scalars(select(Paint.id).where(func.lower(Paint.code) == q.strip().lower())).all())
+    from .scan import find_paint_by_barcode
+
+    if q.strip().isdigit() and len(q.strip()) >= 8:
+        bp = find_paint_by_barcode(session, q)
+        if bp:
+            exact.insert(0, bp.id)
     paint_ids = list(dict.fromkeys(list(exact) + ids.get("paint", [])))
     paints = {
         p.id: p
@@ -89,6 +95,12 @@ def dashboard(request: Request, session: Session = Depends(get_session)):
 def search_page(request: Request, q: str = "", session: Session = Depends(get_session)):
     q = q.strip()
     hx = normalise_hex(q) if q.startswith("#") else None
+    if q.isdigit() and len(q) >= 8 and not is_htmx(request):
+        from .scan import find_paint_by_barcode
+
+        bp = find_paint_by_barcode(session, q)
+        if bp:
+            return redirect(f"/paints/{bp.id}")
     if hx and not is_htmx(request):
         return redirect("/colours", hex=hx)
     results = load_results(session, q) if q else None

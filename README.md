@@ -78,13 +78,20 @@ GitHub Actions also builds a multi-arch (amd64 + arm64) image on every push to `
 * **Comments and photos on everything**: paints, bottles, mixes, racks, individual cells, brands and
   reference colours. Markdown, pin, edit; comments are searchable. Photo upload uses the phone
   camera on mobile.
+* **Barcode scanning** (📷 Scan tab): a USB or Bluetooth scanner types into the scan box; on a
+  phone, “Use camera” reads barcodes with the browser's built-in detector (Chrome/Android) or
+  ZXing (iPhone and others). The first time a barcode is unknown you pick the paint it belongs to;
+  after that it's recognised. Then add a bottle in one tap, or turn on quick mode to add one per scan.
+  Links are stored separately from the catalogue, so re-importing never wipes them, and typing a
+  barcode into the main search jumps to the paint. **The camera needs HTTPS** (browsers block it
+  on plain http, except on localhost), so serve Paint Locker through your HTTPS proxy.
+* **Dark mode** follows your device setting; the toggle in the top bar pins it to dark or light.
 * **Shopping list**: “Used up → shopping list” on a bottle removes it and adds the paint.
 * **Add missing paints**: a quick form with brand/line autocomplete, CSV bulk import, and a merge
   tool for duplicates you added.
 * Works on a phone; installable to the home screen (PWA manifest).
 
-Not in v1 (phase 2, per the plan): the purchase recommender, reverse mixing, barcode scanning and
-camera colour capture, painting recipes, printable QR labels.
+Not in v1 (phase 2, per the plan): the purchase recommender, reverse mixing, camera colour capture, painting recipes, printable QR labels.
 
 ## The paint catalogue
 
@@ -141,4 +148,4 @@ Layout: `app/models.py` (schema), `app/services.py` (storage fit, cell suggestio
 * Paint data: [Arcturus5404/miniature-paints](https://github.com/Arcturus5404/miniature-paints) (MIT).
   WW2 reference colour values are approximations taken from AK Real Colors chips in that dataset.
 * [spectral.js](https://github.com/rvanwijnen/spectral.js) (MIT), ported to Python in `app/colour.py`.
-* [htmx](https://htmx.org) (0BSD), [Alpine.js](https://alpinejs.dev) (MIT), [Pico CSS](https://picocss.com) (MIT), vendored in `app/static/vendor`.
+* [htmx](https://htmx.org) (0BSD), [Alpine.js](https://alpinejs.dev) (MIT), [Pico CSS](https://picocss.com) (MIT), [ZXing JS](https://github.com/zxing-js/library) (MIT), vendored in `app/static/vendor`.

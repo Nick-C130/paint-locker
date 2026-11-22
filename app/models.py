@@ -370,3 +370,15 @@ class ShoppingItem(Base):
     done: Mapped[bool] = mapped_column(Boolean, default=False)
     created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())
     paint: Mapped[Paint | None] = relationship()
+
+
+class BarcodeLink(Base):
+    """A scanned barcode (EAN/UPC) you've linked to a catalogue paint. Kept separate from the
+    seeded catalogue so re-importing the CSVs never wipes your links."""
+
+    __tablename__ = "barcode_links"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    barcode: Mapped[str] = mapped_column(String(40), unique=True)
+    paint_id: Mapped[int] = mapped_column(ForeignKey("paints.id", ondelete="CASCADE"), index=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())
+    paint: Mapped[Paint] = relationship()

@@ -15,6 +15,11 @@
       {% for t in paint.tags.split(';') if t %}<span class="badge">#{{ t }}</span> {% endfor %}
     </p>
     <p class="small muted">Catalogue colour {{ paint.hex or 'unknown' }}{% if paint.measured_hex %} · measured {{ paint.measured_hex }} (used for matching){% endif %}{% if paint.barcode %} · EAN {{ paint.barcode }}{% endif %}</p>
+    <p class="small muted">Barcodes:
+      {% for b in barcodes %}<code>{{ b.barcode }}</code>
+        <form class="inline" method="post" action="/barcodes/{{ b.id }}/delete"><button class="small outline secondary" title="Unlink this barcode">✕</button></form>
+      {% else %}none linked yet{% endfor %}
+      · <a href="/scan?link={{ paint.id }}">📷 scan to link</a></p>
     {% if non_mixing %}<p class="small muted">⚠ {{ paint.type|capitalize }} paints don't mix like ordinary acrylics; mix previews with it are rough.</p>{% endif %}
     <p>
       <a role="button" href="/add?paint_id={{ paint.id }}">+ Add bottle</a>

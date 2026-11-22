@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block title %}Scan{% endblock %}
+{% block head %}<script src="/static/scan.js"></script>{% endblock %}
+{% block content %}
+<div x-data="scanner({{ link_paint|tojson|forceescape }})" x-init="init()">
+  <h1>📷 Scan a bottle</h1>
+  <template x-if="linkPaint">
+    <p class="flash ok">Linking mode: the next barcode you scan will be linked to <b x-text="linkPaint.label"></b>. <a href="/scan">Cancel</a></p>
+  </template>
+
+  <form @submit.prevent="lookup(code)" class="row" style="align-items:center">
+    <input x-ref="box" x-model="code" inputmode="numeric" autocomplete="off" autofocus
+           placeholder="Scan with a USB/Bluetooth scanner, or type the barcode and press Enter">
+    <button type="submit" style="flex:0 0 auto">Look up</button>
+    <button type="button" class="secondary" style="flex:0 0 auto" @click="camera ? stopCamera() : startCamera()" x-text="camera ? 'Stop camera' : '📷 Use camera'"></button>
+  </form>
+  <label class="small"><input type="checkbox" x-model="autoAdd" @change="localStorage.setItem('pl-autoadd', autoAdd ? '1' : '')"> Quick mode: add a bottle as soon as a known barcode is scanned (to the next free cell that fits)</label>
+
+  <p class="flash warn small" x-show="cameraError" x-text="cameraError"></p>
+  <div x-show="camera" style="max-width:32rem">
+    <video x-ref="video" playsinline muted style="width:100%;border-radius:8px;background:#000"></video>
+    <p class="small muted">Point the camera at the barcode on the bottle. It reads automatically.</p>
+  </div>
+
+  <template x-if="result">
+    <article>
+      <template x-if="result.found">
+        <div>
+          <p style="display:flex;gap:.75rem;align-items:center">
+            <span class="swatch swatch-md" :style="'background:' + (result.paint.hex || '#888')"></span>
+            <span><a :href="result.paint.url"><b x-text="result.paint.label"></b></a><br>
+              <span class="small muted" x-text="'Barcode ' + result.barcode"></span></span>
+          </p>
+          <p class="small">
+            <span class="badge" :class="result.paint.owned ? 'owned' : ''" x-text="result.paint.owned ? 'owned ×' + result.paint.owned : 'not owned'"></span>
+            <template x-for="l in result.paint.locations"><span class="loc" x-text="l"></span></template>
+          </p>
+          <p x-show="added" class="flash ok" x-text="added"></p>
+          <p x-show="addWarning" class="flash warn small" x-text="addWarning"></p>
+          <p>
+            <button type="button" @click="addBottle(result.paint.id)"
+                    x-text="'+ Add bottle' + (result.paint.suggestion ? ' → ' + result.paint.suggestion : ' (unsorted)')"></button>
+            <a role="button" class="outline" :href="'/add?paint_id=' + result.paint.id">Choose a cell…</a>
+          </p>
+        </div>
+      </template>
+      <template x-if="!result.found">
+        <div>
+          <p><b>New barcode <code x-text="result.barcode"></code>.</b> Which paint is it? Once linked, it's recognised from then on.</p>
+          <input type="search" x-model="q" placeholder="Search code or name…" @input.debounce.200ms="search()" x-ref="linkbox">
+          <div class="picker-results">
+            <template x-for="r in res" :key="r.id">
+              <div style="display:flex;gap:.4rem;align-items:center;margin-bottom:.3rem">
+                <span class="swatch swatch-sm" :style="'background:' + (r.hex || '#eee')"></span>
+                <span style="flex:1" class="small" x-text="r.label"></span>
+                <button type="button" class="small outline" @click="link(result.barcode, r.id, false)">Link</button>
+                <button type="button" class="small" @click="link(result.barcode, r.id, true)">Link + add bottle</button>
+              </div>
+            </template>
+          </div>
+          <p class="small muted">Can't find it? <a href="/paints/new">Add the paint to the catalogue</a> first, then scan again.</p>
+        </div>
+      </template>
+    </article>
+  </template>
+
+  <template x-if="history.length">
+    <div>
+      <h3>This session</h3>
+      <ul class="results-list">
+        <template x-for="h in history"><li><span class="swatch swatch-sm" :style="'background:' + (h.hex || '#eee')"></span> <span class="grow small" x-text="h.text"></span></li></template>
+      </ul>
+    </div>
+  </template>
+  <p class="small muted" x-show="!secure">Camera scanning needs the page to be served over HTTPS (or from localhost). A USB or Bluetooth scanner works either way.</p>
+</div>
+{% endblock %}

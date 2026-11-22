@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,6 +7,11 @@
   <link rel="manifest" href="/static/manifest.webmanifest">
   <link rel="icon" href="/static/icon.svg" type="image/svg+xml">
   <meta name="theme-color" content="#3d4a2f">
+  <meta name="color-scheme" content="light dark">
+  <script>
+    // Theme: "auto" follows the device setting; "light"/"dark" are pinned via the toggle.
+    (function () { const t = localStorage.getItem('pl-theme'); if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t; })();
+  </script>
   <link rel="stylesheet" href="/static/vendor/pico.min.css">
   <link rel="stylesheet" href="/static/app.css">
   <script src="/static/vendor/htmx.min.js" defer></script>
@@ -16,15 +21,17 @@
 <body>
   <header class="topbar">
     <nav class="container-fluid">
-      <ul><li><a href="/" class="brand">🎨 Paint Locker</a></li></ul>
+      <ul><li><a href="/" class="brand">🖌️ Paint Locker</a></li></ul>
       <ul class="navlinks">
-        <li><a href="/paints">Catalogue</a></li>
-        <li><a href="/storage">Storage</a></li>
-        <li><a href="/mixes">Mixes</a></li>
-        <li><a href="/colours">Colour</a></li>
-        <li><a href="/references">WW2 refs</a></li>
-        <li><a href="/shopping">Shopping</a></li>
-        <li><a href="/settings">Settings</a></li>
+        <li><a href="/scan" title="Scan a barcode"><span class="ico">📷</span>Scan</a></li>
+        <li><a href="/paints"><span class="ico">🎨</span>Catalogue</a></li>
+        <li><a href="/storage"><span class="ico">🗄️</span>Storage</a></li>
+        <li><a href="/mixes"><span class="ico">🧪</span>Mixes</a></li>
+        <li><a href="/colours"><span class="ico">🎯</span>Colour</a></li>
+        <li><a href="/references"><span class="ico">🎖️</span>WW2 refs</a></li>
+        <li><a href="/shopping"><span class="ico">🛒</span>Shopping</a></li>
+        <li><a href="/settings"><span class="ico">⚙️</span>Settings</a></li>
+        <li><button type="button" class="theme-toggle" id="theme-toggle" title="Theme: auto / dark / light"></button></li>
       </ul>
     </nav>
     <form class="container-fluid globalsearch" action="/search" method="get" role="search">
@@ -41,6 +48,19 @@
   </main>
   <footer class="container muted small">Colours are approximate screen values. Record a measured colour when it matters.</footer>
   <script>
+    (function () {
+      const btn = document.getElementById('theme-toggle');
+      const order = ['auto', 'dark', 'light'];
+      const label = { auto: '🌓 Auto', dark: '🌙 Dark', light: '☀️ Light' };
+      const apply = t => {
+        if (t === 'auto') { localStorage.removeItem('pl-theme'); delete document.documentElement.dataset.theme; }
+        else { localStorage.setItem('pl-theme', t); document.documentElement.dataset.theme = t; }
+        btn.textContent = label[t];
+      };
+      let cur = localStorage.getItem('pl-theme') || 'auto';
+      btn.textContent = label[cur];
+      btn.addEventListener('click', () => { cur = order[(order.indexOf(cur) + 1) % 3]; apply(cur); });
+    })();
     if ('serviceWorker' in navigator) { navigator.serviceWorker.register('/sw.js').catch(() => {}); }
     document.addEventListener('keydown', e => {
       if (e.key === '/' && !['INPUT','TEXTAREA','SELECT'].includes(document.activeElement.tagName)) {

@@ -12,6 +12,7 @@ from sqlalchemy import select, text
 from sqlalchemy.orm import Session, selectinload
 
 from .models import (
+    BarcodeLink,
     InventoryItem,
     MixRecipe,
     Note,
@@ -66,6 +67,7 @@ def _doc_for(session: Session, entity_type: str, entity_id: int) -> tuple[str, s
                 p.finish,
                 p.tags.replace(";", " "),
                 p.barcode,
+                " ".join(session.scalars(select(BarcodeLink.barcode).where(BarcodeLink.paint_id == p.id)).all()),
                 _notes_text(session, "paint", p.id),
                 _refs_text(session, "paint", p.id),
                 _item_text(session, p.items),
@@ -152,6 +154,10 @@ def rebuild(session: Session) -> int:
     for l in session.scalars(select(ReferenceLink).options(selectinload(ReferenceLink.reference))).all():
         refs.setdefault((l.entity_type, l.entity_id), []).append(f"{l.reference.label} {l.reference.aliases}")
 
+    codes: dict[int, list[str]] = {}
+    for bl in session.scalars(select(BarcodeLink)).all():
+        codes.setdefault(bl.paint_id, []).append(bl.barcode)
+
     def nt(t, i):
         return " ".join(notes.get((t, i), [])) + " " + " ".join(refs.get((t, i), []))
 
@@ -165,7 +171,7 @@ def rebuild(session: Session) -> int:
                 "t": "paint",
                 "i": p.id,
                 "ti": f"{p.code} {p.name}",
-                "b": f"{p.line.brand.name} {p.line.name} {p.type} {p.finish} {p.tags.replace(';', ' ')} {p.barcode} {nt('paint', p.id)} {items_txt}",
+                "b": f"{p.line.brand.name} {p.line.name} {p.type} {p.finish} {p.tags.replace(';', ' ')} {p.barcode} {' '.join(codes.get(p.id, []))} {nt('paint', p.id)} {items_txt}",
             }
         )
     if rows:

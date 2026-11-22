@@ -189,3 +189,29 @@ def test_exports(client):
     assert client.get("/export/inventory.csv").text.startswith("item_id")
     assert client.get("/export/db").content[:15] == b"SQLite format 3"
     assert client.post("/backup-now", follow_redirects=False).status_code == 303
+
+
+def test_barcode_scan_flow(client, session):
+    p = paint_by_code(session, "70.882")
+    r = client.get("/api/barcode/8429551708821").json()
+    assert r["found"] is False
+    r = client.post("/api/barcode/link", json={"barcode": "8429551708821", "paint_id": p.id}).json()
+    assert r["ok"] and r["paint"]["id"] == p.id
+    r = client.get("/api/barcode/8429551708821").json()
+    assert r["found"] and r["paint"]["id"] == p.id
+    # UPC-A / EAN-13 leading-zero equivalence
+    client.post("/api/barcode/link", json={"barcode": "012345678905", "paint_id": p.id})
+    assert client.get("/api/barcode/0012345678905").json()["found"]
+    # scan-to-add places a bottle
+    r = client.post("/api/barcode/add", json={"paint_id": p.id}).json()
+    assert r["ok"] and r["paint"]["owned"] >= 1
+    # typing the barcode in global search jumps to the paint
+    r = client.get("/search", params={"q": "8429551708821"}, follow_redirects=False)
+    assert r.status_code == 303 and r.headers["location"] == f"/paints/{p.id}"
+    # links survive a catalogue re-import
+    client.post("/catalogue/reimport")
+    assert client.get("/api/barcode/8429551708821").json()["found"]
+    page = client.get(f"/paints/{p.id}").text
+    assert "8429551708821" in page
+    assert client.get("/scan").status_code == 200
+    assert client.get(f"/scan?link={p.id}").status_code == 200
