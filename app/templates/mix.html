@@ -13,7 +13,11 @@
       {% if mix.measured_hex %} · measured {{ swatch(mix.measured_hex, 'sm') }} {{ mix.measured_hex }}{% if est_vs_measured is not none %} (estimate was off by {{ de(est_vs_measured) }}){% endif %}{% endif %}
       {% if mix.target_hex %} · target {{ swatch(mix.target_hex, 'sm') }} {{ mix.target_hex }}{% if target_de is not none %} → {{ de(target_de) }}{% endif %}{% endif %}
     </p>
-    <p><a role="button" href="/mixes/lab?mix_id={{ mix.id }}">Edit in mix lab</a></p>
+    <p><a role="button" href="/mixes/lab?mix_id={{ mix.id }}">Edit in mix lab</a>
+      {% set pids = mix.components|selectattr('paint_id')|map(attribute='paint_id')|join(',') %}
+      {% set mids = mix.components|selectattr('sub_mix_id')|map(attribute='sub_mix_id')|join(',') %}
+      <a role="button" class="secondary" href="/locate?paints={{ pids }}&mixes={{ mids }}&title={{ ('Paints for ' ~ mix.name)|urlencode }}&back=/mixes/{{ mix.id }}">📍 Find paints in racks</a>
+      {% if items %}<a role="button" class="outline" href="/locate?mixes={{ mix.id }}&title={{ ('Batches of ' ~ mix.name)|urlencode }}&back=/mixes/{{ mix.id }}">Where are my batches?</a>{% endif %}</p>
   </div>
 </div>
 {% if warnings %}<p class="flash warn small">⚠️ Includes paints that don't mix like ordinary acrylics ({{ warnings|join(', ') }}); the preview is rough.</p>{% endif %}

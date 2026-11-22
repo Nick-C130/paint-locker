@@ -1,4 +1,4 @@
-{% extends "base.html" %}{% from "macros.html" import swatch, locations, mini_rack %}
+{% extends "base.html" %}{% from "macros.html" import swatch, locations, mini_rack, legend %}
 {% block content %}
 <div class="row">
   <article class="stat"><b>{{ stats.bottles }}</b>bottles</article>
@@ -15,6 +15,7 @@
   <a role="button" href="/storage/new">Create a storage unit</a>
 </article>
 {% else %}
+{{ legend() }}
 <div class="row">
 {% for u in units %}
   {% set used = u.cells|selectattr('items')|list|length %}

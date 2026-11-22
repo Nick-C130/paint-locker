@@ -4,17 +4,27 @@ A self-hosted web app for a miniature paint collection: a searchable multi-brand
 your bottles and where they live in your racks, mix recipes with a pigment-style colour preview,
 and comments on everything. Built for WW2-style miniatures, but nothing stops you painting elves.
 
-Single user, one Docker container, one SQLite file.
+Single user, one Docker container, one SQLite file. MIT licensed.
 
 ## Quick start
 
+All you need is Docker and one file, [`docker-compose.deploy.yml`](docker-compose.deploy.yml):
+
 ```bash
-git clone https://github.com/Nick-C130/paint-locker.git
-cd paint-locker
-docker compose up -d --build
+mkdir paint-locker && cd paint-locker
+curl -o docker-compose.yml https://raw.githubusercontent.com/Nick-C130/paint-locker/main/docker-compose.deploy.yml
+docker compose up -d
 ```
 
-Open http://your-server:8080. Your data lives in `./data` (database, photos, backups).
+Open http://your-server:8080. Your data lives in `./data` next to the compose file (database,
+photos, backups). Set `TZ` in the file to your time zone so the nightly backup runs when you expect.
+
+> **While the repository is private** the image is private too. Log in once with a GitHub
+> [personal access token](https://github.com/settings/tokens) (classic) with the `read:packages` scope:
+> `echo <token> | docker login ghcr.io -u <github-username> --password-stdin`. The curl above also
+> needs the file copied by hand while private. Neither step is needed once the project is public.
+
+To build from source instead: `git clone https://github.com/Nick-C130/paint-locker.git && cd paint-locker && docker compose up -d --build`.
 
 On first start the app runs its database migrations and imports the paint catalogue (about
 4,200 paints, takes a couple of seconds). Later starts only re-import when the catalogue CSVs change.
@@ -30,12 +40,17 @@ On first start the app runs its database migrations and imports the paint catalo
 | `PAINTLOCKER_BACKUPS` | `1` | Set to `0` to turn nightly backups off |
 | `PAINTLOCKER_SEED` | `1` | Set to `0` to skip the catalogue import on startup |
 | `PAINTLOCKER_MAX_UPLOAD_MB` | `15` | Photo upload limit |
+| `PUID` / `PGID` | `1000` | User and group the app runs as; `./data` is handed to them on start |
+| `TZ` | `UTC` | Container time zone (used for the backup hour) |
 
 ### Updating
 
-`git pull && docker compose up -d --build`. Migrations run automatically on startup.
-GitHub Actions also builds a multi-arch (amd64 + arm64) image on every push to `main`:
-`ghcr.io/nick-c130/paint-locker:latest` (uncomment the `image:` line in `docker-compose.yml` to use it).
+Published image: `docker compose pull && docker compose up -d`. Built from source:
+`git pull && docker compose up -d --build`. Migrations run automatically on startup, and a backup
+of `./data` before a big update never hurts.
+
+GitHub Actions builds a multi-arch (amd64 + arm64) image on every push to `main`, tagged `latest`
+and with the commit SHA (`ghcr.io/nick-c130/paint-locker:<sha>`) so you can pin or roll back.
 
 ### Backups
 
@@ -78,8 +93,7 @@ GitHub Actions also builds a multi-arch (amd64 + arm64) image on every push to `
 * **Mix batches**: “Make a batch” creates a bottle of the mix and stores it in a cell like any paint.
   Record the measured colour after mixing; the mix page shows how far off the estimate was.
 * **Colour request log**: every colour search, “closest I own”, reference lookup and mix-lab target
-  is logged with the best owned match at the time. This is the history the phase-2 purchase
-  recommender will use. See it under Settings → Colour request log.
+  is logged with the best owned match at the time. Buy next uses this history. See it under Settings → Colour request log.
 * **WW2 reference colours**: 62 standards (German RAL and RLM, US FS/ANA and Olive Drab, British
   SCC/BSC and Caunter colours, Soviet 4BO/6K/7K/…), with nearest catalogue paints and what you own.
   Link paints and mixes to them so they show up when you search the reference.
@@ -99,7 +113,24 @@ GitHub Actions also builds a multi-arch (amd64 + arm64) image on every push to `
   tool for duplicates you added.
 * Works on a phone; installable to the home screen (PWA manifest).
 
-Not in v1 (phase 2, per the plan): the purchase recommender, camera colour capture, painting recipes, printable QR labels.
+### Since v1
+
+* **🛍️ Buy next (purchase recommender)**: ranks paints you don't own by two things, blended with a
+  slider: *reach* (how much of the colour space you could newly mix with what you own, using the
+  same spectral maths as the mix lab) and *demand* (how much closer it gets you to the colours
+  you've actually searched for and mixed, with recent requests counting more). Picks are chosen
+  one at a time so they don't overlap, and each says why ("opens up about 6% more of the colour
+  range you can mix, mostly greens; would have improved 4 of your past colour requests…"). Limit it
+  to brands you already own or one brand, skip discontinued paints; dismiss a pick or send it to the
+  shopping list.
+* **📍 Find in racks**: from the mix lab or a saved mix, show only the racks holding the paints you
+  need, with those cells highlighted and anything missing listed. "Where are my batches?" does the
+  same for bottles of a mix.
+* **Swatch borders by type** everywhere a rack is drawn (rack grids, the home page mini racks, the
+  find-in-racks view): plain acrylic, airbrush-ready, thinner/medium/varnish, wash/contrast/ink,
+  metallic, primer and mix batches each get their own border colour and style, with a legend.
+
+Still to come: camera colour capture, painting recipes, printable QR labels. Ideas welcome in the issues.
 
 ## The paint catalogue
 
@@ -151,12 +182,20 @@ SQLAlchemy 2 + Alembic on SQLite with an FTS5 search index. Schema changes:
 `alembic revision --autogenerate -m "what changed"`.
 
 Layout: `app/models.py` (schema), `app/services.py` (storage fit, cell suggestions, colour matching),
-`app/colour.py` (OKLab, CIEDE2000, spectral mixing), `app/search.py` (FTS5), `app/seed.py`
-(catalogue importer), `app/routers/` (pages and JSON endpoints), `app/templates/`.
+`app/colour.py` (OKLab, CIEDE2000, spectral mixing), `app/mixsolver.py` (reverse mixing),
+`app/recommender.py` (Buy next), `app/search.py` (FTS5), `app/seed.py` (catalogue importer),
+`app/routers/` (pages and JSON endpoints), `app/templates/`. Lint with `ruff check .`.
+
+## Contributing
+
+Bug reports, catalogue fixes and pull requests are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md)
+and the [code of conduct](CODE_OF_CONDUCT.md). Security issues: see [SECURITY.md](SECURITY.md).
+Changes are listed in [CHANGELOG.md](CHANGELOG.md).
 
 ## Credits and licences
 
 * Paint data: [Arcturus5404/miniature-paints](https://github.com/Arcturus5404/miniature-paints) (MIT).
   WW2 reference colour values are approximations taken from AK Real Colors chips in that dataset.
 * [spectral.js](https://github.com/rvanwijnen/spectral.js) (MIT), ported to Python in `app/colour.py`.
+* Paint Locker itself is [MIT licensed](LICENSE).
 * [htmx](https://htmx.org) (0BSD), [Alpine.js](https://alpinejs.dev) (MIT), [Pico CSS](https://picocss.com) (MIT), [ZXing JS](https://github.com/zxing-js/library) (MIT), vendored in `app/static/vendor`.

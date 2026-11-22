@@ -1,7 +1,7 @@
 {% extends "base.html" %}{% from "macros.html" import swatch %}
 {% block title %}Shopping list{% endblock %}
 {% block content %}
-<h1>Shopping list</h1>
+<h1>Shopping list <a class="small" role="button" href="/recommend">🛍️ What should I buy next?</a></h1>
 <form method="post" action="/shopping" class="row"><input name="text" placeholder="Add a free-text item (e.g. 'more 70.950')"><button style="flex:0">Add</button></form>
 {% for brand, group in items|groupby('paint.line.brand.name', default='Other') %}
 <h3>{{ brand }}</h3>

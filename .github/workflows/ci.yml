@@ -14,6 +14,7 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install -r requirements-dev.txt
+      - run: ruff check .
       - run: pytest -q
 
   image:
@@ -35,6 +36,20 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build test image (amd64)
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          load: true
+          tags: paint-locker:test
+      - name: Smoke test (fresh root-owned bind mount, like the deploy compose file)
+        run: |
+          sudo mkdir -p /tmp/pl-data && sudo chown root:root /tmp/pl-data
+          docker run -d --name pl -p 8080:8080 -v /tmp/pl-data:/data paint-locker:test
+          for i in $(seq 1 30); do curl -fsS http://localhost:8080/healthz && break; sleep 2; done
+          curl -fsS http://localhost:8080/ > /dev/null
+          test -f /tmp/pl-data/paintlocker.db || (ls -la /tmp/pl-data; docker logs pl; exit 1)
+          docker logs pl | tail -5
       - uses: docker/build-push-action@v6
         with:
           context: .

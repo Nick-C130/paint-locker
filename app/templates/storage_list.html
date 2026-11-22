@@ -1,7 +1,8 @@
-{% extends "base.html" %}{% from "macros.html" import mini_rack %}
+{% extends "base.html" %}{% from "macros.html" import mini_rack, legend %}
 {% block title %}Storage{% endblock %}
 {% block content %}
 <h1>Storage <a class="small" role="button" href="/storage/new">+ New unit</a></h1>
+{{ legend() }}
 <div class="row">
 {% for u in units %}
   {% set used = u.cells|selectattr('items')|list|length %}

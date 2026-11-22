@@ -1,0 +1,35 @@
+# Run Paint Locker from the published image. This file is all you need:
+#
+#   mkdir paint-locker && cd paint-locker
+#   curl -O https://raw.githubusercontent.com/Nick-C130/paint-locker/main/docker-compose.deploy.yml
+#   docker compose -f docker-compose.deploy.yml up -d
+#
+# (Or save it as docker-compose.yml and drop the -f flag.)
+# Update to the latest version:
+#
+#   docker compose -f docker-compose.deploy.yml pull
+#   docker compose -f docker-compose.deploy.yml up -d
+#
+# While the repository is private, log in to the registry once first with a GitHub
+# personal access token that has the read:packages scope:
+#
+#   echo <token> | docker login ghcr.io -u <github-username> --password-stdin
+
+services:
+  paint-locker:
+    image: ghcr.io/nick-c130/paint-locker:latest   # or pin a commit: ghcr.io/nick-c130/paint-locker:<sha>
+    container_name: paint-locker
+    restart: unless-stopped
+    ports:
+      - "8080:8080"            # change the left side to use another host port
+    volumes:
+      - ./data:/data           # database, photos and nightly backups; back this folder up
+    environment:
+      TZ: UTC                  # your zone, e.g. Australia/Sydney; sets the nightly backup hour
+      # PUID: "1000"                        # user/group that owns ./data on the host
+      # PGID: "1000"
+      # PAINTLOCKER_PASSWORD: change-me     # optional shared password (HTTP basic auth)
+      # PAINTLOCKER_BACKUP_HOUR: "3"        # hour of the nightly backup (container local time)
+      # PAINTLOCKER_BACKUP_KEEP: "14"       # nightly backups to keep
+      # PAINTLOCKER_BACKUPS: "0"            # turn nightly backups off
+      # PAINTLOCKER_MAX_UPLOAD_MB: "15"     # photo upload limit

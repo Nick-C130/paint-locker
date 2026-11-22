@@ -2,7 +2,16 @@ import re
 
 from sqlalchemy import select
 
-from app.models import BottleFormat, ColourRequest, InventoryItem, MixRecipe, Paint, ProductLine, StorageCell, StorageUnit
+from app.models import (
+    BottleFormat,
+    ColourRequest,
+    InventoryItem,
+    MixRecipe,
+    Paint,
+    ProductLine,
+    StorageCell,
+    StorageUnit,
+)
 
 
 def paint_by_code(session, code):
@@ -254,7 +263,7 @@ def test_water_and_flow_improver_dilute_not_tint(client, session):
 
 def test_dashboard_mini_rack(client):
     html = client.get("/").text
-    assert "mini-rack" in html and 'class="mc"' in html
+    assert "mini-rack" in html and 'class="mc cat-' in html and 'class="legend' in html
     assert "mini-rack" in client.get("/storage").text
 
 
@@ -277,3 +286,61 @@ def test_mix_suggestions_from_owned_paints(client, session):
     combo = ",".join(f'{c["id"]}:{c["amount"]:g}' for c in s[0]["components"])
     lab = client.get("/mixes/lab", params={"target": "#9C8853", "combo": combo}).text
     assert s[0]["components"][0]["label"].split(": ")[-1] in lab
+
+
+def test_locate_paints_for_a_mix(client, session):
+    uid = make_unit(client, "Locate rack", 2, 3)
+    blue = paint_by_code(session, "70.925")
+    white = paint_by_code(session, "70.951")
+    session.expire_all()
+    cell = sorted(session.get(StorageUnit, uid).cells, key=lambda c: (c.row, c.col))[0]
+    client.post(f"/api/cells/{cell.id}/fill", json={"paint_id": blue.id})
+    r = client.post("/api/mixes", json={"name": "Locate me", "components": [
+        {"kind": "paint", "id": blue.id, "amount": 1}, {"kind": "paint", "id": white.id, "amount": 1}]}).json()
+    page = client.get(f"/mixes/{r['id']}").text
+    assert "Find paints in racks" in page
+    url = re.search(r'href="(/locate\?[^"]+)"', page).group(1).replace("&amp;", "&")
+    html = client.get(url).text
+    assert "Locate rack" in html and " hl" in html and "cat-acrylic" in html
+
+
+def test_purchase_recommender(client, session):
+    page = client.get("/recommend")
+    assert page.status_code == 200
+    r = client.get("/recommend", params={"run": 1, "count": 3, "scope": "lines"})
+    assert r.status_code == 200
+    picks = re.findall(r'action="/recommend/(\d+)/dismiss"', r.text)
+    assert len(picks) == 3 and len(set(picks)) == 3
+    owned_ids = {i.paint_id for i in session.scalars(select(InventoryItem)).all()}
+    assert not ({int(p) for p in picks} & owned_ids)
+    assert "colour range" in r.text
+    # dismiss removes it from the next run; shopping-list picks are skipped too
+    client.post(f"/recommend/{picks[0]}/dismiss")
+    client.post(f"/recommend/{picks[1]}/shopping")
+    r2 = client.get("/recommend", params={"run": 1, "count": 3})
+    again = re.findall(r'action="/recommend/(\d+)/dismiss"', r2.text)
+    assert picks[0] not in again and picks[1] not in again
+    client.post("/recommend/dismissed/clear")
+
+
+def test_recommender_unit_demand():
+    from datetime import datetime
+
+    from app.recommender import recommend
+
+    class P:
+        def __init__(self, i, hx):
+            self.id, self.display_hex = i, hx
+
+    class Req:
+        def __init__(self, hx):
+            self.target_hex, self.context, self.created_at = hx, "red markings", datetime.now()
+
+    owned = [P(1, "#FFFFFF"), P(2, "#000000"), P(3, "#1F3A93")]
+    cands = [P(10, "#D2232A"), P(11, "#2E8B57"), P(12, "#1E3A90")]
+    # Demand only: repeatedly asked for red -> red first
+    picks = recommend(owned, cands, [Req("#C0392B")] * 3, count=2, weight_reach=0.0)
+    assert picks[0].paint.id == 10 and picks[0].helped
+    # The near-duplicate blue adds almost nothing
+    picks = recommend(owned, cands, [], count=3, weight_reach=1.0)
+    assert picks[-1].paint.id == 12 or len(picks) < 3

@@ -8,8 +8,8 @@ from sqlalchemy.orm import Session, selectinload
 
 from .. import search as fts
 from ..colour import delta_e, describe_delta_e, normalise_hex
-from ..mixsolver import suggest_mixes
 from ..db import get_session
+from ..mixsolver import suggest_mixes
 from ..models import (
     ADDITIVE_TYPES,
     BUILTIN_ADDITIVES,

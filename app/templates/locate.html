@@ -1,0 +1,30 @@
+{% extends "base.html" %}{% from "macros.html" import swatch, legend %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+{% if back %}<p><a href="{{ back }}">← Back</a></p>{% endif %}
+<h1>📍 {{ title }}</h1>
+<ul class="results-list">
+{% for r in rows %}
+  <li>{{ swatch(r.obj.display_hex, 'sm') }}
+    <a class="grow" href="/{{ 'paints' if r.kind == 'paint' else 'mixes' }}/{{ r.obj.id }}">{{ r.obj.full_label if r.kind == 'paint' else 'Mix: ' ~ r.obj.name }}</a>
+    {% for it in r.bottles %}
+      {% if it.cell %}<span class="loc">{{ it.cell.unit.name }} {{ it.cell.label }}</span>{% else %}<a class="loc unsorted" href="/items/{{ it.id }}">unsorted</a>{% endif %}
+    {% else %}
+      <span class="badge warn">not in stock</span>
+      {% if r.kind == 'paint' %}<form class="inline" method="post" action="/shopping"><input type="hidden" name="paint_id" value="{{ r.obj.id }}"><button class="small outline">+ shopping list</button></form>{% endif %}
+    {% endfor %}
+  </li>
+{% endfor %}
+</ul>
+{% if units %}
+{{ legend() }}
+<p class="small muted">Highlighted cells hold what you need.</p>
+{% for u in units %}
+  {% with unit=u.unit, grid=u.grid %}
+  <h3><a href="/storage/{{ unit.id }}">{{ unit.name }}</a> {% if unit.location %}<span class="muted small">{{ unit.location }}</span>{% endif %}</h3>
+  {% include "partials/grid.html" %}
+  {% endwith %}
+{% endfor %}
+<div id="cell-panel"></div>
+{% else %}<p class="muted">None of these are in a rack yet.</p>{% endif %}
+{% endblock %}

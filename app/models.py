@@ -35,6 +35,33 @@ ADDITIVE_TYPES = {"medium", "varnish"}
 # Built-in mix components that aren't catalogue paints.
 BUILTIN_ADDITIVES = {"water": "Water"}
 MIX_UNITS = ["parts", "drops", "ml"]
+
+# How bottles are grouped for the border style on rack views (see .cat-* in app.css).
+TYPE_CATEGORY = {
+    "acrylic": "acrylic",
+    "air": "air",
+    "medium": "thinner",
+    "varnish": "thinner",
+    "wash": "wash",
+    "ink": "wash",
+    "contrast": "wash",
+    "metallic": "metallic",
+    "primer": "primer",
+}
+CATEGORY_LABELS = [
+    ("acrylic", "Brush acrylic"),
+    ("air", "Airbrush-ready"),
+    ("thinner", "Thinner / medium / varnish"),
+    ("wash", "Wash / ink / contrast"),
+    ("metallic", "Metallic"),
+    ("primer", "Primer"),
+    ("mix", "Your mix"),
+    ("other", "Other (pigment, lacquer, enamel, oil)"),
+]
+
+
+def type_category(paint_type: str | None) -> str:
+    return TYPE_CATEGORY.get(paint_type or "", "other")
 ENTITY_TYPES = ["brand", "line", "paint", "item", "mix", "unit", "cell", "reference"]
 
 
@@ -337,6 +364,12 @@ class InventoryItem(Base):
         if self.mix:
             return self.mix.name[:10]
         return "?"
+
+    @property
+    def category(self) -> str:
+        if self.mix_id:
+            return "mix"
+        return type_category(self.paint.type if self.paint else None)
 
     @property
     def effective_format(self) -> BottleFormat | None:

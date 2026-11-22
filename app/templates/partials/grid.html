@@ -12,7 +12,7 @@
         {% set it = cell.items[0] %}
         {% set fmt = it.effective_format %}
         {% set misfit = fmt and unit.formats and fmt not in unit.formats %}
-        <div class="cell filled{% if it.id in hl %} hl{% endif %}{% if misfit %} misfit{% endif %}" draggable="true" data-item="{{ it.id }}" data-cell="{{ cell.id }}"
+        <div class="cell filled cat-{{ it.category }}{% if it.id in hl %} hl{% endif %}{% if misfit %} misfit{% endif %}" draggable="true" data-item="{{ it.id }}" data-cell="{{ cell.id }}"
              style="background:{{ it.hex or '#fafafa' }};color:{{ it.hex|textcol }}"
              title="{{ cell.label }}: {{ it.full_label }}{% if misfit %} (bottle may not fit this rack){% endif %}"
              hx-get="/cells/{{ cell.id }}" hx-target="#cell-panel">

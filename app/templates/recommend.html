@@ -1,0 +1,59 @@
+{% extends "base.html" %}{% from "macros.html" import swatch %}
+{% block title %}What to buy next{% endblock %}
+{% block content %}
+<h1>🛍️ What should I buy next?</h1>
+<p class="muted small">Ranks paints you don't own by how much new colour they let you mix (alone or mixed 1:1 to 3:1 with one of your paints)
+and by how much closer they'd get to colours you've searched for or set as mix targets ({{ request_count }} logged so far). Picks are chosen one at a time,
+assuming you bought the previous ones, so the list covers different gaps. Uses approximate catalogue colours: treat it as a strong hint.</p>
+{% if not mixable_count %}<p class="flash warn">Add some bottles first: recommendations are based on what you already own.</p>{% endif %}
+<form method="get" action="/recommend">
+  <input type="hidden" name="run" value="1">
+  <div class="grid">
+    <label>Suggest from
+      <select name="scope">
+        <option value="lines" {% if f.scope == 'lines' %}selected{% endif %}>Product lines I own</option>
+        <option value="brands" {% if f.scope == 'brands' %}selected{% endif %}>Brands I own</option>
+        <option value="all" {% if f.scope == 'all' %}selected{% endif %}>All brands</option>
+      </select>
+    </label>
+    <label>Brand
+      <select name="brand"><option value="">Any</option>{% for b in brands %}<option value="{{ b.id }}" {% if f.brand == b.id %}selected{% endif %}>{{ b.name }}</option>{% endfor %}</select>
+    </label>
+    <label>How many <input type="number" name="count" min="1" max="15" value="{{ f.count }}"></label>
+  </div>
+  <label>Balance: <span class="muted small">fill gaps in colours I've asked for</span>
+    <input type="range" name="weight" min="0" max="100" step="10" value="{{ f.weight }}" style="max-width:20rem;display:inline-block;vertical-align:middle">
+    <span class="muted small">explore new colours</span></label>
+  <div class="small">
+    <label><input type="checkbox" name="stocked" value="1" {% if f.stocked %}checked{% endif %}> Only lines my shop stocks</label>
+    <label><input type="checkbox" name="discontinued" value="1" {% if f.discontinued %}checked{% endif %}> Include discontinued</label>
+    <label><input type="checkbox" name="novelty" value="1" {% if f.novelty %}checked{% endif %}> Include fluorescent / transparent</label>
+  </div>
+  <button>Recommend</button>
+</form>
+{% if picks is not none %}
+  <p class="small muted">You can currently mix about <b>{{ '%.0f' % (cover * 100) }}%</b> of the sampled colour range (within ≈ΔE 3) from {{ mixable_count }} paints · {{ candidate_count }} candidates considered.</p>
+  {% for p in picks %}
+  <article>
+    <div style="display:flex;gap:.75rem;align-items:center;flex-wrap:wrap">
+      <b style="font-size:1.4rem">{{ loop.index }}</b>
+      {{ swatch(p.paint.display_hex, 'md') }}
+      <div style="flex:1;min-width:14rem">
+        <a href="/paints/{{ p.paint.id }}"><b>{% if p.paint.code %}{{ p.paint.code }} {% endif %}{{ p.paint.name }}</b></a>
+        <span class="muted small">{{ p.paint.line.brand.name }} {{ p.paint.line.name }}</span><br>
+        <span class="small">{{ p.explain() }}.</span>
+      </div>
+      <form class="inline" method="post" action="/recommend/{{ p.paint.id }}/shopping"><button class="small">+ Shopping list</button></form>
+      <form class="inline" method="post" action="/recommend/{{ p.paint.id }}/shopping"><input type="hidden" name="ordered" value="1"><button class="small outline">Already ordered</button></form>
+      <form class="inline" method="post" action="/recommend/{{ p.paint.id }}/dismiss"><button class="small outline secondary">Dismiss</button></form>
+    </div>
+    {% if p.helped %}
+    <details class="small"><summary>Past requests it helps ({{ p.helped|length }})</summary>
+      <ul>{% for h in p.helped[:8] %}<li>{{ swatch(h.hex, 'sm') }} {{ h.label }}: best match ≈ΔE {{ '%.0f' % h.before }} → {{ '%.0f' % h.after }}</li>{% endfor %}</ul>
+    </details>
+    {% endif %}
+  </article>
+  {% else %}<p class="muted">Nothing to recommend with these filters.</p>{% endfor %}
+{% endif %}
+{% if dismissed_count %}<form method="post" action="/recommend/dismissed/clear"><button class="small outline secondary">Un-dismiss {{ dismissed_count }} paint{{ 's' if dismissed_count != 1 }}</button></form>{% endif %}
+{% endblock %}

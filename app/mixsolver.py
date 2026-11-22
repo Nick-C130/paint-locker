@@ -13,7 +13,18 @@ from dataclasses import dataclass
 
 import numpy as np
 
-from .colour import _BASE, _CMF, _CONV, EPS, delta_e, hex_to_oklab, normalise_hex, spectral_mix, srgb_to_lrgb, hex_to_rgb
+from .colour import (
+    _BASE,
+    _CMF,
+    _CONV,
+    EPS,
+    delta_e,
+    hex_to_oklab,
+    hex_to_rgb,
+    normalise_hex,
+    spectral_mix,
+    srgb_to_lrgb,
+)
 
 _B = {k: np.array(v) for k, v in _BASE.items()}
 _CMF_T = np.array(_CMF).T  # (38, 3)
@@ -151,7 +162,7 @@ def suggest_mixes(paints: list, target_hex: str, limit: int = 8, max_paints: int
     for s in out:
         # Drop a mix that isn't meaningfully better than a simpler one using a subset of its paints
         if len(s.paints) > 1 and any(
-            set(x.id for x in o.paints) < set(x.id for x in s.paints) and o.delta_e <= s.delta_e + 0.5 for o in pruned
+            {x.id for x in o.paints} < {x.id for x in s.paints} and o.delta_e <= s.delta_e + 0.5 for o in pruned
         ):
             continue
         pruned.append(s)

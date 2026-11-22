@@ -96,9 +96,9 @@ def create_app() -> FastAPI:
     def sw():
         return FileResponse(STATIC_DIR / "sw.js", media_type="application/javascript")
 
-    from .routers import admin, catalogue, inventory, mixes, notes, pages, scan, storage
+    from .routers import admin, catalogue, inventory, mixes, notes, pages, recommend, scan, storage
 
-    for r in (pages, catalogue, inventory, storage, mixes, notes, admin, scan):
+    for r in (pages, catalogue, inventory, storage, mixes, notes, admin, scan, recommend):
         app.include_router(r.router)
     return app
 

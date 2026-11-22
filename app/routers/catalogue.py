@@ -9,9 +9,9 @@ from ..colour import normalise_hex
 from ..db import get_session
 from ..mixsolver import suggest_mixes
 from ..models import (
-    BarcodeLink,
     NON_MIXING_TYPES,
     PAINT_TYPES,
+    BarcodeLink,
     BottleFormat,
     Brand,
     InventoryItem,

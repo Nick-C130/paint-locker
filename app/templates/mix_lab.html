@@ -44,6 +44,7 @@
     <p class="muted small" x-show="!m.components.length">Add two or more paints from the left.</p>
     <p class="small" x-show="m.components.length">Ratio <b x-text="ratio"></b>
       <span x-show="dilution > 0"> · <b x-text="Math.round(dilution * 100) + '%'"></b> water/thinner/medium (<span x-text="consistency"></span>)</span></p>
+    <p x-show="m.components.some(c => c.kind !== 'additive')"><a class="small" role="button" :href="locateUrl" target="_blank">📍 Find these paints in my racks</a></p>
     <div x-show="m.components.length">
       <label>Make <input type="number" min="1" step="1" x-model.number="makeMl" style="width:6rem;display:inline-block"> ml:</label>
       <ul class="small">

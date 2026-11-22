@@ -1,0 +1,33 @@
+name: Bug report
+description: Something doesn't work the way it should
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: Steps to reproduce, what you expected, and what you saw instead. Screenshots help.
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: Image tag and roughly when you pulled it, or the git commit if you built from source.
+      placeholder: ghcr.io/nick-c130/paint-locker:latest (pulled 2026-11-20)
+  - type: dropdown
+    id: install
+    attributes:
+      label: How do you run it?
+      options: [Docker (published image), Docker (built from source), Python directly, Other]
+  - type: input
+    id: browser
+    attributes:
+      label: Browser and device
+      placeholder: Chrome on Android, Safari on iPhone, Firefox on desktop…
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs
+      description: Output of `docker compose logs paint-locker`, if relevant.
+      render: text

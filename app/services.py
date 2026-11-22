@@ -256,4 +256,4 @@ def owned_counts(session: Session, paint_ids: list[int]) -> dict[int, int]:
         .where(InventoryItem.paint_id.in_(paint_ids))
         .group_by(InventoryItem.paint_id)
     ).all()
-    return {pid: n for pid, n in rows}
+    return dict(rows)

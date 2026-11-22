@@ -94,6 +94,10 @@ function mixLab(initial, refs, nonMixing, dpm, additiveTypes) {
     },
     // Very rough: how opaque one coat looks. Neat paint ≈ fully opaque; heavily thinned ≈ a tint.
     get coatOpacity() { return Math.max(0.08, 1 - this.dilution * 0.95).toFixed(2); },
+    get locateUrl() {
+      const ids = k => this.m.components.filter(c => c.kind === k).map(c => c.id).join(',');
+      return '/locate?paints=' + ids('paint') + '&mixes=' + ids('mix') + '&title=' + encodeURIComponent('Paints for ' + (this.m.name || 'this mix'));
+    },
     addWater() { this.m.components.push({ kind: 'additive', id: 'water', label: 'Water', hex: null, type: 'additive', amount: 1 }); },
     async showAdditives() {
       this.q = '';

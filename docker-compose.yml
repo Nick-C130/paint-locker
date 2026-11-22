@@ -10,7 +10,7 @@ services:
     volumes:
       - ./data:/data
     environment:
-      TZ: Australia/Sydney
+      TZ: UTC                              # set to your zone, e.g. Europe/London, for the backup hour
       # PAINTLOCKER_PASSWORD: change-me     # optional single shared password (HTTP basic auth)
       # PAINTLOCKER_BACKUP_HOUR: "3"        # nightly backup time (container local time)
       # PAINTLOCKER_BACKUP_KEEP: "14"       # how many nightly backups to keep

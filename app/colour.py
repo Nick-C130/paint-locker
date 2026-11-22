@@ -263,7 +263,7 @@ def _gamut_map_xyz(xyz, jnd=0.03, e=0.0001):
     current = lrgb
     clipped = xyz_to_oklab(lrgb_to_xyz([_clamp01(x) for x in current]))
     E = _delta_ok(clipped, xyz_to_oklab(lrgb_to_xyz(current)))
-    if E < jnd:
+    if jnd > E:
         return lrgb_to_srgb(xyz_to_lrgb(oklab_to_xyz(clipped)))
     while hi - lo > e:
         chroma = (lo + hi) / 2
@@ -274,7 +274,7 @@ def _gamut_map_xyz(xyz, jnd=0.03, e=0.0001):
         else:
             clipped = xyz_to_oklab(lrgb_to_xyz([_clamp01(x) for x in current]))
             E = _delta_ok(clipped, lab)
-            if E < jnd:
+            if jnd > E:
                 if jnd - E < e:
                     break
                 lo_in = False

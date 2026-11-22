@@ -1,0 +1,23 @@
+name: Catalogue data
+description: Missing paint, wrong colour, new brand or barcode
+labels: [catalogue]
+body:
+  - type: input
+    id: brand
+    attributes:
+      label: Brand and line
+      placeholder: Vallejo Model Color
+    validations:
+      required: true
+  - type: textarea
+    id: change
+    attributes:
+      label: What should change?
+      description: Paste rows in the catalogue CSV format if you can (code,name,hex,type,finish,volume_ml,barcode).
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Source
+      description: Where the colour or code came from (manufacturer chart, your own swatch, product page…).

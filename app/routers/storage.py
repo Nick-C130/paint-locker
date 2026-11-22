@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import contextlib
+
 from fastapi import APIRouter, Depends, Form, HTTPException, Request
 from sqlalchemy import select, text
 from sqlalchemy.orm import Session, selectinload
@@ -149,10 +151,8 @@ async def storage_edit(request: Request, unit_id: int, session: Session = Depend
     unit.rows, unit.cols = rows, cols
     if form.get("label_scheme") in ("A1", "1-1"):
         unit.label_scheme = form.get("label_scheme")
-    try:
+    with contextlib.suppress(ValueError):
         unit.sort_order = int(form.get("sort_order") or 0)
-    except ValueError:
-        pass
     unit.formats = _formats_from(session, form.getlist("format_ids"))
     build_cells(unit)
     session.flush()
@@ -294,3 +294,41 @@ async def api_cell_fill(request: Request, cell_id: int, session: Session = Depen
     fts.index_entity(session, "paint" if paint_id else "mix", paint_id or mix_id)
     session.commit()
     return {"ok": True, "item_id": item.id, "label": item.label, "hex": item.hex, "warning": warning}
+
+
+@router.get("/locate")
+def locate(
+    request: Request,
+    paints: str = "",
+    mixes: str = "",
+    title: str = "",
+    back: str = "",
+    session: Session = Depends(get_session),
+):
+    """Show every rack holding any of the given paints/mixes, with those cells highlighted."""
+    pids = [int(x) for x in paints.split(",") if x.strip().isdigit()]
+    mids = [int(x) for x in mixes.split(",") if x.strip().isdigit()]
+    items = session.scalars(
+        select(InventoryItem).where(
+            (InventoryItem.paint_id.in_(pids)) | (InventoryItem.mix_id.in_(mids))
+        )
+    ).all()
+    hl = {it.id for it in items}
+    unit_ids = sorted({it.cell.unit_id for it in items if it.cell})
+    units = [load_unit(session, uid) for uid in unit_ids]
+    wanted = [("paint", session.get(Paint, i)) for i in pids] + [("mix", session.get(MixRecipe, i)) for i in mids]
+    rows = []
+    for kind, obj in wanted:
+        if obj is None:
+            continue
+        mine = [it for it in items if (it.paint_id if kind == "paint" else it.mix_id) == obj.id]
+        rows.append({"kind": kind, "obj": obj, "bottles": mine})
+    return render(
+        request,
+        "locate.html",
+        units=[{"unit": u, "grid": grid(u)} for u in units],
+        hl=hl,
+        rows=rows,
+        title=title or "Find in racks",
+        back=back if back.startswith("/") else "",
+    )

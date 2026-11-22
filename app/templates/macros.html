@@ -44,8 +44,14 @@
 <a href="/storage/{{ u.id }}" class="mini-rack" style="grid-template-columns: repeat({{ u.cols }}, 1fr)" title="Open {{ u.name }}">
   {% for c in u.cells|sort(attribute='row,col') %}
     {% if c.disabled %}<span class="mc off"></span>
-    {% elif c.items %}{% set it = c.items[0] %}<span class="mc" style="background:{{ it.hex or '#888' }}" title="{{ c.label }}: {{ it.full_label }}"></span>
+    {% elif c.items %}{% set it = c.items[0] %}<span class="mc cat-{{ it.category }}" style="background:{{ it.hex or '#888' }}" title="{{ c.label }}: {{ it.full_label }}"></span>
     {% else %}<span class="mc empty" title="{{ c.label }}: empty"></span>{% endif %}
   {% endfor %}
 </a>
+{%- endmacro %}
+
+{% macro legend() -%}
+<div class="legend small">
+  {% for key, label in CATEGORY_LABELS %}<span><span class="lg cat-{{ key }}"></span>{{ label }}</span>{% endfor %}
+</div>
 {%- endmacro %}

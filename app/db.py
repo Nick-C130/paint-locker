@@ -8,7 +8,6 @@ from sqlalchemy.orm import Session, sessionmaker
 from . import config
 
 
-
 def make_engine(url: str | None = None):
     url = url or f"sqlite:///{config.DB_PATH}"
     engine = create_engine(url, connect_args={"check_same_thread": False})
