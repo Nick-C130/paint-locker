@@ -15,3 +15,7 @@ updates:
     directory: /
     schedule:
       interval: monthly
+    ignore:
+      # Move to a new Python minor by hand once numpy and the other wheels support it.
+      - dependency-name: python
+        update-types: ["version-update:semver-minor", "version-update:semver-major"]
