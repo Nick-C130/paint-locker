@@ -36,6 +36,8 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Simulate a Windows checkout (CRLF entrypoint, no exec bit)
+        run: sed -i 's/$/\r/' docker/entrypoint.sh && chmod 644 docker/entrypoint.sh
       - name: Build test image (amd64)
         uses: docker/build-push-action@v7
         with:
@@ -50,6 +52,8 @@ jobs:
           curl -fsS http://localhost:8080/ > /dev/null
           test -f /tmp/pl-data/paintlocker.db || (ls -la /tmp/pl-data; docker logs pl; exit 1)
           docker logs pl | tail -5
+      - name: Restore the real checkout
+        run: git checkout -- docker/entrypoint.sh
       - uses: docker/build-push-action@v7
         with:
           context: .

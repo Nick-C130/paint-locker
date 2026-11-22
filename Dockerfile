@@ -17,6 +17,8 @@ COPY app ./app
 COPY catalogues ./catalogues
 
 COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
+# Strip Windows line endings (a checkout with core.autocrlf turns the shebang into "sh\r") and set the exec bit.
+RUN sed -i 's/\r$//' /usr/local/bin/entrypoint.sh && chmod 755 /usr/local/bin/entrypoint.sh
 RUN useradd --create-home --uid 1000 paintlocker \
     && mkdir -p /data && chown paintlocker:paintlocker /data
 # The entrypoint fixes ownership of /data, then runs the app as PUID/PGID (default 1000).
