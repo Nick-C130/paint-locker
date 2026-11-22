@@ -5,7 +5,7 @@
 <p class="small">
   {% for f in unit.formats %}<span class="badge">{{ f.name }}</span> {% endfor %}
   {% if unit.location %}<span class="muted">{{ unit.location }}</span> · {% endif %}
-  <a href="/storage/{{ unit.id }}/bulk">Bulk shelf entry</a> · <a href="/storage/{{ unit.id }}/edit">Edit</a>
+  <a href="/storage/{{ unit.id }}/bulk">Bulk shelf entry</a> · <a href="/labels?unit={{ unit.id }}">🏷️ Print QR labels</a> · <a href="/storage/{{ unit.id }}/edit">Edit</a>
   {% if other_units|length > 1 %} · Go to: {% for u in other_units if u.id != unit.id %}<a href="/storage/{{ u.id }}">{{ u.name }}</a>{% if not loop.last %}, {% endif %}{% endfor %}{% endif %}
 </p>
 {{ legend() }}

@@ -1,0 +1,40 @@
+{% extends "base.html" %}{% from "macros.html" import swatch, notes, needs_table %}
+{% block title %}{{ recipe.name }}{% endblock %}
+{% block content %}
+<p class="muted"><a href="/recipes">Painting recipes</a>{% for t in recipe.tags.split(';') if t %} · <span class="badge">#{{ t }}</span>{% endfor %}</p>
+<h1>{{ recipe.name }}</h1>
+{% if recipe.description %}<div>{{ recipe.description|markdown }}</div>{% endif %}
+<p>
+  <a role="button" href="/recipes/{{ recipe.id }}/edit">Edit steps</a>
+  {% if rows %}<a role="button" class="secondary" href="{{ locate }}">📍 Find these paints in my racks</a>{% endif %}
+  <a role="button" class="outline" href="/labels?recipe={{ recipe.id }}">🏷️ Print a QR label</a>
+</p>
+{% if projects %}<p class="small">Used by: {% for p in projects %}<a href="/projects/{{ p.id }}">{{ p.name }}</a>{% if not loop.last %}, {% endif %}{% endfor %}</p>{% endif %}
+
+<ol class="steps">
+{% for s in recipe.steps %}
+  <li id="step-{{ s.id }}">
+    <div class="step-head">
+      {% if s.hex %}{{ swatch(s.hex) }}{% endif %}
+      <div>
+        <b class="technique">{{ s.technique|capitalize }}</b>{% if s.area %} <span>· {{ s.area }}</span>{% endif %}
+        <div>
+          {% if s.paint %}<a href="/paints/{{ s.paint_id }}">{{ s.paint.full_label }}</a>
+            {% if s.paint.items %}<span class="badge owned">owned</span>{% else %}<span class="badge warn">not owned</span>{% endif %}
+          {% elif s.mix %}<a href="/mixes/{{ s.mix_id }}">Mix: {{ s.mix.name }}</a>{% endif %}
+          {% if s.dilution %}<span class="muted small">({{ s.dilution }})</span>{% endif %}
+        </div>
+      </div>
+    </div>
+    {% if s.instructions %}<div class="small">{{ s.instructions|markdown }}</div>{% endif %}
+  </li>
+{% else %}<p class="muted">No steps yet. <a href="/recipes/{{ recipe.id }}/edit">Add some</a>.</p>{% endfor %}
+</ol>
+
+{% if rows %}
+<h2>Paints needed</h2>
+{{ needs_table(rows) }}
+{% if missing %}<form method="post" action="/recipes/{{ recipe.id }}/shopping"><button class="secondary small">Add the {{ missing }} missing paint{{ 's' if missing != 1 }} to my shopping list</button></form>{% endif %}
+{% endif %}
+{{ notes('recipe', recipe.id) }}
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Shops{% endblock %}
+{% macro shop_form(s=None) -%}
+<div class="grid">
+  <label>Name <input name="name" value="{{ s.name if s else '' }}" required></label>
+  <label>Website <input name="url" value="{{ s.url if s else '' }}" placeholder="https://…"></label>
+  <label>Order <input type="number" name="sort_order" value="{{ s.sort_order if s else 0 }}" title="Lower comes first when several shops stock a paint"></label>
+</div>
+<label>Search page <input name="search_url" value="{{ s.search_url if s else '' }}" placeholder="https://shop.example/search?q={q}">
+  <small>Search for anything on the shop's site, copy the address, and replace the search words with <code>{q}</code>.</small></label>
+<fieldset><legend class="small">Brands it stocks</legend>
+  <div class="brand-checks">{% for b in brands %}<label><input type="checkbox" name="brand_ids" value="{{ b.id }}" {% if s and b in s.brands %}checked{% endif %}> {{ b.name }}</label>{% endfor %}</div>
+</fieldset>
+<label>Notes <input name="notes" value="{{ s.notes if s else '' }}" placeholder="free shipping over $50, local pickup…"></label>
+{%- endmacro %}
+{% block content %}
+<p class="muted"><a href="/shopping">← Shopping list</a></p>
+<h1>Shops</h1>
+<p class="muted">The shopping list puts each paint under the first shop here that stocks its brand (or whose name is in the catalogue's “stocked by” column).</p>
+{% for s in shops %}
+<details>
+  <summary><b>{{ s.name }}</b> <span class="muted small">{{ s.brands|map(attribute='name')|join(', ') or 'no brands ticked' }}</span></summary>
+  <form method="post" action="/shops/{{ s.id }}/edit">{{ shop_form(s) }}<button class="small">Save</button></form>
+  <form method="post" action="/shops/{{ s.id }}/delete"><button class="small outline secondary">Remove {{ s.name }}</button></form>
+</details>
+{% else %}<p class="muted">No shops yet.</p>{% endfor %}
+<article><header>Add a shop</header><form method="post" action="/shops">{{ shop_form() }}<button>Add shop</button></form></article>
+{% endblock %}

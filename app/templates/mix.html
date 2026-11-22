@@ -68,7 +68,7 @@
     <input type="color" x-model="h" style="flex:0 0 3.5rem;height:2.6rem"><input name="measured_hex" x-model="h">
     <button class="small" style="flex:0">Save</button>
   </form>
-  <p class="small muted">Photograph-based colour capture comes in phase 2. For now, pick the colour by eye or from a photo.</p>
+  <p class="small"><a href="/capture?mix_id={{ mix.id }}">📷 Measure it from a photo</a> (with a grey card) · <a href="/labels?mixes={{ mix.id }}">🏷️ Print a bottle label</a></p>
   <h4>Reference colours</h4>
   <ul class="results-list">
   {% for l in links %}<li>{{ swatch(l.reference.hex, 'sm') }} <a class="grow" href="/references/{{ l.reference.id }}">{{ l.reference.label }}</a>

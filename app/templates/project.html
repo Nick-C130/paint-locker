@@ -1,0 +1,81 @@
+{% extends "base.html" %}{% from "macros.html" import swatch, notes, needs_table, picker %}
+{% block title %}{{ project.name }}{% endblock %}
+{% block head %}<script src="/static/picker.js"></script>{% endblock %}
+{% block content %}
+<p class="muted"><a href="/projects">Projects</a>{% for a in ([project.parent] if project.parent else []) %} · <a href="/projects/{{ a.id }}">{{ a.name }}</a>{% endfor %}</p>
+<h1>{{ project.name }} <span class="badge">{{ project.kind }}</span> <span class="badge {{ 'owned' if project.status == 'done' }}">{{ project.status }}</span></h1>
+{% if project.description %}<div>{{ project.description|markdown }}</div>{% endif %}
+{% if total %}
+<div class="row" style="align-items:center">
+  <progress value="{{ done }}" max="{{ total }}" style="flex:1;margin:0"></progress>
+  <b style="flex:0 0 auto">{{ done }} / {{ total }} painted</b>
+  {% if project.models_total %}
+  <form class="inline" method="post" action="/projects/{{ project.id }}/progress" style="flex:0 0 auto"><input type="hidden" name="delta" value="1"><button class="small">+1 painted</button></form>
+  <form class="inline" method="post" action="/projects/{{ project.id }}/progress" style="flex:0 0 auto"><input type="hidden" name="delta" value="-1"><button class="small outline secondary">−1</button></form>
+  {% endif %}
+</div>
+{% if project.children %}<p class="small muted">Includes its units' models.</p>{% endif %}
+{% endif %}
+
+{% if project.children %}
+<h2>Units</h2>
+<ul class="results-list">{% for c in project.children %}{% set d, t = c.progress %}
+  <li><a class="grow" href="/projects/{{ c.id }}">{{ c.name }}</a> <span class="badge">{{ c.status }}</span>{% if t %} <span class="small muted">{{ d }}/{{ t }}</span>{% endif %}</li>{% endfor %}</ul>
+{% endif %}
+
+<h2>Recipes</h2>
+<ul class="results-list">
+{% for r in project.recipes %}
+  <li><span class="strip">{% for s in r.steps if s.hex %}<span class="swatch swatch-sm" style="background:{{ s.hex }}"></span>{% endfor %}</span>
+    <a class="grow" href="/recipes/{{ r.id }}">{{ r.name }}</a>
+    <form class="inline" method="post" action="/projects/{{ project.id }}/recipes/{{ r.id }}/remove"><button class="small outline secondary">remove</button></form></li>
+{% else %}<li class="muted">No recipes linked.</li>{% endfor %}
+</ul>
+{% if recipes %}
+<form method="post" action="/projects/{{ project.id }}/recipes" class="row">
+  <select name="recipe_id">{% for r in recipes %}<option value="{{ r.id }}">{{ r.name }}</option>{% endfor %}</select>
+  <button class="small" style="flex:0 0 auto">Link recipe</button>
+</form>
+{% endif %}
+<p class="small"><a href="/recipes">Write a new recipe →</a></p>
+
+<h2>Everything it needs</h2>
+{% if rows %}
+<p><a role="button" class="secondary" href="{{ locate }}">📍 Find these paints in my racks</a>
+{% if missing %}<form class="inline" method="post" action="/projects/{{ project.id }}/shopping"><button class="outline">🛒 Add {{ missing }} missing to shopping list</button></form>{% endif %}</p>
+{{ needs_table(rows) }}
+{% endif %}
+
+<h3>Paints used directly</h3>
+<ul class="results-list">
+{% for e in project.extras %}
+  <li>{% if e.paint %}{{ swatch(e.paint.display_hex, 'sm') }} <a class="grow" href="/paints/{{ e.paint_id }}">{{ e.paint.full_label }}</a>{% else %}{{ swatch(e.mix.display_hex, 'sm') }} <a class="grow" href="/mixes/{{ e.mix_id }}">Mix: {{ e.mix.name }}</a>{% endif %}
+    <span class="muted small">{{ e.note }}</span>
+    <form class="inline" method="post" action="/project-paints/{{ e.id }}/delete"><button class="small outline secondary">✕</button></form></li>
+{% else %}<li class="muted small">None. Add paints here that aren't in a recipe (bases, decals, varnish…).</li>{% endfor %}
+</ul>
+<form method="post" action="/projects/{{ project.id }}/paints">
+  <div class="grid"><div>{{ picker() }}</div><input name="note" placeholder="What for (optional)"></div>
+  <button class="small">Add paint</button>
+</form>
+
+<details>
+  <summary>Edit project</summary>
+  <form method="post" action="/projects/{{ project.id }}/edit">
+    <div class="grid">
+      <label>Name <input name="name" value="{{ project.name }}" required></label>
+      <label>Kind <select name="kind">{% for k in kinds %}<option {% if k == project.kind %}selected{% endif %}>{{ k }}</option>{% endfor %}</select></label>
+      <label>Part of <select name="parent_id"><option value="">(nothing, top level)</option>{% for x in parents %}<option value="{{ x.id }}" {% if x.id == project.parent_id %}selected{% endif %}>{{ x.name }}</option>{% endfor %}</select></label>
+    </div>
+    <div class="grid">
+      <label>Models <input type="number" name="models_total" min="0" value="{{ project.models_total }}"></label>
+      <label>Painted <input type="number" name="models_done" min="0" value="{{ project.models_done }}"></label>
+      <label>Status <select name="status">{% for s in statuses %}<option {% if s == project.status %}selected{% endif %}>{{ s }}</option>{% endfor %}</select></label>
+    </div>
+    <label>Description <textarea name="description" rows="3">{{ project.description }}</textarea></label>
+    <button class="secondary">Save</button>
+  </form>
+  <form method="post" action="/projects/{{ project.id }}/delete"><button class="small outline secondary">Delete project</button></form>
+</details>
+{{ notes('project', project.id) }}
+{% endblock %}

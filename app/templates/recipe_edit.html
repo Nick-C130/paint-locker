@@ -1,0 +1,47 @@
+{% extends "base.html" %}{% from "macros.html" import swatch, picker %}
+{% block title %}Edit {{ recipe.name }}{% endblock %}
+{% block head %}<script src="/static/picker.js"></script>{% endblock %}
+{% macro step_form(s=None) -%}
+<div class="grid">
+  <label>Technique
+    <select name="technique">{% for t in techniques %}<option value="{{ t }}" {% if (s and s.technique == t) or (not s and t == 'basecoat') %}selected{% endif %}>{{ t|capitalize }}</option>{% endfor %}</select>
+  </label>
+  <label>Area <input name="area" value="{{ s.area if s else '' }}" placeholder="whole model, tracks, tunic…"></label>
+  <label>Dilution <input name="dilution" value="{{ s.dilution if s else '' }}" placeholder="2:1 water, thin glaze…"></label>
+</div>
+<div class="field"><span class="small">Paint or mix (optional)</span>{{ picker(paint=s.paint if s else None, mix=s.mix if s else None) }}</div>
+<label>Instructions <textarea name="instructions" rows="2" placeholder="How to apply it (Markdown)">{{ s.instructions if s else '' }}</textarea></label>
+{%- endmacro %}
+{% block content %}
+<p class="muted"><a href="/recipes/{{ recipe.id }}">← {{ recipe.name }}</a></p>
+<h1>Edit recipe</h1>
+<form method="post" action="/recipes/{{ recipe.id }}/edit">
+  <div class="grid"><label>Name <input name="name" value="{{ recipe.name }}" required></label>
+  <label>Tags <input name="tags" value="{{ recipe.tags.replace(';', ', ') }}"></label></div>
+  <label>Description <textarea name="description" rows="3">{{ recipe.description }}</textarea></label>
+  <button class="secondary">Save details</button>
+</form>
+
+<h2>Steps</h2>
+{% for s in recipe.steps %}
+<details class="step-edit" id="step-{{ s.id }}">
+  <summary>{{ loop.index }}. {% if s.hex %}{{ swatch(s.hex, 'sm') }}{% endif %} <b>{{ s.technique|capitalize }}</b> {{ s.area }}
+    <span class="muted small">{% if s.paint %}{{ s.paint.label }}{% elif s.mix %}Mix: {{ s.mix.name }}{% endif %}</span></summary>
+  <form method="post" action="/recipe-steps/{{ s.id }}/edit">{{ step_form(s) }}<button class="small">Save step</button></form>
+  <div class="row" style="justify-content:flex-start">
+    <form class="inline" method="post" action="/recipe-steps/{{ s.id }}/move"><input type="hidden" name="direction" value="up"><button class="small outline" {% if loop.first %}disabled{% endif %}>↑ Up</button></form>
+    <form class="inline" method="post" action="/recipe-steps/{{ s.id }}/move"><input type="hidden" name="direction" value="down"><button class="small outline" {% if loop.last %}disabled{% endif %}>↓ Down</button></form>
+    <form class="inline" method="post" action="/recipe-steps/{{ s.id }}/delete"><button class="small outline secondary">Remove</button></form>
+  </div>
+</details>
+{% else %}<p class="muted">No steps yet.</p>{% endfor %}
+
+<article id="add">
+  <header>Add a step</header>
+  <form method="post" action="/recipes/{{ recipe.id }}/steps">{{ step_form() }}<button>Add step</button></form>
+</article>
+<details><summary class="small">Copy or delete this recipe</summary>
+  <form class="inline" method="post" action="/recipes/{{ recipe.id }}/copy"><button class="small outline">Make a copy</button></form>
+  <form class="inline" method="post" action="/recipes/{{ recipe.id }}/delete"><button class="small secondary">Delete {{ recipe.name }}</button></form>
+</details>
+{% endblock %}

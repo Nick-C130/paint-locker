@@ -1,0 +1,25 @@
+{% extends "base.html" %}{% from "macros.html" import swatch %}
+{% block title %}Painting recipes{% endblock %}
+{% block content %}
+<h1>Painting recipes</h1>
+<p class="muted">Step-by-step guides, like “German grey: prime, base, wash, highlight”. Each step can use a paint or one of your mixes, so a recipe can show you where everything is and what you're missing.</p>
+<form method="get" class="row"><input type="search" name="q" value="{{ q }}" placeholder="Filter by name or tag"><button class="secondary" style="flex:0">Filter</button></form>
+<div class="row">
+{% for r in recipes %}
+  <article class="recipe-card">
+    <header><a href="/recipes/{{ r.id }}"><b>{{ r.name }}</b></a></header>
+    <div class="strip">{% for s in r.steps %}{% if s.hex %}<span class="swatch swatch-sm" style="background:{{ s.hex }}" title="{{ s.technique }} {{ s.area }}"></span>{% endif %}{% endfor %}</div>
+    <p class="small muted">{{ r.steps|length }} step{{ 's' if r.steps|length != 1 }}{% for t in r.tags.split(';') if t %} · #{{ t }}{% endfor %}</p>
+  </article>
+{% else %}<p class="muted">No recipes yet.</p>{% endfor %}
+</div>
+<article>
+  <header>New recipe</header>
+  <form method="post" action="/recipes">
+    <div class="grid"><label>Name <input name="name" required placeholder="Panzer grey, 1939"></label>
+    <label>Tags <input name="tags" placeholder="german, armour, early war"></label></div>
+    <label>Description <textarea name="description" rows="2" placeholder="What it's for, references, the look you're after (Markdown)"></textarea></label>
+    <button>Create and add steps</button>
+  </form>
+</article>
+{% endblock %}

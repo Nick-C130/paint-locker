@@ -55,3 +55,46 @@
   {% for key, label in CATEGORY_LABELS %}<span><span class="lg cat-{{ key }}"></span>{{ label }}</span>{% endfor %}
 </div>
 {%- endmacro %}
+
+{# Paint/mix picker. Posts paint_id or mix_id (prefixed). Needs /static/picker.js on the page. #}
+{% macro picker(prefix='', kinds='paint,mix', paint=None, mix=None, placeholder='Search a paint or mix (code or name)') -%}
+{% set init = {'kinds': kinds, 'kind': 'paint' if paint else ('mix' if mix else ''), 'id': (paint or mix).id if (paint or mix) else None,
+               'label': paint.full_label if paint else (('Mix: ' ~ mix.name) if mix else ''), 'hex': (paint or mix).display_hex if (paint or mix) else ''} %}
+<div class="picker" x-data='picker({{ init|tojson }})'>
+  <input type="hidden" name="{{ prefix }}paint_id" :value="kind === 'paint' ? id : ''">
+  <input type="hidden" name="{{ prefix }}mix_id" :value="kind === 'mix' ? id : ''">
+  <template x-if="id">
+    <p class="picked"><span class="swatch swatch-sm" :style="'background:' + (hex || '#ccc')"></span> <span x-text="label"></span>
+      <button type="button" class="small outline secondary" @click="clear()">change</button></p>
+  </template>
+  <div x-show="!id">
+    <input type="search" x-model="q" placeholder="{{ placeholder }}" autocomplete="off"
+           @input.debounce.200ms="search()" @keydown.enter.prevent="choose(res[sel])"
+           @keydown.down.prevent="sel = Math.min(sel + 1, res.length - 1)" @keydown.up.prevent="sel = Math.max(sel - 1, 0)">
+    <div class="picker-results" x-show="res.length">
+      <template x-for="(r, i) in res" :key="r.kind + r.id">
+        <button type="button" :class="i === sel ? '' : 'outline secondary'" @click="choose(r)">
+          <span class="swatch swatch-sm" :style="'background:' + (r.hex || '#eee')"></span>
+          <span x-text="r.label"></span><span class="badge owned" x-show="r.owned" x-text="'owned ×' + r.owned"></span>
+        </button>
+      </template>
+    </div>
+  </div>
+</div>
+{%- endmacro %}
+
+{# Table of paints/mixes something needs, with what you own and where. rows from services.needs() #}
+{% macro needs_table(rows) -%}
+<table class="compact">
+  <tbody>
+  {% for r in rows %}
+    <tr class="{{ 'missing' if not r.bottles }}">
+      <td>{{ swatch(r.obj.display_hex, 'sm') }}</td>
+      <td>{% if r.kind == 'paint' %}<a href="/paints/{{ r.obj.id }}">{{ r.obj.full_label }}</a>{% else %}<a href="/mixes/{{ r.obj.id }}">Mix: {{ r.obj.name }}</a>{% endif %}
+        {% if r.uses %}<span class="muted small">{{ r.uses|join(', ') }}</span>{% endif %}</td>
+      <td>{% if r.bottles %}{{ locations(r.bottles) }}{% elif r.kind == 'mix' %}<span class="badge">no batch</span>{% else %}<span class="badge warn">not owned</span>{% endif %}</td>
+    </tr>
+  {% else %}<tr><td class="muted">No paints yet.</td></tr>{% endfor %}
+  </tbody>
+</table>
+{%- endmacro %}

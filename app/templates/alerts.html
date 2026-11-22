@@ -1,0 +1,29 @@
+{% extends "base.html" %}{% from "macros.html" import swatch %}
+{% block title %}Alerts{% endblock %}
+{% block content %}
+<h1>⚠️ Alerts <span class="muted small">{{ total }} to look at</span></h1>
+<p class="muted">Low bottles, key paints you only have one of, duplicates, near-identical paints and old bottles. Set a bottle's level on its page. Dismiss anything that's fine.</p>
+{% for kind, icon, title, alerts in groups %}
+<h2>{{ icon }} {{ title }} <span class="muted small">{{ alerts|length }}</span></h2>
+<ul class="results-list">
+{% for a in alerts %}
+  <li>
+    {{ swatch(a.hex, 'sm') }}{% if a.hex2 %}{{ swatch(a.hex2, 'sm') }}{% endif %}
+    <span class="grow">{{ a.text }} {% for label, url in a.links %}<a class="small" href="{{ url }}">{{ label }}</a>{% if not loop.last %} · {% endif %}{% endfor %}</span>
+    {% if a.paint_id and kind in ('low', 'single') %}<form class="inline" method="post" action="/alerts/shopping"><input type="hidden" name="paint_id" value="{{ a.paint_id }}"><button class="small">🛒 Add to list</button></form>{% endif %}
+    {% if kind in ('age', 'mixage') %}<form class="inline" method="post" action="/items/{{ a.item_id }}/checked"><input type="hidden" name="back" value="/alerts"><button class="small">Still good</button></form>{% endif %}
+    <form class="inline" method="post" action="/alerts/dismiss"><input type="hidden" name="key" value="{{ a.key }}"><button class="small outline secondary">Dismiss</button></form>
+  </li>
+{% endfor %}
+</ul>
+{% else %}<p>Nothing needs a look. 🎉</p>{% endfor %}
+<details class="small">
+  <summary>Alert settings{% if dismissed %} · {{ dismissed }} dismissed{% endif %}</summary>
+  <form method="post" action="/alerts/settings" class="grid">
+    <label>Flag bought paints older than (years) <input type="number" name="age_years" min="1" max="20" value="{{ age_years }}"></label>
+    <label>Flag mix batches older than (months) <input type="number" name="mix_months" min="1" max="60" value="{{ mix_months }}"></label>
+    <button class="small secondary">Save</button>
+  </form>
+  {% if dismissed %}<form method="post" action="/alerts/dismissed/clear"><button class="small outline">Bring back dismissed alerts</button></form>{% endif %}
+</details>
+{% endblock %}

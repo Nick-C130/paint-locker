@@ -1,0 +1,65 @@
+{% extends "base.html" %}{% from "macros.html" import swatch %}
+{% block title %}Colour capture{% endblock %}
+{% block head %}<script src="/static/capture.js"></script>{% endblock %}
+{% block content %}
+{% set target = paint or mix %}
+<h1>🎨 Colour capture</h1>
+{% if paint %}<p>Measuring <a href="/paints/{{ paint.id }}">{{ paint.full_label }}</a> {{ swatch(paint.hex, 'sm') }} <span class="muted small">catalogue {{ paint.hex }}</span></p>
+{% elif mix %}<p>Measuring the mix <a href="/mixes/{{ mix.id }}">{{ mix.name }}</a> {{ swatch(mix.estimated_hex, 'sm') }} <span class="muted small">estimated {{ mix.estimated_hex }}</span></p>{% endif %}
+<details class="small"><summary>How to get a good reading</summary>
+  <ul>
+    <li>Paint a swatch on card (or use a painted model) and put a grey card or plain white paper right next to it, in the same light.</li>
+    <li>Use daylight from a window or a daylight lamp. Avoid direct sun, mixed lighting and glare.</li>
+    <li>Fill the frame, keep the phone parallel to the card, and don't use flash on gloss paint.</li>
+    <li>The card fixes the colour cast of the light and camera. Without it, readings can be off by a lot.</li>
+  </ul>
+</details>
+<div x-data='capture({{ {"compare": target.display_hex if target else None}|tojson }})'>
+  <div class="grid">
+    <label>Reference card
+      <select x-model="card" @change="saveCard()">
+        <template x-for="(c, k) in cards" :key="k"><option :value="k" x-text="c.label" :selected="k === card"></option></template>
+      </select>
+    </label>
+    <label x-show="card === 'custom'">Card colour <input type="color" x-model="customHex" @change="saveCard()"></label>
+    <label>Sample size
+      <input type="range" min="1" max="6" step="0.5" x-model.number="radius">
+    </label>
+  </div>
+  <label role="button" class="secondary" style="display:inline-block">📷 Take or choose a photo
+    <input type="file" accept="image/*" capture="environment" @change="load($event)" hidden>
+  </label>
+
+  <p class="capture-step" x-show="img">
+    <template x-if="step === 'card'"><span>① Tap the <b x-text="cards[card].label.toLowerCase()"></b> in the photo. <a href="#" @click.prevent="skipCard()">No card</a></span></template>
+    <template x-if="step === 'paint'"><span>② Now tap the paint.</span></template>
+    <template x-if="step === 'done'"><span>Done. Tap again to resample the paint, or <a href="#" @click.prevent="retapCard()">re-pick the card</a>.</span></template>
+  </p>
+  <div class="capture-wrap" x-show="img">
+    <canvas x-ref="canvas" @click="tap($event)"></canvas>
+    <template x-for="m in marks" :key="m.kind">
+      <span class="capture-mark" :class="m.kind" :style="`left:${m.x}%;top:${m.y}%;width:${m.r * 2}%`"></span>
+    </template>
+  </div>
+  <p class="flash warn" x-show="warning" x-text="warning"></p>
+
+  <article x-show="sampleRaw">
+    <header>Result</header>
+    <div class="row capture-result">
+      <div><span class="swatch swatch-lg" :style="'background:' + corrected"></span><br><b x-text="corrected"></b><br><span class="small muted" x-text="refRaw ? 'corrected with the card' : 'uncorrected'"></span></div>
+      <div x-show="refRaw"><span class="swatch swatch-lg" :style="'background:' + rawHex"></span><br><span x-text="rawHex"></span><br><span class="small muted">as the camera saw it</span></div>
+      <div x-show="compare"><span class="swatch swatch-lg" :style="'background:' + compare"></span><br><span x-text="compare"></span><br><span class="small muted">current value</span></div>
+    </div>
+    <p>
+      <a role="button" :href="'/colours?source=capture&hex=' + encodeURIComponent(corrected)">🎯 Find matching paints</a>
+      {% if paint %}
+      <form class="inline" method="post" action="/paints/{{ paint.id }}/measured"><input type="hidden" name="measured_hex" :value="corrected"><button class="secondary">Save as {{ paint.label }}'s measured colour</button></form>
+      {% elif mix %}
+      <form class="inline" method="post" action="/mixes/{{ mix.id }}/measured"><input type="hidden" name="measured_hex" :value="corrected"><button class="secondary">Save as the mix's measured colour</button></form>
+      {% endif %}
+      <a role="button" class="outline" :href="'/mixes/lab?target=' + encodeURIComponent(corrected)">🧪 Mix it</a>
+    </p>
+    <p class="small muted">Phone cameras aren't colorimeters. With a card and good light this usually lands within a few ΔE, which beats the catalogue's screen colours for dark and muddy paints.</p>
+  </article>
+</div>
+{% endblock %}

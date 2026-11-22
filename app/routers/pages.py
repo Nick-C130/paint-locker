@@ -12,6 +12,8 @@ from ..models import (
     MixRecipe,
     Paint,
     ProductLine,
+    Project,
+    Recipe,
     ReferenceColour,
     StorageCell,
     StorageUnit,
@@ -57,6 +59,8 @@ def load_results(session: Session, q: str, types=fts.INDEXED, limit: int = 40) -
     }
     refs = {r.id: r for r in session.scalars(select(ReferenceColour).where(ReferenceColour.id.in_(ids.get("reference", [])))).all()}
     units = {u.id: u for u in session.scalars(select(StorageUnit).where(StorageUnit.id.in_(ids.get("unit", [])))).all()}
+    recipes = {r.id: r for r in session.scalars(select(Recipe).where(Recipe.id.in_(ids.get("recipe", [])))).all()}
+    projects = {p.id: p for p in session.scalars(select(Project).where(Project.id.in_(ids.get("project", [])))).all()}
     paint_list = [paints[i] for i in paint_ids if i in paints]
     # Owned paints float to the top
     paint_list.sort(key=lambda p: (0 if p.items else 1))
@@ -65,6 +69,8 @@ def load_results(session: Session, q: str, types=fts.INDEXED, limit: int = 40) -
         "mixes": [mixes[i] for i in ids.get("mix", []) if i in mixes],
         "references": [refs[i] for i in ids.get("reference", []) if i in refs],
         "units": [units[i] for i in ids.get("unit", []) if i in units],
+        "recipes": [recipes[i] for i in ids.get("recipe", []) if i in recipes],
+        "projects": [projects[i] for i in ids.get("project", []) if i in projects],
     }
 
 
@@ -88,7 +94,16 @@ def dashboard(request: Request, session: Session = Depends(get_session)):
         .order_by(InventoryItem.id.desc())
         .limit(10)
     ).all()
-    return render(request, "dashboard.html", units=units, stats=stats, recent=recent)
+    from .. import alerts as al
+    from ..models import Project
+
+    found = al.compute(session)
+    kinds = ", ".join(f"{len(a)} {title.lower()}" for _, _, title, a in al.grouped(found))
+    projects = session.scalars(
+        select(Project).where(Project.status == "active", Project.parent_id.is_(None)).order_by(Project.updated_at.desc()).limit(6)
+    ).all()
+    return render(request, "dashboard.html", units=units, stats=stats, recent=recent,
+                  alert_count=len(found), alert_kinds=kinds, projects=projects)
 
 
 @router.get("/search")

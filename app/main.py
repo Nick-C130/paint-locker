@@ -39,7 +39,12 @@ def startup(db_url: str | None = None) -> None:
                 seed.set_setting(session, "catalogue_fingerprint", fp)
                 log.info("catalogue import: %s", stats)
                 search.rebuild(session)
+                seed.set_setting(session, "search_index_version", search.INDEX_VERSION)
+        if seed.get_setting(session, "search_index_version") != search.INDEX_VERSION:
+            search.rebuild(session)
+            seed.set_setting(session, "search_index_version", search.INDEX_VERSION)
         seed.ensure_formats(session)
+        seed.ensure_shops(session)
         session.commit()
 
 
@@ -96,9 +101,28 @@ def create_app() -> FastAPI:
     def sw():
         return FileResponse(STATIC_DIR / "sw.js", media_type="application/javascript")
 
-    from .routers import admin, catalogue, inventory, mixes, notes, pages, recommend, scan, storage
+    from .routers import (
+        admin,
+        alerts,
+        capture,
+        catalogue,
+        imports,
+        inventory,
+        labels,
+        mixes,
+        notes,
+        pages,
+        projects,
+        recipes,
+        recommend,
+        scan,
+        shops,
+        stats,
+        storage,
+    )
 
-    for r in (pages, catalogue, inventory, storage, mixes, notes, admin, scan, recommend):
+    for r in (pages, catalogue, inventory, storage, mixes, notes, admin, scan, recommend,
+              recipes, projects, labels, capture, alerts, shops, stats, imports):
         app.include_router(r.router)
     return app
 

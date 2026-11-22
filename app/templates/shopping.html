@@ -1,18 +1,54 @@
 {% extends "base.html" %}{% from "macros.html" import swatch %}
 {% block title %}Shopping list{% endblock %}
 {% block content %}
+<div class="no-print">
 <h1>Shopping list <a class="small" role="button" href="/recommend">🛍️ What should I buy next?</a></h1>
 <form method="post" action="/shopping" class="row"><input name="text" placeholder="Add a free-text item (e.g. 'more 70.950')"><button style="flex:0">Add</button></form>
-{% for brand, group in items|groupby('paint.line.brand.name', default='Other') %}
-<h3>{{ brand }}</h3>
+<p class="small muted">Grouped by the shop that stocks each paint (<a href="/shops">set up your shops</a>: which brands they carry and their search page). Pick a different shop for any item.
+{% if only %} · <a href="/shopping">Show all shops</a>{% endif %}</p>
+</div>
+{% for g in groups %}
+<section class="shop-group">
+  <h2>{% if g.shop %}{% if g.shop.url %}<a href="{{ g.shop.url }}" target="_blank" rel="noopener">{{ g.shop.name }}</a>{% else %}{{ g.shop.name }}{% endif %}{% else %}Anywhere{% endif %}
+    <span class="muted small">{{ g.rows|length }} item{{ 's' if g.rows|length != 1 }}</span>
+    <span class="no-print small">
+      <a href="/shopping?shop={{ g.shop.id if g.shop else 'none' }}&print=1">🖨️ Print</a>
+    </span></h2>
+  <ul class="results-list">
+  {% for r in g.rows %}{% set s = r.item %}
+    <li>
+      {% if s.paint %}{{ swatch(s.paint.display_hex, 'sm') }} <span class="grow"><a href="/paints/{{ s.paint_id }}">{{ s.paint.full_label }}</a>
+        {% if g.shop and (g.shop.search_url or g.shop.url) %}<a class="small no-print" href="{{ g.shop.search_link(s.paint) }}" target="_blank" rel="noopener">find at {{ g.shop.name }} ↗</a>{% endif %}
+        {% for o in r.others %}<a class="small muted no-print" href="{{ o.search_link(s.paint) or '#' }}" target="_blank" rel="noopener">also {{ o.name }}</a> {% endfor %}</span>
+      {% else %}<span class="grow">{{ s.text }}</span>{% endif %}
+      <span class="qty">{% if s.quantity > 1 %}× {{ s.quantity }}{% endif %}</span>
+      <span class="no-print row-actions">
+        <form class="inline" method="post" action="/shopping/{{ s.id }}/quantity"><input type="hidden" name="delta" value="1"><button class="small outline" title="One more">+</button></form>
+        {% if s.quantity > 1 %}<form class="inline" method="post" action="/shopping/{{ s.id }}/quantity"><input type="hidden" name="delta" value="-1"><button class="small outline" title="One fewer">−</button></form>{% endif %}
+        {% if shops %}<form class="inline" method="post" action="/shopping/{{ s.id }}/shop">
+          <select name="shop_id" onchange="this.form.submit()" class="small" title="Which shop">
+            <option value="">{{ 'Auto' if r.auto else 'Auto (by brand)' }}</option>
+            {% for sh in shops %}<option value="{{ sh.id }}" {% if s.shop_id == sh.id %}selected{% endif %}>{{ sh.name }}</option>{% endfor %}
+          </select></form>{% endif %}
+        <form class="inline" method="post" action="/shopping/{{ s.id }}/toggle"><button class="small">bought</button></form>
+        <form class="inline" method="post" action="/shopping/{{ s.id }}/delete"><button class="small outline secondary">✕</button></form>
+      </span>
+    </li>
+  {% endfor %}
+  </ul>
+  <details class="no-print small"><summary>Copy as text</summary><textarea rows="{{ [g.rows|length, 12]|min + 1 }}" readonly onclick="this.select()">{{ g.text }}</textarea></details>
+</section>
+{% else %}<p class="muted">Nothing to buy. Bottles you mark “used up → shopping list” or “running low” land here.</p>{% endfor %}
+
+{% if done and not only %}
+<details class="no-print"><summary>Bought ({{ done|length }})</summary>
 <ul class="results-list">
-{% for s in group %}
-  <li style="{% if s.done %}opacity:.5;text-decoration:line-through{% endif %}">
-    {% if s.paint %}{{ swatch(s.paint.display_hex, 'sm') }} <a class="grow" href="/paints/{{ s.paint_id }}">{{ s.paint.full_label }}</a>{% else %}<span class="grow">{{ s.text }}</span>{% endif %}
-    <form class="inline" method="post" action="/shopping/{{ s.id }}/toggle"><button class="small outline">{{ 'undo' if s.done else 'bought' }}</button></form>
-    <form class="inline" method="post" action="/shopping/{{ s.id }}/delete"><button class="small outline secondary">✕</button></form>
-  </li>
-{% endfor %}
+{% for s in done %}<li style="opacity:.6">{% if s.paint %}{{ swatch(s.paint.display_hex, 'sm') }} <span class="grow">{{ s.paint.full_label }}</span>{% else %}<span class="grow">{{ s.text }}</span>{% endif %}
+  {% if s.paint %}<a class="small" href="/add?paint_id={{ s.paint_id }}">+ add bottle</a>{% endif %}
+  <form class="inline" method="post" action="/shopping/{{ s.id }}/toggle"><button class="small outline">undo</button></form></li>{% endfor %}
 </ul>
-{% else %}<p class="muted">Empty. Bottles you mark “used up → shopping list” land here.</p>{% endfor %}
+<form method="post" action="/shopping/clear-bought"><button class="small outline secondary">Clear bought items</button></form>
+</details>
+{% endif %}
 {% endblock %}
+{% block scripts %}{% if request.query_params.get('print') %}<script>window.addEventListener('load', () => setTimeout(() => window.print(), 200));</script>{% endif %}{% endblock %}

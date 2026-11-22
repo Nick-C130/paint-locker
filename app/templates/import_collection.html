@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Import your collection{% endblock %}
+{% block content %}
+<h1>📥 Import your collection</h1>
+<p>Bring in the paints you own from a spreadsheet, another paint app's export, or a plain list. Nothing is added until you've checked the preview.</p>
+<div class="row">
+<article>
+  <header>Upload a file</header>
+  <form method="post" action="/import/collection" enctype="multipart/form-data">
+    <input type="file" name="file" accept=".csv,.tsv,.txt,.xlsx,.xlsm,text/csv" required>
+    <button>Upload and preview</button>
+  </form>
+  <p class="small muted">CSV, TSV or Excel (.xlsx; the first sheet). Columns are recognised by name: brand, range/line, code/SKU,
+    name, barcode/EAN, quantity, owned (yes/no), rack/location, cell/slot, date bought, notes. You can fix the mapping on the next page.</p>
+  <p class="small muted">Works with Paint Locker's own inventory export, and with exports from other paint apps and trackers
+    that save a CSV or spreadsheet. If an app marks paints as owned or wishlist, rows marked not owned are skipped.</p>
+</article>
+<article>
+  <header>Or paste a list</header>
+  <form method="post" action="/import/collection">
+    <textarea name="text" rows="8" placeholder="70.950&#10;Vallejo 70.862 Black Grey&#10;2x Abaddon Black&#10;Army Painter Matt White x3"></textarea>
+    <button class="secondary">Preview</button>
+  </form>
+  <p class="small muted">One paint per line: a code, a name, or both, with an optional brand. “2x …” or “… x3” sets how many bottles.</p>
+</article>
+</div>
+<p class="small">Adding paints to the <em>catalogue</em> instead (new brands or lines)? Use <a href="/import">catalogue CSV import</a>.</p>
+{% endblock %}

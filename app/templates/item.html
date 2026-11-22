@@ -32,6 +32,17 @@
   </form>
 </article>
 </div>
+<article>
+  <header>How full is it?</header>
+  <form method="post" action="/items/{{ item.id }}/level" class="row" style="align-items:center">
+    {% for k, label in BOTTLE_LEVELS %}<label style="flex:0 0 auto"><input type="radio" name="level" value="{{ k }}" {% if item.level == k %}checked{% endif %} onchange="this.form.requestSubmit()"> {{ label }}</label>{% endfor %}
+    <label style="flex:0 0 auto"><input type="radio" name="level" value="" {% if not item.level %}checked{% endif %} onchange="this.form.requestSubmit()"> Not recorded</label>
+  </form>
+  {% if item.paint and item.level != 'low' %}<form method="post" action="/items/{{ item.id }}/level"><input type="hidden" name="level" value="low"><input type="hidden" name="shopping" value="1"><button class="small outline">Running low → add to shopping list</button></form>{% endif %}
+  <p class="small muted">{% if item.checked_on %}Last checked {{ item.checked_on.strftime('%d %b %Y') }}. {% endif %}
+    <form class="inline" method="post" action="/items/{{ item.id }}/checked"><button class="small outline secondary">Checked it today: still good</button></form>
+    <a class="small" href="/labels?items={{ item.id }}">🏷️ Print a label</a></p>
+</article>
 <p>
   {% if item.paint %}<form class="inline" method="post" action="/items/{{ item.id }}/used-up"><input type="hidden" name="shopping" value="1"><button class="secondary">Used up → add to shopping list</button></form>{% endif %}
   <form class="inline" method="post" action="/items/{{ item.id }}/used-up"><button class="outline secondary">Used up / remove</button></form>

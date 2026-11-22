@@ -62,7 +62,16 @@ CATEGORY_LABELS = [
 
 def type_category(paint_type: str | None) -> str:
     return TYPE_CATEGORY.get(paint_type or "", "other")
-ENTITY_TYPES = ["brand", "line", "paint", "item", "mix", "unit", "cell", "reference"]
+
+
+ENTITY_TYPES = ["brand", "line", "paint", "item", "mix", "unit", "cell", "reference", "recipe", "project"]
+TECHNIQUES = [
+    "prime", "basecoat", "airbrush", "layer", "wash", "shade", "glaze", "drybrush", "highlight",
+    "edge highlight", "filter", "weathering", "chipping", "pigment", "decal", "varnish", "other",
+]
+PROJECT_KINDS = ["army", "unit", "model", "diorama", "other"]
+PROJECT_STATUSES = ["planned", "active", "done", "shelved"]
+BOTTLE_LEVELS = [("full", "Full"), ("half", "About half"), ("low", "Running low")]
 
 
 class Setting(Base):
@@ -326,6 +335,8 @@ class InventoryItem(Base):
     volume_ml: Mapped[float | None] = mapped_column(Float)
     acquired_on: Mapped[date | None] = mapped_column(Date)
     notes: Mapped[str] = mapped_column(Text, default="")
+    level: Mapped[str | None] = mapped_column(String(10))  # full | half | low (None = not recorded)
+    checked_on: Mapped[date | None] = mapped_column(Date)  # last "still good" check, resets the age alert
     created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())
 
     paint: Mapped[Paint | None] = relationship(back_populates="items")
@@ -426,8 +437,163 @@ class ShoppingItem(Base):
     paint_id: Mapped[int | None] = mapped_column(ForeignKey("paints.id"))
     text: Mapped[str] = mapped_column(Text, default="")
     done: Mapped[bool] = mapped_column(Boolean, default=False)
+    quantity: Mapped[int] = mapped_column(Integer, default=1)
+    shop_id: Mapped[int | None] = mapped_column(ForeignKey("shops.id", ondelete="SET NULL"))  # None = automatic
     created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())
     paint: Mapped[Paint | None] = relationship()
+    shop: Mapped[Shop | None] = relationship()
+
+
+shop_brands = Table(
+    "shop_brands",
+    Base.metadata,
+    Column("shop_id", ForeignKey("shops.id", ondelete="CASCADE"), primary_key=True),
+    Column("brand_id", ForeignKey("brands.id", ondelete="CASCADE"), primary_key=True),
+)
+
+
+class Shop(Base):
+    """A shop you buy from. It stocks a paint if you've ticked the brand, or the catalogue line's
+    stocked_by names the shop."""
+
+    __tablename__ = "shops"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(String(120), unique=True)
+    url: Mapped[str] = mapped_column(String(300), default="")
+    search_url: Mapped[str] = mapped_column(String(300), default="")  # e.g. https://shop/search?q={q}
+    notes: Mapped[str] = mapped_column(Text, default="")
+    sort_order: Mapped[int] = mapped_column(Integer, default=0)
+    brands: Mapped[list[Brand]] = relationship(secondary=shop_brands, order_by="Brand.name")
+
+    def stocks(self, paint: Paint) -> bool:
+        if any(b.id == paint.line.brand_id for b in self.brands):
+            return True
+        return self.name.lower() in (paint.line.stocked_by or "").lower()
+
+    def search_link(self, paint: Paint) -> str:
+        if not self.search_url:
+            return self.url
+        from urllib.parse import quote_plus
+
+        q = f"{paint.line.brand.name} {paint.code or ''} {paint.name}".replace("  ", " ").strip()
+        return self.search_url.replace("{q}", quote_plus(q))
+
+
+class Recipe(Base):
+    """A painting guide: ordered steps, each optionally using a paint or a mix."""
+
+    __tablename__ = "recipes"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(String(160))
+    description: Mapped[str] = mapped_column(Text, default="")
+    tags: Mapped[str] = mapped_column(Text, default="")
+    created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())
+    updated_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now(), onupdate=func.now())
+    steps: Mapped[list[RecipeStep]] = relationship(
+        back_populates="recipe", cascade="all, delete-orphan", order_by="RecipeStep.position"
+    )
+
+    @property
+    def label(self) -> str:
+        return self.name
+
+    @property
+    def paint_ids(self) -> list[int]:
+        return list(dict.fromkeys(s.paint_id for s in self.steps if s.paint_id))
+
+    @property
+    def mix_ids(self) -> list[int]:
+        return list(dict.fromkeys(s.mix_id for s in self.steps if s.mix_id))
+
+
+class RecipeStep(Base):
+    __tablename__ = "recipe_steps"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    recipe_id: Mapped[int] = mapped_column(ForeignKey("recipes.id", ondelete="CASCADE"), index=True)
+    position: Mapped[int] = mapped_column(Integer, default=0)
+    technique: Mapped[str] = mapped_column(String(40), default="layer")
+    area: Mapped[str] = mapped_column(String(120), default="")  # e.g. "tunic", "tracks", "whole model"
+    paint_id: Mapped[int | None] = mapped_column(ForeignKey("paints.id", ondelete="SET NULL"))
+    mix_id: Mapped[int | None] = mapped_column(ForeignKey("mix_recipes.id", ondelete="SET NULL"))
+    dilution: Mapped[str] = mapped_column(String(60), default="")  # e.g. "2:1 with water"
+    instructions: Mapped[str] = mapped_column(Text, default="")
+
+    recipe: Mapped[Recipe] = relationship(back_populates="steps")
+    paint: Mapped[Paint | None] = relationship()
+    mix: Mapped[MixRecipe | None] = relationship()
+
+    @property
+    def hex(self) -> str | None:
+        if self.paint:
+            return self.paint.display_hex
+        if self.mix:
+            return self.mix.display_hex
+        return None
+
+
+project_recipes = Table(
+    "project_recipes",
+    Base.metadata,
+    Column("project_id", ForeignKey("projects.id", ondelete="CASCADE"), primary_key=True),
+    Column("recipe_id", ForeignKey("recipes.id", ondelete="CASCADE"), primary_key=True),
+)
+
+
+class Project(Base):
+    """An army, unit, model or diorama. Armies can contain units (parent_id)."""
+
+    __tablename__ = "projects"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(String(160))
+    kind: Mapped[str] = mapped_column(String(20), default="unit")
+    status: Mapped[str] = mapped_column(String(20), default="active")
+    parent_id: Mapped[int | None] = mapped_column(ForeignKey("projects.id", ondelete="SET NULL"), index=True)
+    description: Mapped[str] = mapped_column(Text, default="")
+    models_total: Mapped[int] = mapped_column(Integer, default=0)
+    models_done: Mapped[int] = mapped_column(Integer, default=0)
+    created_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now())
+    updated_at: Mapped[datetime] = mapped_column(DateTime, server_default=func.now(), onupdate=func.now())
+
+    parent: Mapped[Project | None] = relationship(remote_side="Project.id", back_populates="children")
+    children: Mapped[list[Project]] = relationship(back_populates="parent", order_by="Project.name")
+    recipes: Mapped[list[Recipe]] = relationship(secondary=project_recipes, order_by="Recipe.name")
+    extras: Mapped[list[ProjectPaint]] = relationship(back_populates="project", cascade="all, delete-orphan")
+
+    @property
+    def label(self) -> str:
+        return self.name
+
+    def all_projects(self) -> list[Project]:
+        """This project and every unit under it."""
+        out, todo, seen = [], [self], set()
+        while todo:
+            p = todo.pop(0)
+            if p.id in seen:
+                continue
+            seen.add(p.id)
+            out.append(p)
+            todo.extend(p.children)
+        return out
+
+    @property
+    def progress(self) -> tuple[int, int]:
+        ps = self.all_projects()
+        return sum(p.models_done for p in ps), sum(p.models_total for p in ps)
+
+
+class ProjectPaint(Base):
+    """A paint or mix a project uses directly (outside any recipe)."""
+
+    __tablename__ = "project_paints"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    project_id: Mapped[int] = mapped_column(ForeignKey("projects.id", ondelete="CASCADE"), index=True)
+    paint_id: Mapped[int | None] = mapped_column(ForeignKey("paints.id", ondelete="CASCADE"))
+    mix_id: Mapped[int | None] = mapped_column(ForeignKey("mix_recipes.id", ondelete="CASCADE"))
+    note: Mapped[str] = mapped_column(String(200), default="")
+
+    project: Mapped[Project] = relationship(back_populates="extras")
+    paint: Mapped[Paint | None] = relationship()
+    mix: Mapped[MixRecipe | None] = relationship()
 
 
 class BarcodeLink(Base):

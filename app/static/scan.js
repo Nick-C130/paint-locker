@@ -33,6 +33,9 @@ function scanner(linkPaint) {
     },
 
     async lookup(raw) {
+      // Paint Locker QR labels hold a link like https://host/q/c/12: open it.
+      const qr = String(raw || '').match(/\/q\/([a-z])\/(\d+)/);
+      if (qr) { this.code = ''; window.location.href = '/q/' + qr[1] + '/' + qr[2]; return; }
       const code = String(raw || '').replace(/[^0-9A-Za-z]/g, '');
       this.code = '';
       if (!code) return;

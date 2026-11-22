@@ -1,0 +1,68 @@
+{% extends "base.html" %}{% from "macros.html" import swatch %}
+{% block title %}Import preview{% endblock %}
+{% block content %}
+<p class="muted"><a href="/import/collection">← Start again</a> · {{ filename }}</p>
+<h1>Check the import</h1>
+<p><b>{{ ready|length }}</b> rows ready ({{ bottles }} bottles): {{ counts.barcode }} by barcode, {{ counts.code }} by code, {{ counts.name }} by name,
+  {{ counts.guess }} best guesses{% if unmatched %}, <b>{{ unmatched }}</b> not matched{% endif %}.</p>
+
+<form method="get" class="import-mapping">
+  <details {% if not ready %}open{% endif %}>
+    <summary>Columns and options</summary>
+    <div class="table-scroll"><table class="compact">
+      <thead><tr>{% for h in header %}<th>{{ h }}</th>{% endfor %}</tr></thead>
+      <tbody>
+        <tr>{% for h in header %}{% set col = loop.index0 %}<td><select name="map_{{ col }}" class="small">
+          <option value="">(ignore)</option>{% for f in fields %}<option value="{{ f }}" {% if mapping.get(col) == f %}selected{% endif %}>{{ labels[f] }}</option>{% endfor %}
+        </select></td>{% endfor %}</tr>
+        {% for r in sample %}<tr class="muted small">{% for c in r %}<td>{{ c }}</td>{% endfor %}</tr>{% endfor %}
+      </tbody>
+    </table></div>
+    <div class="grid">
+      <label><input type="checkbox" name="skip_owned" value="1" {% if opts.skip_owned %}checked{% endif %}> Skip paints I already own</label>
+      <label><input type="hidden" name="guesses" value="0"><input type="checkbox" name="guesses" value="1" {% if opts.guesses %}checked{% endif %}> Include best guesses</label>
+      <label>Put bottles
+        <select name="place">
+          <option value="file" {% if opts.place == 'file' %}selected{% endif %}>in the rack/cell from the file, else the next free cell</option>
+          <option value="auto" {% if opts.place == 'auto' %}selected{% endif %}>in the next free fitting cell</option>
+          <option value="none" {% if opts.place == 'none' %}selected{% endif %}>in Unsorted</option>
+        </select></label>
+    </div>
+    <button class="secondary small">Update preview</button>
+  </details>
+</form>
+
+<form method="post" action="/import/collection/{{ token }}/confirm" x-data="{all: true}">
+  {% for i, f in mapping.items() %}<input type="hidden" name="map_{{ i }}" value="{{ f }}">{% endfor %}
+  <input type="hidden" name="skip_owned" value="{{ '1' if opts.skip_owned else '0' }}">
+  <input type="hidden" name="guesses" value="{{ '1' if opts.guesses else '0' }}">
+  <input type="hidden" name="place" value="{{ opts.place }}">
+  <div class="table-scroll"><table class="compact">
+    <thead><tr><th><input type="checkbox" checked @change="all = $event.target.checked; $root.querySelectorAll('input[name=row]').forEach(c => c.checked = all)"></th>
+      <th>#</th><th>From the file</th><th>Matched to</th><th>Qty</th><th>Where</th></tr></thead>
+    <tbody>
+    {% for r in rows %}
+      <tr class="{{ 'muted' if r.skip }}">
+        <td>{% if r.paint and not r.skip %}<input type="checkbox" name="row" value="{{ r.n }}" checked>{% endif %}</td>
+        <td class="small">{{ r.n }}</td>
+        <td class="small">{{ r.text }}</td>
+        <td>{% if r.paint and r.skip != 'no match' %}
+          {% if r.alternatives %}
+            <select name="alt_{{ r.n }}" class="small">
+              <option value="{{ r.paint.id }}">{{ r.paint.full_label }}</option>
+              {% for a in r.alternatives %}<option value="{{ a.id }}">{{ a.full_label }}</option>{% endfor %}
+            </select>
+          {% else %}{{ swatch(r.paint.display_hex, 'sm') }} {{ r.paint.full_label }}{% endif %}
+          <span class="badge {{ 'warn' if r.how == 'guess' else '' }}">{{ 'best guess' if r.how == 'guess' else 'by ' ~ r.how }}</span>
+        {% endif %}
+        {% if r.skip %}<span class="badge {{ 'warn' if r.skip == 'no match' }}">{{ r.skip }}</span>{% endif %}</td>
+        <td>{{ r.quantity }}</td>
+        <td class="small">{% if r.storage and opts.place == 'file' %}{{ r.storage.name }} {{ r.cell_label }}{% elif opts.place == 'none' %}Unsorted{% else %}next free{% endif %}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table></div>
+  {% if ready %}<button>Import {{ bottles }} bottle{{ 's' if bottles != 1 }}</button>{% endif %}
+</form>
+{% if unmatched %}<p class="small muted">Paints that aren't in the catalogue can be added with <a href="/paints/new">Add a paint</a> or a <a href="/import">catalogue CSV</a>; then run this import again with “Skip paints I already own” ticked.</p>{% endif %}
+{% endblock %}

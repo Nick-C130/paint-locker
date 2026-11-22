@@ -218,3 +218,23 @@ def import_user_csv(session: Session, brand_name: str, line_name: str, data: byt
     line = get_or_create_line(session, brand, line_name.strip())
     text = data.decode("utf-8-sig")
     return import_paint_rows(session, line, csv.DictReader(io.StringIO(text)), formats, source="user")
+
+
+def ensure_shops(session: Session) -> None:
+    """Create a Shop for each shop named in the catalogue's stocked_by column, once. Shops you
+    delete aren't recreated."""
+    import json
+
+    from .models import Shop
+
+    seen = set(json.loads(get_setting(session, "shops_seeded") or "[]"))
+    names = set()
+    for raw in session.scalars(select(ProductLine.stocked_by).where(ProductLine.stocked_by != "")).all():
+        names.update(n.strip() for n in raw.replace(",", ";").split(";") if n.strip())
+    existing = {s.name.lower() for s in session.scalars(select(Shop)).all()}
+    for n in sorted(names - seen):
+        if n.lower() not in existing:
+            session.add(Shop(name=n))
+    if names - seen:
+        set_setting(session, "shops_seeded", json.dumps(sorted(seen | names)))
+    session.flush()

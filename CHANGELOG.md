@@ -5,6 +5,15 @@ All notable changes to Paint Locker. The format follows [Keep a Changelog](https
 ## [Unreleased]
 
 ### Added
+* Painting recipes, projects and armies, printable QR labels, colour capture from a photo with a
+  grey card, collection alerts (low, single, duplicate, near-identical, old), shops and a shopping
+  list grouped by shop, a stats page, and collection import from spreadsheets or a pasted list.
+* Recipes and projects are included in global search.
+
+### Fixed
+* The container failed to start when built from a Windows checkout (CRLF in the entrypoint).
+
+### Earlier in this release
 * "Buy next" purchase recommender: ranks paints you don't own by how much new colour they let you
   mix and by your recent colour requests, with an explanation for each pick.
 * "Find in racks" from the mix lab and saved mixes: shows the racks with the needed bottles highlighted.

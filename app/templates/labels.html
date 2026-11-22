@@ -1,0 +1,50 @@
+{% extends "base.html" %}{% from "macros.html" import swatch %}
+{% block title %}QR labels{% endblock %}
+{% block content %}
+<div class="no-print">
+<h1>🏷️ QR labels</h1>
+<p class="muted">Print labels for rack slots, mix bottles, recipes and projects. Scanning one with a phone camera (or the 📷 Scan page) opens that slot or mix in Paint Locker.</p>
+<form method="get" class="label-form">
+  <div class="grid">
+    <label>Rack
+      <select name="unit"><option value="">(none)</option>{% for u in units %}<option value="{{ u.id }}" {% if f.unit == u.id|string %}selected{% endif %}>{{ u.name }}</option>{% endfor %}</select>
+    </label>
+    <label>Which cells
+      <select name="cells"><option value="all">Every cell</option><option value="filled" {% if f.cells == 'filled' %}selected{% endif %}>Only cells with a bottle</option></select>
+    </label>
+    <label>Mixes
+      <select name="mixes"><option value="">(none)</option><option value="all" {% if f.mixes == 'all' %}selected{% endif %}>All mix recipes</option>
+        {% if f.mixes and f.mixes != 'all' %}<option value="{{ f.mixes }}" selected>The selected mixes</option>{% endif %}</select>
+    </label>
+    <label>Size
+      <select name="size">{% for k, mm in sizes.items() %}<option value="{{ k }}" {% if size == k %}selected{% endif %}>{{ k|capitalize }} ({{ mm }} mm wide)</option>{% endfor %}</select>
+    </label>
+  </div>
+  {% for k in ['items', 'recipe', 'project'] if f[k] %}<input type="hidden" name="{{ k }}" value="{{ f[k] }}">{% endfor %}
+  <button class="secondary">Show labels</button>
+  {% if labels %}<button type="button" onclick="window.print()">🖨️ Print {{ labels|length }} label{{ 's' if labels|length != 1 }}</button>{% endif %}
+</form>
+<details class="small">
+  <summary>Label address: <code>{{ base }}</code></summary>
+  <p>The QR codes link to this address. If you open Paint Locker by a different name on your phone (for example through your HTTPS proxy), set it here so the labels work from anywhere on your network.</p>
+  <form method="post" action="/labels/public-url" class="row">
+    <input name="public_url" value="{{ public_url }}" placeholder="https://paints.example.home">
+    <input type="hidden" name="back" value="{{ request.url.path }}?{{ request.url.query }}">
+    <button class="small" style="flex:0 0 auto">Save</button>
+  </form>
+</details>
+{% if not labels %}<p class="muted">Pick a rack or mixes above. You can also print a label from a bottle, mix, recipe or project page.</p>{% endif %}
+</div>
+<div class="labels" style="--label-w: {{ mm }}mm">
+{% for lb in labels %}
+  <div class="label cat-{{ lb.cat or 'none' }}" data-url="{{ lb.url }}" title="{{ lb.url }}">
+    <div class="qr">{{ lb.svg }}</div>
+    <div class="label-text">
+      <b>{{ lb.title }}</b>
+      {% for line in lb.lines %}<span>{{ line }}</span>{% endfor %}
+      {% if lb.hex %}<span class="label-swatch" style="background:{{ lb.hex }}"></span>{% endif %}
+    </div>
+  </div>
+{% endfor %}
+</div>
+{% endblock %}

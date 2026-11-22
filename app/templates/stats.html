@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Stats{% endblock %}
+{% macro bars(rows, unit='', link=False) -%}
+<ul class="bars">
+{% for r in rows %}
+  <li title="{{ r.label }}: {{ r.value }}{{ unit }}{% if r.of is defined %} of {{ r.of }}{% endif %}">
+    <span class="bar-label">{% if r.hex is defined and r.hex %}<span class="swatch swatch-sm" style="background:{{ r.hex }}"></span> {% endif %}{% if r.url is defined %}<a href="{{ r.url }}">{{ r.label }}</a>{% else %}{{ r.label }}{% endif %}</span>
+    <span class="bar-track"><span class="bar" style="width:{{ ([r.pct, 0.8]|max) if r.value else 0 }}%"></span><span class="bar-value">{{ r.value }}{% if r.of is defined %} / {{ r.of }}{% endif %}{{ unit }}</span></span>
+  </li>
+{% else %}<li class="muted small">Nothing yet.</li>{% endfor %}
+</ul>
+{%- endmacro %}
+{% block content %}
+<h1>📊 Stats</h1>
+<div class="row">
+  <article class="stat"><b>{{ t.bottles }}</b>bottles</article>
+  <article class="stat"><b>{{ t.paints }}</b>different paints</article>
+  <article class="stat"><b>{{ t.brands }}</b>brands</article>
+  <article class="stat"><b>{{ t.mixes }}</b>mixes · {{ t.batches }} batches</article>
+  <article class="stat"><b>{{ t.recipes }}</b>painting recipes</article>
+  {% if t.models_total %}<article class="stat"><b>{{ t.models_done }}/{{ t.models_total }}</b>models painted</article>{% endif %}
+  {% if t.ml %}<article class="stat"><b>{{ '{:,}'.format(t.ml) }} ml</b>of paint, roughly</article>{% endif %}
+</div>
+<div class="stats-grid">
+  <section><h2>Bottles by brand</h2>{{ bars(by_brand) }}</section>
+  <section><h2>Bottles by type</h2>{{ bars(by_cat) }}</section>
+  <section><h2>Colour families</h2><p class="small muted">Different paints you own. The swatch is the family's average colour.</p>{{ bars(families) }}</section>
+  <section><h2>Most-used paints</h2><p class="small muted">Times used in mixes, recipe steps and active projects.</p>{{ bars(most_used) }}</section>
+  {% if top_mixes %}<section><h2>Most-made mixes</h2><p class="small muted">Batches you currently have.</p>{{ bars(top_mixes) }}</section>{% endif %}
+  <section><h2>Bottles added per month</h2>{{ bars(timeline) }}</section>
+  <section><h2>Rack space</h2><p class="small muted">Cells used out of usable cells.</p>{{ bars(racks) }}</section>
+</div>
+<p class="small muted">{{ t.measured }} of your paints have a measured colour. <a href="/capture">Capture more</a> to make matching and mixing more accurate.</p>
+{% endblock %}

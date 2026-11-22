@@ -5,7 +5,7 @@
   <p>{{ swatch(colour_hex) }} <a href="/colours?hex={{ colour_hex|urlencode }}">Find paints close to {{ colour_hex }}</a> · <a href="/colours?hex={{ colour_hex|urlencode }}&owned=1">closest I own</a></p>
 {% endif %}
 {% if results %}
-  {% set total = results.paints|length + results.mixes|length + results.references|length + results.units|length %}
+  {% set total = results.paints|length + results.mixes|length + results.references|length + results.units|length + results.recipes|length + results.projects|length %}
   {% if total == 0 and not colour_hex %}<p class="muted">Nothing found for “{{ q }}”. <a href="/paints/new">Add it as a new paint?</a></p>{% endif %}
   {% if results.references %}
   <h4>Reference colours</h4>
@@ -35,6 +35,14 @@
     </li>
   {% endfor %}
   </ul>
+  {% endif %}
+  {% if results.recipes %}
+  <h4>Painting recipes</h4>
+  <ul class="results-list">{% for r in results.recipes %}<li><span class="strip">{% for st in r.steps if st.hex %}{{ swatch(st.hex, 'sm') }}{% endfor %}</span> <a class="grow" href="/recipes/{{ r.id }}">{{ r.name }}</a></li>{% endfor %}</ul>
+  {% endif %}
+  {% if results.projects %}
+  <h4>Projects</h4>
+  <ul class="results-list">{% for p in results.projects %}<li><a class="grow" href="/projects/{{ p.id }}">{{ p.name }}</a> <span class="badge">{{ p.kind }}</span></li>{% endfor %}</ul>
   {% endif %}
   {% if results.units %}
   <h4>Storage</h4>

@@ -18,13 +18,16 @@ from .models import (
     Note,
     Paint,
     ProductLine,
+    Project,
+    Recipe,
     ReferenceColour,
     ReferenceLink,
     StorageCell,
     StorageUnit,
 )
 
-INDEXED = ("paint", "mix", "reference", "unit")
+INDEXED = ("paint", "mix", "reference", "unit", "recipe", "project")
+INDEX_VERSION = "2"  # bump to force a rebuild on startup when what gets indexed changes
 
 
 def _notes_text(session: Session, entity_type: str, entity_id: int) -> str:
@@ -104,6 +107,17 @@ def _doc_for(session: Session, entity_type: str, entity_id: int) -> tuple[str, s
             _notes_text(session, "cell", c.id) for c in u.cells
         )
         return u.name, f"storage {u.location} {_notes_text(session, 'unit', u.id)} {cell_notes}"
+    if entity_type == "recipe":
+        r = session.get(Recipe, entity_id)
+        if not r:
+            return None
+        steps = " ".join(f"{st.technique} {st.area} {st.dilution} {st.instructions} {st.paint.full_label if st.paint else ''} {st.mix.name if st.mix else ''}" for st in r.steps)
+        return r.name, f"recipe {r.description} {r.tags.replace(';', ' ')} {steps} {_notes_text(session, 'recipe', r.id)}"
+    if entity_type == "project":
+        pr = session.get(Project, entity_id)
+        if not pr:
+            return None
+        return pr.name, f"project {pr.kind} {pr.status} {pr.description} {' '.join(r.name for r in pr.recipes)} {_notes_text(session, 'project', pr.id)}"
     return None
 
 
@@ -178,7 +192,7 @@ def rebuild(session: Session) -> int:
         session.execute(
             text("INSERT INTO search_index (entity_type, entity_id, title, body) VALUES (:t, :i, :ti, :b)"), rows
         )
-    for t, model in (("mix", MixRecipe), ("reference", ReferenceColour), ("unit", StorageUnit)):
+    for t, model in (("mix", MixRecipe), ("reference", ReferenceColour), ("unit", StorageUnit), ("recipe", Recipe), ("project", Project)):
         for (eid,) in session.execute(select(model.id)).all():
             index_entity(session, t, eid)
     return len(rows)

@@ -130,7 +130,32 @@ and with the commit SHA (`ghcr.io/nick-c130/paint-locker:<sha>`) so you can pin 
   find-in-racks view): plain acrylic, airbrush-ready, thinner/medium/varnish, wash/contrast/ink,
   metallic, primer and mix batches each get their own border colour and style, with a legend.
 
-Still to come: camera colour capture, painting recipes, printable QR labels. Ideas welcome in the issues.
+* **📒 Painting recipes**: step-by-step guides (prime → base → wash → highlight…) where each step has
+  a technique, area, dilution, notes and optionally a paint or mix. A recipe shows what you own and
+  where it is, finds everything in your racks, and adds missing paints to the shopping list.
+* **🪖 Projects and armies**: armies hold units; each project links recipes and extra paints, tracks
+  models painted, and adds up every paint it needs across its units.
+* **🏷️ QR labels**: print labels for rack cells, bottles, mixes, recipes and projects (three sizes).
+  Scanning one with a phone camera or the Scan page opens that slot or mix. If you reach Paint Locker by
+  a different address on your phone, set the label address on the labels page.
+* **📷 Colour capture**: photograph a paint swatch next to an 18% grey card (or white paper, or a card
+  of known colour), tap the card, then the paint. The card corrects the light's colour cast; save the
+  result as the paint's or mix's measured colour, find matches, or mix it. Uses the phone's normal
+  camera picker, so it works without HTTPS.
+* **⚠️ Alerts**: bottles marked running low, key paints you only have one of, duplicate bottles,
+  near-identical paints (ΔE under 1.5), bought paints older than 3 years and mix batches older than
+  6 months (both adjustable). “Still good” resets the age check; anything can be dismissed.
+* **🏪 Shopping by shop**: add your shops with the brands they stock and their search page; the
+  shopping list groups items by shop, links straight to a search for each paint, keeps quantities,
+  and prints or copies one shop's list.
+* **📊 Stats**: bottles by brand and type, colour families, most-used paints and mixes, bottles added
+  per month and rack space.
+* **📥 Import your collection** from a CSV, TSV or Excel file (including other apps' exports and
+  Paint Locker's own inventory export) or a pasted list. Columns are recognised by name and can be
+  remapped; rows match by barcode, code, name or a best guess, and you check the preview before
+  anything is added.
+
+Ideas welcome in the issues.
 
 ## The paint catalogue
 

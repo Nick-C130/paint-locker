@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Projects{% endblock %}
+{% macro proj_row(p, depth=0) -%}
+{% set d, t = p.progress %}
+<li style="padding-left: {{ depth * 1.5 }}rem">
+  <a class="grow" href="/projects/{{ p.id }}"><b>{{ p.name }}</b></a>
+  <span class="badge">{{ p.kind }}</span> <span class="badge {{ 'owned' if p.status == 'done' }}">{{ p.status }}</span>
+  {% if t %}<progress value="{{ d }}" max="{{ t }}" style="width:6rem;margin:0" title="{{ d }} of {{ t }} models painted"></progress><span class="small muted">{{ d }}/{{ t }}</span>{% endif %}
+</li>
+{% for c in p.children %}{{ proj_row(c, depth + 1) }}{% endfor %}
+{%- endmacro %}
+{% block content %}
+<h1>Projects and armies</h1>
+<p class="muted">Track what you're painting. An army can hold units; each gets recipes and paints, and the project page adds up everything it needs and where it is.</p>
+<p class="small">Show:
+  <a href="/projects" {% if not status %}aria-current="page"{% endif %}>all</a>{% for s in statuses %} · <a href="/projects?status={{ s }}" {% if status == s %}aria-current="page"{% endif %}>{{ s }}</a>{% endfor %}</p>
+<ul class="results-list">{% for p in top %}{{ proj_row(p) }}{% else %}<li class="muted">No projects yet.</li>{% endfor %}</ul>
+<article>
+  <header>New project</header>
+  <form method="post" action="/projects">
+    <div class="grid">
+      <label>Name <input name="name" required placeholder="Kampfgruppe Peiper"></label>
+      <label>Kind <select name="kind">{% for k in kinds %}<option {% if k == 'army' %}selected{% endif %}>{{ k }}</option>{% endfor %}</select></label>
+      <label>Part of <select name="parent_id"><option value="">(nothing, top level)</option>{% for p in all_projects %}<option value="{{ p.id }}">{{ p.name }}</option>{% endfor %}</select></label>
+    </div>
+    <div class="grid">
+      <label>Models <input type="number" name="models_total" min="0" value="0"></label>
+      <label>Painted so far <input type="number" name="models_done" min="0" value="0"></label>
+      <label>Status <select name="status">{% for s in statuses %}<option {% if s == 'active' %}selected{% endif %}>{{ s }}</option>{% endfor %}</select></label>
+    </div>
+    <label>Description <textarea name="description" rows="2"></textarea></label>
+    <button>Create project</button>
+  </form>
+</article>
+{% endblock %}

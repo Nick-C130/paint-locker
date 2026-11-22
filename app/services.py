@@ -257,3 +257,46 @@ def owned_counts(session: Session, paint_ids: list[int]) -> dict[int, int]:
         .group_by(InventoryItem.paint_id)
     ).all()
     return dict(rows)
+
+
+# ---------------------------------------------------------------- what a recipe/project needs
+
+
+def needs(session: Session, wanted: list[tuple[str, int, str]]) -> list[dict]:
+    """wanted: (kind, id, use) with kind 'paint'|'mix'. Returns one row per paint/mix, in first-seen
+    order, with the bottles you have (for locations) and the uses that asked for it."""
+    order: dict[tuple[str, int], list[str]] = {}
+    for kind, oid, use in wanted:
+        if not oid:
+            continue
+        uses = order.setdefault((kind, oid), [])
+        if use and use not in uses:
+            uses.append(use)
+    rows = []
+    for (kind, oid), uses in order.items():
+        obj = session.get(Paint if kind == "paint" else MixRecipe, oid)
+        if obj is None:
+            continue
+        rows.append({"kind": kind, "obj": obj, "bottles": list(obj.items), "uses": uses})
+    return rows
+
+
+def locate_url(rows: list[dict], title: str, back: str) -> str:
+    from urllib.parse import urlencode
+
+    pids = ",".join(str(r["obj"].id) for r in rows if r["kind"] == "paint")
+    mids = ",".join(str(r["obj"].id) for r in rows if r["kind"] == "mix")
+    return "/locate?" + urlencode({"paints": pids, "mixes": mids, "title": title, "back": back})
+
+
+def add_missing_to_shopping(session: Session, rows: list[dict]) -> int:
+    from .models import ShoppingItem
+
+    on_list = set(session.scalars(select(ShoppingItem.paint_id).where(ShoppingItem.done.is_(False))).all())
+    n = 0
+    for r in rows:
+        if r["kind"] == "paint" and not r["bottles"] and r["obj"].id not in on_list:
+            session.add(ShoppingItem(paint_id=r["obj"].id))
+            on_list.add(r["obj"].id)
+            n += 1
+    return n

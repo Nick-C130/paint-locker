@@ -245,16 +245,6 @@ def item_used_up(item_id: int, shopping: str = Form(""), session: Session = Depe
 # ---------------------------------------------------------------- shopping list
 
 
-@router.get("/shopping")
-def shopping(request: Request, session: Session = Depends(get_session)):
-    items = session.scalars(
-        select(ShoppingItem)
-        .options(selectinload(ShoppingItem.paint).selectinload(Paint.line).selectinload(ProductLine.brand))
-        .order_by(ShoppingItem.done, ShoppingItem.id.desc())
-    ).all()
-    return render(request, "shopping.html", items=items)
-
-
 @router.post("/shopping")
 def shopping_add(paint_id: int | None = Form(None), text_: str = Form("", alias="text"), session: Session = Depends(get_session)):
     if not paint_id and not text_.strip():

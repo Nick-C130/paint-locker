@@ -52,7 +52,8 @@
 <p class="small muted">The catalogue is re-imported automatically when the CSV files under <code>catalogues/</code> change. Hex values are approximate.</p>
 <form class="inline" method="post" action="/catalogue/reimport"><button class="small secondary">Re-import now</button></form>
 <form class="inline" method="post" action="/search/rebuild"><button class="small outline secondary">Rebuild search index</button></form>
-<p class="small"><a href="/import">Bulk import a CSV</a> · <a href="/colour-requests">Colour request log</a></p>
+<p class="small"><a href="/import/collection">📥 Import my collection</a> (spreadsheet, other apps, pasted list) · <a href="/import">Add paints to the catalogue from CSV</a> · <a href="/colour-requests">Colour request log</a></p>
+<p class="small"><a href="/shops">🏪 Shops</a> · <a href="/labels">🏷️ QR labels</a> · <a href="/alerts">⚠️ Alerts</a> · <a href="/stats">📊 Stats</a> · <a href="/capture">📷 Colour capture</a></p>
 
 <h2>Security</h2>
 <p class="small">Password protection is <b>{{ 'on' if password_on else 'off' }}</b>. Set <code>PAINTLOCKER_PASSWORD</code> to turn on a single shared password (HTTP basic auth). The app expects to sit behind your own proxy or VPN.</p>

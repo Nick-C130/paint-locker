@@ -11,7 +11,7 @@ from fastapi.templating import Jinja2Templates
 from markupsafe import Markup
 
 from .colour import describe_delta_e, text_colour_for
-from .models import CATEGORY_LABELS, FINISHES, MIX_UNITS, PAINT_TYPES
+from .models import BOTTLE_LEVELS, CATEGORY_LABELS, FINISHES, MIX_UNITS, PAINT_TYPES
 from .services import row_label
 
 APP_DIR = Path(__file__).resolve().parent
@@ -27,7 +27,7 @@ def render_markdown(text: str) -> Markup:
 templates.env.filters["markdown"] = render_markdown
 templates.env.filters["textcol"] = text_colour_for
 templates.env.filters["de_words"] = describe_delta_e
-templates.env.globals.update(PAINT_TYPES=PAINT_TYPES, FINISHES=FINISHES, MIX_UNITS=MIX_UNITS, row_label=row_label, CATEGORY_LABELS=CATEGORY_LABELS)
+templates.env.globals.update(PAINT_TYPES=PAINT_TYPES, FINISHES=FINISHES, MIX_UNITS=MIX_UNITS, row_label=row_label, CATEGORY_LABELS=CATEGORY_LABELS, BOTTLE_LEVELS=BOTTLE_LEVELS)
 
 
 def render(request: Request, name: str, **ctx):
