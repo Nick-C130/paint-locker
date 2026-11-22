@@ -1,4 +1,4 @@
-FROM python:3.12-slim
+FROM python:3.15-slim
 
 LABEL org.opencontainers.image.title="Paint Locker" \
       org.opencontainers.image.description="Self-hosted miniature paint inventory, racks and mixing" \
