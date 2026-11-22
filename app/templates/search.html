@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% block title %}Search: {{ q }}{% endblock %}
+{% block content %}
+<h1>Search{% if q %}: “{{ q }}”{% endif %}</h1>
+{% include "partials/search_results.html" %}
+{% endblock %}

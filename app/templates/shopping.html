@@ -1,0 +1,18 @@
+{% extends "base.html" %}{% from "macros.html" import swatch %}
+{% block title %}Shopping list{% endblock %}
+{% block content %}
+<h1>Shopping list</h1>
+<form method="post" action="/shopping" class="row"><input name="text" placeholder="Add a free-text item (e.g. 'more 70.950')"><button style="flex:0">Add</button></form>
+{% for brand, group in items|groupby('paint.line.brand.name', default='Other') %}
+<h3>{{ brand }}</h3>
+<ul class="results-list">
+{% for s in group %}
+  <li style="{% if s.done %}opacity:.5;text-decoration:line-through{% endif %}">
+    {% if s.paint %}{{ swatch(s.paint.display_hex, 'sm') }} <a class="grow" href="/paints/{{ s.paint_id }}">{{ s.paint.full_label }}</a>{% else %}<span class="grow">{{ s.text }}</span>{% endif %}
+    <form class="inline" method="post" action="/shopping/{{ s.id }}/toggle"><button class="small outline">{{ 'undo' if s.done else 'bought' }}</button></form>
+    <form class="inline" method="post" action="/shopping/{{ s.id }}/delete"><button class="small outline secondary">✕</button></form>
+  </li>
+{% endfor %}
+</ul>
+{% else %}<p class="muted">Empty. Bottles you mark “used up → shopping list” land here.</p>{% endfor %}
+{% endblock %}

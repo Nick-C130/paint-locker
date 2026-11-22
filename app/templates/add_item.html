@@ -1,0 +1,29 @@
+{% extends "base.html" %}{% from "macros.html" import swatch, cell_select %}
+{% block title %}Add bottle{% endblock %}
+{% block content %}
+{% set label = paint.full_label if paint else 'Mix: ' ~ mix.name %}
+{% set hex = paint.display_hex if paint else mix.display_hex %}
+<h1>{{ swatch(hex) }} Add {{ label }}</h1>
+<form method="post" action="/items">
+  {% if paint %}<input type="hidden" name="paint_id" value="{{ paint.id }}">{% else %}<input type="hidden" name="mix_id" value="{{ mix.id }}">{% endif %}
+  <p>
+    {% if suggestion %}Suggested spot: <b>{{ suggestion.unit.name }} {{ suggestion.label }}</b>{% if fmt %} <span class="muted small">(next free cell in a rack that takes {{ fmt.name }})</span>{% endif %}
+    {% else %}<span class="muted">No free cell in a rack that fits {{ fmt.name if fmt else 'this bottle' }}. It'll go to Unsorted unless you pick a cell.</span>{% endif %}
+  </p>
+  <div class="grid">
+    <label>Cell {{ cell_select(groups, suggestion) }}</label>
+    <label>How many bottles <input type="number" name="quantity" value="1" min="1" max="50"></label>
+  </div>
+  <details>
+    <summary class="small">More details</summary>
+    <div class="grid">
+      <label>Bottle format
+        <select name="format_id"><option value="">Default{{ ' (' ~ fmt.name ~ ')' if fmt }}</option>{% for f in formats %}<option value="{{ f.id }}">{{ f.name }}</option>{% endfor %}</select>
+      </label>
+      <label>Bought on <input type="date" name="acquired_on" value="{{ today }}"></label>
+    </div>
+    <label>Notes <input name="notes"></label>
+  </details>
+  <button type="submit" autofocus>Add to collection</button>
+</form>
+{% endblock %}

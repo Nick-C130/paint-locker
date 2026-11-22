@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block title %}Bulk entry: {{ unit.name }}{% endblock %}
+{% block content %}
+<h1>Bulk shelf entry: <a href="/storage/{{ unit.id }}">{{ unit.name }}</a></h1>
+<p class="small muted">Walks the rack cell by cell. Type a code or name and press <kbd>Enter</kbd> to put the top match in the current cell (use <kbd>↑</kbd>/<kbd>↓</kbd> to pick another match). Press <kbd>Enter</kbd> on an empty box to skip the cell, <kbd>Shift</kbd>+<kbd>Enter</kbd> to go back one.</p>
+<div x-data="bulk()" x-init="init()">
+  <article>
+    <template x-if="current">
+      <div>
+        <p class="bulk-current">Cell <b x-text="current.label"></b>
+          <span class="muted small" x-text="'(' + (idx + 1) + ' of ' + cells.length + ')'"></span>
+          <template x-if="current.filled.length"><span class="badge owned" x-text="'has ' + current.filled.map(f => f.label).join(', ')"></span></template>
+        </p>
+        <input x-ref="box" type="search" x-model="q" placeholder="Code or name, Enter to place, empty Enter to skip" autocomplete="off"
+               @input.debounce.150ms="lookup()" @keydown.enter.prevent="enter($event)" @keydown.down.prevent="sel = Math.min(sel + 1, res.length - 1)" @keydown.up.prevent="sel = Math.max(sel - 1, 0)">
+        <div class="picker-results">
+          <template x-for="(r, i) in res" :key="r.kind + r.id">
+            <button type="button" :class="i === sel ? '' : 'outline secondary'" @click="sel = i; place()">
+              <span class="swatch swatch-sm" :style="'background:' + (r.hex || '#eee')"></span>
+              <span x-text="r.label"></span>
+              <span class="badge" x-show="r.format" x-text="r.format"></span>
+            </button>
+          </template>
+        </div>
+      </div>
+    </template>
+    <template x-if="!current"><p>All done. <a href="/storage/{{ unit.id }}">View the rack</a></p></template>
+    <p class="flash warn" x-show="warning" x-text="warning"></p>
+  </article>
+  <h3>Placed this session</h3>
+  <ul class="results-list">
+    <template x-for="p in log" :key="p.item_id"><li><span class="swatch swatch-sm" :style="'background:' + (p.hex || '#eee')"></span> <b x-text="p.cell"></b> <span x-text="p.label"></span></li></template>
+  </ul>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+function bulk() {
+  const cells = {{ cells|tojson }};
+  const start = {{ start|tojson }};
+  return {
+    cells, idx: 0, q: '', res: [], sel: 0, log: [], warning: '',
+    get current() { return this.cells[this.idx]; },
+    init() {
+      let i = start ? this.cells.findIndex(c => c.label === start) : this.cells.findIndex(c => !c.disabled && c.filled.length < c.capacity);
+      this.idx = i < 0 ? 0 : i;
+      this.skipUnusable(1);
+      this.$nextTick(() => this.$refs.box && this.$refs.box.focus());
+    },
+    skipUnusable(dir) {
+      while (this.current && this.current.disabled) this.idx += dir;
+      if (this.idx < 0) this.idx = 0;
+    },
+    move(dir) {
+      this.idx += dir; this.skipUnusable(dir);
+      this.q = ''; this.res = []; this.sel = 0;
+      this.$nextTick(() => this.$refs.box && this.$refs.box.focus());
+    },
+    async lookup() {
+      const q = this.q.trim();
+      if (!q) { this.res = []; return; }
+      this.res = await (await fetch('/api/search?q=' + encodeURIComponent(q))).json();
+      this.sel = 0;
+    },
+    async enter(e) {
+      if (e.shiftKey) { this.move(-1); return; }
+      if (!this.q.trim()) { this.move(1); return; }
+      if (this.res.length === 0) await this.lookup();
+      if (this.res.length) await this.place();
+    },
+    async place() {
+      const r = this.res[this.sel]; if (!r) return;
+      const body = r.kind === 'mix' ? { mix_id: r.id } : { paint_id: r.id };
+      const resp = await fetch('/api/cells/' + this.current.id + '/fill', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+      const data = await resp.json();
+      if (!data.ok) { this.warning = data.error; this.move(1); return; }
+      this.warning = data.warning || '';
+      this.current.filled.push({ label: data.label, hex: data.hex });
+      this.log.unshift({ item_id: data.item_id, cell: this.current.label, label: data.label, hex: data.hex });
+      this.move(1);
+    },
+  };
+}
+</script>
+{% endblock %}

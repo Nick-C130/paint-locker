@@ -1,0 +1,19 @@
+{% extends "base.html" %}{% from "macros.html" import notes %}
+{% block title %}{{ brand.name }}{% endblock %}
+{% block content %}
+<h1>{{ brand.name }}</h1>
+<table class="compact striped">
+  <thead><tr><th>Line</th><th>Paints</th><th>Bottles owned</th><th>Default bottle</th><th>Stocked by</th></tr></thead>
+  <tbody>
+  {% for l in brand.lines %}
+  <tr>
+    <td><a href="/paints?line={{ l.id }}">{{ l.name }}</a>{% if l.discontinued %} <span class="badge">legacy</span>{% endif %}</td>
+    <td>{{ line_counts.get(l.id, 0) }}</td><td>{{ owned.get(l.id, 0) }}</td>
+    <td class="small">{{ l.default_format.name if l.default_format else '' }}</td>
+    <td class="small">{{ l.stocked_by }}</td>
+  </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{{ notes('brand', brand.id) }}
+{% endblock %}

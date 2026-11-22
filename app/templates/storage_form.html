@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Edit ' ~ unit.name if unit else 'New storage unit' }}{% endblock %}
+{% block content %}
+<h1>{{ 'Edit ' ~ unit.name if unit else 'New storage unit' }}</h1>
+<form method="post" action="{{ '/storage/%d/edit' % unit.id if unit else '/storage' }}">
+  <label>Name <input name="name" required value="{{ unit.name if unit else '' }}" placeholder="Rack 1"></label>
+  <div class="grid">
+    <label>Rows <input type="number" name="rows" min="1" max="60" required value="{{ unit.rows if unit else 6 }}"></label>
+    <label>Columns <input type="number" name="cols" min="1" max="60" required value="{{ unit.cols if unit else 10 }}"></label>
+    <label>Cell labels
+      <select name="label_scheme">
+        <option value="A1" {% if unit and unit.label_scheme == 'A1' %}selected{% endif %}>A1, A2… (letter = row)</option>
+        <option value="1-1" {% if unit and unit.label_scheme == '1-1' %}selected{% endif %}>1-1, 1-2… (row-column)</option>
+      </select>
+    </label>
+  </div>
+  <label>Location <input name="location" value="{{ unit.location if unit else '' }}" placeholder="Shelf above the desk"></label>
+  {% if unit %}<label>Sort order <input type="number" name="sort_order" value="{{ unit.sort_order }}"></label>{% endif %}
+  <fieldset>
+    <legend>Bottle formats this unit holds</legend>
+    <p class="small muted">Used to suggest the right rack and to warn when a bottle won't fit. Leave all unticked to accept anything.</p>
+    {% set selected = unit.formats|map(attribute='id')|list if unit else [] %}
+    {% for f in formats %}
+    <label><input type="checkbox" name="format_ids" value="{{ f.id }}" {% if f.id in selected %}checked{% endif %}> {{ f.name }} <span class="muted small">{{ f.notes }}</span></label>
+    {% endfor %}
+    <p class="small"><a href="/settings#formats">Manage bottle formats</a></p>
+  </fieldset>
+  <button>Save</button>
+</form>
+{% if unit %}
+<details><summary class="small">Delete this unit</summary>
+  <p class="small">Its bottles become unsorted; nothing else is lost.</p>
+  <form method="post" action="/storage/{{ unit.id }}/delete"><button class="secondary">Delete {{ unit.name }}</button></form>
+</details>
+{% endif %}
+{% endblock %}

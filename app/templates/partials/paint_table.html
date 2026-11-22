@@ -1,0 +1,27 @@
+{% from "macros.html" import swatch, owned_badge %}
+<p class="muted small">{{ total }} paint{{ 's' if total != 1 }}{% if pages > 1 %} · page {{ page }} of {{ pages }}{% endif %}</p>
+<figure>
+<table class="compact striped">
+  <thead><tr><th></th><th>Code</th><th>Name</th><th>Line</th><th>Type</th><th>Owned</th><th></th></tr></thead>
+  <tbody>
+  {% for p in paints %}
+    <tr>
+      <td>{{ swatch(p.display_hex, 'sm') }}</td>
+      <td><code>{{ p.code }}</code></td>
+      <td><a href="/paints/{{ p.id }}">{{ p.name }}</a>{% if p.discontinued %} <span class="badge">disc.</span>{% endif %}</td>
+      <td class="small">{{ p.line.brand.name }} {{ p.line.name }}</td>
+      <td class="small">{{ p.type }} · {{ p.finish }}</td>
+      <td>{{ owned_badge(counts.get(p.id, 0)) }}</td>
+      <td><a class="small" href="/add?paint_id={{ p.id }}">+ bottle</a></td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+</figure>
+{% if pages > 1 %}
+{% set base = '/paints?q=' ~ (f.q or '')|urlencode ~ '&brand=' ~ (f.brand or '') ~ '&line=' ~ (f.line or '') ~ '&type=' ~ f.type ~ '&finish=' ~ f.finish ~ '&owned=' ~ f.owned %}
+<nav>
+  {% if page > 1 %}<a href="{{ base }}&page={{ page - 1 }}" hx-get="{{ base }}&page={{ page - 1 }}" hx-target="#paint-table" hx-push-url="true">← Previous</a>{% endif %}
+  {% if page < pages %}<a href="{{ base }}&page={{ page + 1 }}" hx-get="{{ base }}&page={{ page + 1 }}" hx-target="#paint-table" hx-push-url="true">Next →</a>{% endif %}
+</nav>
+{% endif %}

@@ -1,0 +1,11 @@
+{% extends "base.html" %}{% from "macros.html" import swatch, locations %}
+{% block title %}Bottles{% endblock %}
+{% block content %}
+<h1>{{ 'Unsorted bottles' if unsorted else 'All bottles' }} <span class="muted small">{{ items|length }}</span></h1>
+<p><a href="/items">All</a> · <a href="/items?unsorted=1">Unsorted only</a> · <a href="/export/inventory.csv">Export CSV</a></p>
+<ul class="results-list">
+{% for it in items %}
+  <li>{{ swatch(it.hex, 'sm') }} <a class="grow" href="/items/{{ it.id }}">{{ it.full_label }}</a> {{ locations([it]) }}</li>
+{% else %}<li class="muted">No bottles.</li>{% endfor %}
+</ul>
+{% endblock %}

@@ -1,0 +1,40 @@
+<div class="notes-block" id="notes-{{ entity_type }}-{{ entity_id }}">
+  {% set tgt = '#notes-' ~ entity_type ~ '-' ~ entity_id %}
+  <form hx-post="/notes/{{ entity_type }}/{{ entity_id }}" hx-target="{{ tgt }}" hx-swap="outerHTML" method="post" action="/notes/{{ entity_type }}/{{ entity_id }}">
+    <textarea name="body" rows="2" placeholder="Add a comment (Markdown works)…" required></textarea>
+    <label class="small"><input type="checkbox" name="pinned" value="1"> Pin</label>
+    <button class="small">Add comment</button>
+  </form>
+  <div class="notes-list">
+  {% for n in notes %}
+    <article class="note{% if n.pinned %} pinned{% endif %}" x-data="{edit:false}">
+      <div x-show="!edit">{{ n.body|markdown }}</div>
+      <form x-show="edit" x-cloak hx-post="/notes/{{ n.id }}/edit" hx-target="{{ tgt }}" hx-swap="outerHTML" method="post" action="/notes/{{ n.id }}/edit">
+        <textarea name="body" rows="3">{{ n.body }}</textarea><button class="small">Save</button>
+      </form>
+      <footer class="small muted">
+        {{ n.created_at.strftime('%d %b %Y %H:%M') if n.created_at else '' }}{% if n.pinned %} · 📌{% endif %}
+        · <a href="#" @click.prevent="edit = !edit">edit</a>
+        · <a href="#" hx-post="/notes/{{ n.id }}/pin" hx-target="{{ tgt }}" hx-swap="outerHTML">{{ 'unpin' if n.pinned else 'pin' }}</a>
+        · <a href="#" hx-post="/notes/{{ n.id }}/delete" hx-target="{{ tgt }}" hx-swap="outerHTML" hx-confirm="Delete this comment?">delete</a>
+      </footer>
+    </article>
+  {% endfor %}
+  </div>
+  <div class="photos">
+  {% for a in attachments %}
+    <figure>
+      <a href="/uploads/{{ a.filename }}" target="_blank"><img src="/uploads/{{ a.filename }}" alt="{{ a.caption or a.original_name }}" loading="lazy"></a>
+      <figcaption class="small">{{ a.caption }} <a href="#" hx-post="/attachments/{{ a.id }}/delete" hx-target="{{ tgt }}" hx-swap="outerHTML" hx-confirm="Delete this photo?">✕</a></figcaption>
+    </figure>
+  {% endfor %}
+  </div>
+  <details class="inline-form">
+    <summary>Add a photo</summary>
+    <form hx-post="/attachments/{{ entity_type }}/{{ entity_id }}" hx-target="{{ tgt }}" hx-swap="outerHTML" hx-encoding="multipart/form-data" method="post" action="/attachments/{{ entity_type }}/{{ entity_id }}" enctype="multipart/form-data">
+      <input type="file" name="file" accept="image/*" capture="environment" required>
+      <input name="caption" placeholder="Caption (optional)">
+      <button class="small">Upload</button>
+    </form>
+  </details>
+</div>

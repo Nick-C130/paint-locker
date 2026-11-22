@@ -1,0 +1,27 @@
+<div class="grid-wrap" id="grid">
+<div class="rack" style="grid-template-columns: 1.5rem repeat({{ unit.cols }}, max-content)">
+  <div></div>
+  {% for c in range(unit.cols) %}<div class="hdr">{{ c + 1 }}</div>{% endfor %}
+  {% for row in grid %}
+    {% set rowloop = loop %}
+    <div class="hdr">{{ row_label(rowloop.index0) if unit.label_scheme == 'A1' else rowloop.index }}</div>
+    {% for cell in row %}
+      {% if cell.disabled %}
+        <div class="cell disabled" title="{{ cell.label }} (disabled)" hx-get="/cells/{{ cell.id }}" hx-target="#cell-panel"><span class="lbl">{{ cell.label }}</span></div>
+      {% elif cell.items %}
+        {% set it = cell.items[0] %}
+        {% set fmt = it.effective_format %}
+        {% set misfit = fmt and unit.formats and fmt not in unit.formats %}
+        <div class="cell filled{% if it.id in hl %} hl{% endif %}{% if misfit %} misfit{% endif %}" draggable="true" data-item="{{ it.id }}" data-cell="{{ cell.id }}"
+             style="background:{{ it.hex or '#fafafa' }};color:{{ it.hex|textcol }}"
+             title="{{ cell.label }}: {{ it.full_label }}{% if misfit %} (bottle may not fit this rack){% endif %}"
+             hx-get="/cells/{{ cell.id }}" hx-target="#cell-panel">
+          <span class="lbl">{{ cell.label }}</span><span class="code">{{ it.short_code }}</span>
+        </div>
+      {% else %}
+        <div class="cell empty" data-cell="{{ cell.id }}" title="{{ cell.label }}: empty" hx-get="/cells/{{ cell.id }}" hx-target="#cell-panel"><span class="lbl">{{ cell.label }}</span></div>
+      {% endif %}
+    {% endfor %}
+  {% endfor %}
+</div>
+</div>

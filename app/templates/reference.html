@@ -1,0 +1,40 @@
+{% extends "base.html" %}{% from "macros.html" import swatch, owned_badge, de, notes %}
+{% block title %}{{ ref.label }}{% endblock %}
+{% block content %}
+<div class="row">
+  <div style="flex:0 0 8rem">{{ swatch(ref.hex, 'lg') }}</div>
+  <div>
+    <p class="muted">{{ ref.nation }} · <a href="/references">reference colours</a></p>
+    <h1>{{ ref.system }} {{ ref.code }} {{ ref.name }}</h1>
+    <p>{{ ref.aliases }}</p>
+    <p class="small muted">{{ ref.hex }} · {{ ref.source }}</p>
+    {% if ref.hex %}
+    <a role="button" href="/colours?hex={{ ref.hex|urlencode }}&owned=1&source=reference&context={{ ref.label|urlencode }}">Closest I own</a>
+    <a role="button" class="secondary" href="/mixes/lab?target={{ ref.hex|urlencode }}">Mix it</a>
+    {% endif %}
+  </div>
+</div>
+<div class="row">
+<section>
+  <h3>Linked paints &amp; mixes</h3>
+  <ul class="results-list">
+  {% for p in linked_paints %}<li>{{ swatch(p.display_hex, 'sm') }} <a href="/paints/{{ p.id }}">{{ p.full_label }}</a></li>{% endfor %}
+  {% for m in linked_mixes %}<li>{{ swatch(m.display_hex, 'sm') }} <a href="/mixes/{{ m.id }}">Mix: {{ m.name }}</a></li>{% endfor %}
+  {% if not linked_paints and not linked_mixes %}<li class="muted">Nothing linked yet. Link paints from their own page.</li>{% endif %}
+  </ul>
+  {% if nearest_owned %}
+  <h3>Closest you own</h3>
+  <ul class="results-list">{% for m in nearest_owned %}<li>{{ swatch(m.hex, 'sm') }} <a class="grow" href="/paints/{{ m.obj.id }}">{{ m.obj.full_label }}</a> {{ de(m.delta_e) }}</li>{% endfor %}</ul>
+  {% endif %}
+</section>
+<section>
+  <h3>Closest in the catalogue</h3>
+  <ul class="results-list">
+  {% for m in nearest %}
+    <li>{{ swatch(m.hex, 'sm') }} <span class="grow"><a href="/paints/{{ m.obj.id }}">{% if m.obj.code %}<code>{{ m.obj.code }}</code> {% endif %}{{ m.obj.name }}</a> <span class="muted small">{{ m.obj.line.brand.name }} {{ m.obj.line.name }}</span></span> {{ owned_badge(counts.get(m.obj.id, 0)) }} {{ de(m.delta_e) }}</li>
+  {% endfor %}
+  </ul>
+</section>
+</div>
+{{ notes('reference', ref.id) }}
+{% endblock %}

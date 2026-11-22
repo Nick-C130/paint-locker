@@ -1,0 +1,105 @@
+code,name,hex,type,finish,volume_ml,barcode,format,discontinued,tags
+X-1,Black,#000000,acrylic,matt,,,,,Gloss
+X-10,Gun metal,#505557,metallic,metallic,,,,,Gloss
+X-11,Chrome silver,#C2C8CA,metallic,metallic,,,,,Gloss
+X-12,Gold leaf,#CCA208,metallic,metallic,,,,,Gloss
+X-13,Metallic blue,#1E7497,metallic,metallic,,,,,Gloss
+X-14,Sky blue,#1D99C4,acrylic,matt,,,,,Gloss
+X-15,Light green,#66B821,acrylic,matt,,,,,Gloss
+X-16,Purple,#474BA0,acrylic,matt,,,,,Gloss
+X-17,Pink,#F881AC,acrylic,matt,,,,,Gloss
+X-18,Semi gloss black,#333333,acrylic,gloss,,,,,Gloss
+X-19,Smoke,#8F918C,acrylic,matt,,,,,Gloss
+X-2,White,#FFFFFF,acrylic,matt,,,,,Gloss
+X-20A,Acrylic thinner,#FFFFFF,medium,matt,,,,,Gloss
+X-21,Flat base,#FFFFFF,acrylic,matt,,,,,Gloss
+X-22,Clear,#FFFFFF,varnish,matt,,,,,Gloss
+X-23,Clear blue,#34B3D1,varnish,matt,,,,,Gloss
+X-24,Clear yellow,#FFE600,varnish,matt,,,,,Gloss
+X-25,Clear green,#1A9641,varnish,matt,,,,,Gloss
+X-26,Clear orange,#FE8C14,varnish,matt,,,,,Gloss
+X-27,Clear red,#FA0026,varnish,matt,,,,,Gloss
+X-28,Park green,#33A44D,acrylic,matt,,,,,Gloss
+X-3,Royal blue,#1D2D53,acrylic,matt,,,,,Gloss
+X-31,Titanium gold,#CBBB72,metallic,metallic,,,,,Gloss
+X-32,Titanium silver,#CCCCB8,metallic,metallic,,,,,Gloss
+X-33,Bronze,#672622,metallic,metallic,,,,,Gloss
+X-34,Metallic brown,#993F06,metallic,metallic,,,,,Gloss
+X-35,Semi-gloss clear,#FFFFFF,varnish,gloss,,,,,Gloss
+X-4,Blue,#09347B,acrylic,matt,,,,,Gloss
+X-5,Green,#00441B,acrylic,matt,,,,,Gloss
+X-6,Orange,#FF7F00,acrylic,matt,,,,,Gloss
+X-7,Red,#FF0000,acrylic,matt,,,,,Gloss
+X-8,Lemon yellow,#FFE600,acrylic,matt,,,,,Gloss
+X-9,Brown,#4D2207,acrylic,matt,,,,,Gloss
+XF-1,Flat black,#333333,acrylic,matt,,,,,Flat
+XF-10,Flat brown,#3E2A09,acrylic,matt,,,,,Flat
+XF-11,J.N. green,#26330B,acrylic,matt,,,,,Flat
+XF-12,J.N. grey,#B3CBAE,acrylic,matt,,,,,Flat
+XF-13,J.A. green,#334A1F,acrylic,matt,,,,,Flat
+XF-14,J.A. grey,#B3CA8E,acrylic,matt,,,,,Flat
+XF-15,Flat flesh,#FDCDA1,acrylic,matt,,,,,Flat
+XF-16,Flat aluminum,#CCCCCC,metallic,metallic,,,,,Flat
+XF-17,Sea blue,#2E3B43,acrylic,matt,,,,,Flat
+XF-18,Medium blue,#485B5F,medium,matt,,,,,Flat
+XF-19,Sky grey,#ADB7C0,acrylic,matt,,,,,Flat
+XF-2,Flat white,#FFFFFF,acrylic,matt,,,,,Flat
+XF-20,Medium grey,#A3AA96,medium,matt,,,,,Flat
+XF-21,Sky,#B8BE77,acrylic,matt,,,,,Flat
+XF-22,RLM grey,#7B8D7D,acrylic,matt,,,,,Flat
+XF-23,Light blue,#8FB5AD,acrylic,matt,,,,,Flat
+XF-24,Dark grey,#3E4448,acrylic,matt,,,,,Flat
+XF-25,Light sea grey,#7A8BA9,acrylic,matt,,,,,Flat
+XF-26,Deep green,#2E1F09,acrylic,matt,,,,,Flat
+XF-27,Black green,#00260F,acrylic,matt,,,,,Flat
+XF-28,Dark copper,#995F3B,metallic,metallic,,,,,Flat
+XF-3,Flat yellow,#FFCC00,acrylic,matt,,,,,Flat
+XF-4,Yellow green,#B3C60F,acrylic,matt,,,,,Flat
+XF-49,Khaki,#7E783F,acrylic,matt,,,,,Flat
+XF-5,Flat green,#244313,acrylic,matt,,,,,Flat
+XF-50,Field blue,#364146,acrylic,matt,,,,,Flat
+XF-51,Khaki drab,#29330E,acrylic,matt,,,,,Flat
+XF-52,Flat earth,#734834,acrylic,matt,,,,,Flat
+XF-53,Neutral grey,#6C787B,acrylic,matt,,,,,Flat
+XF-54,Dark sea grey,#5C5D61,acrylic,matt,,,,,Flat
+XF-55,Deck tan,#B7B187,acrylic,matt,,,,,Flat
+XF-56,Metallic grey,#5C6264,metallic,metallic,,,,,Flat
+XF-57,Buff,#B8B36A,acrylic,matt,,,,,Flat
+XF-58,Olive green,#1A3B14,acrylic,matt,,,,,Flat
+XF-59,Desert yellow,#D89C42,acrylic,matt,,,,,Flat
+XF-6,Copper,#CC5C03,metallic,metallic,,,,,Flat
+XF-60,Dark yellow,#C7B140,acrylic,matt,,,,,Flat
+XF-61,Dark green,#1A2D0F,acrylic,matt,,,,,Flat
+XF-62,Olive drab,#404B13,acrylic,matt,,,,,Flat
+XF-63,German grey,#3E474A,acrylic,matt,,,,,Flat
+XF-64,Red brown,#66370A,acrylic,matt,,,,,Flat
+XF-65,Field grey,#67866B,acrylic,matt,,,,,Flat
+XF-66,Light grey,#667679,acrylic,matt,,,,,Flat
+XF-67,NATO green,#33601A,acrylic,matt,,,,,Flat
+XF-68,NATO brown,#733007,acrylic,matt,,,,,Flat
+XF-69,NATO black,#222424,acrylic,matt,,,,,Flat
+XF-7,Flat red,#FF0000,acrylic,matt,,,,,Flat
+XF-70,Dark green 2,#00250F,acrylic,matt,,,,,Flat
+XF-71,Cockpit green (IJN),#74925D,acrylic,matt,,,,,Flat
+XF-72,Brown (JGSDF),#734C0C,acrylic,matt,,,,,Flat
+XF-73,Dark green (JGSDF),#1A4316,acrylic,matt,,,,,Flat
+XF-74,Olive drab (JGSDF),#334012,acrylic,matt,,,,,Flat
+XF-75,IJN gray (Kure Arsenal),#828D93,acrylic,matt,,,,,Flat
+XF-76,Gray green (IJN),#B8C3A7,acrylic,matt,,,,,Flat
+XF-77,IJN gray (Sasebo Arsenal),#686D71,acrylic,matt,,,,,Flat
+XF-78,Wooden deck tan,#D3B685,acrylic,matt,,,,,Flat
+XF-79,Linoleum deck brown,#784629,acrylic,matt,,,,,Flat
+XF-8,Flat blue,#284C7B,acrylic,matt,,,,,Flat
+XF-80,Royal light gray,#C1CAC8,acrylic,matt,,,,,Flat
+XF-81,Dark green 2 (RAF),#FFFFFF,acrylic,matt,,,,,Flat
+XF-82,Ocean gray 2 (RAF),#FFFFFF,acrylic,matt,,,,,Flat
+XF-83,Medium sea gray 2 (RAF),#FFFFFF,medium,matt,,,,,Flat
+XF-84,Dark iron,#FFFFFF,metallic,metallic,,,,,Flat
+XF-85,Rubber black,#FFFFFF,acrylic,matt,,,,,Flat
+XF-86,Flat clear,#FFFFFF,varnish,matt,,,,,Flat
+XF-87,IJN gray (Maizuru Arsenal),#FFFFFF,acrylic,matt,,,,,Flat
+XF-88,Dark yellow 2,#FFFFFF,acrylic,matt,,,,,Flat
+XF-89,Dark green 2,#FFFFFF,acrylic,matt,,,,,Flat
+XF-9,Hull red,#3E0E02,acrylic,matt,,,,,Flat
+XF-90,Red brown 2,#FFFFFF,acrylic,matt,,,,,Flat
+XF-91,IJN gray (Yokosuka Arsenal),#FFFFFF,acrylic,matt,,,,,Flat

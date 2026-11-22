@@ -1,0 +1,47 @@
+{% from "macros.html" import swatch, locations, owned_badge %}
+{% if q %}
+<div>
+{% if colour_hex %}
+  <p>{{ swatch(colour_hex) }} <a href="/colours?hex={{ colour_hex|urlencode }}">Find paints close to {{ colour_hex }}</a> · <a href="/colours?hex={{ colour_hex|urlencode }}&owned=1">closest I own</a></p>
+{% endif %}
+{% if results %}
+  {% set total = results.paints|length + results.mixes|length + results.references|length + results.units|length %}
+  {% if total == 0 and not colour_hex %}<p class="muted">Nothing found for “{{ q }}”. <a href="/paints/new">Add it as a new paint?</a></p>{% endif %}
+  {% if results.references %}
+  <h4>Reference colours</h4>
+  <ul class="results-list">
+  {% for r in results.references %}
+    <li>{{ swatch(r.hex, 'sm') }} <a class="grow" href="/references/{{ r.id }}">{{ r.system }} {{ r.code }} {{ r.name }}</a><span class="muted small">{{ r.nation }}</span></li>
+  {% endfor %}
+  </ul>
+  {% endif %}
+  {% if results.mixes %}
+  <h4>Mixes</h4>
+  <ul class="results-list">
+  {% for m in results.mixes %}
+    <li>{{ swatch(m.display_hex, 'sm') }} <a class="grow" href="/mixes/{{ m.id }}">{{ m.name }}</a> {{ owned_badge(m.items|length) }} {{ locations(m.items) }}</li>
+  {% endfor %}
+  </ul>
+  {% endif %}
+  {% if results.paints %}
+  <h4>Paints</h4>
+  <ul class="results-list">
+  {% for p in results.paints %}
+    <li>{{ swatch(p.display_hex, 'sm') }}
+      <span class="grow"><a href="/paints/{{ p.id }}">{% if p.code %}<code>{{ p.code }}</code> {% endif %}{{ p.name }}</a>
+        <span class="muted small">{{ p.line.brand.name }} {{ p.line.name }} · {{ p.type }}{% if p.discontinued %} · discontinued{% endif %}</span></span>
+      {{ owned_badge(p.items|length) }} {{ locations(p.items) }}
+      <a class="small" role="button" href="/add?paint_id={{ p.id }}">+ Add bottle</a>
+    </li>
+  {% endfor %}
+  </ul>
+  {% endif %}
+  {% if results.units %}
+  <h4>Storage</h4>
+  <ul class="results-list">
+  {% for u in results.units %}<li><a href="/storage/{{ u.id }}">{{ u.name }}</a> <span class="muted small">{{ u.location }}</span></li>{% endfor %}
+  </ul>
+  {% endif %}
+{% endif %}
+</div>
+{% endif %}

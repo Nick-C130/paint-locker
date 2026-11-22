@@ -1,0 +1,5 @@
+{% extends "base.html" %}
+{% block content %}
+<p><a href="/storage/{{ cell.unit_id }}">← {{ cell.unit.name }}</a></p>
+<div id="cell-panel">{% include "partials/cell_panel.html" %}</div>
+{% endblock %}

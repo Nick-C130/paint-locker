@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Paint Locker{% endblock %}</title>
+  <link rel="manifest" href="/static/manifest.webmanifest">
+  <link rel="icon" href="/static/icon.svg" type="image/svg+xml">
+  <meta name="theme-color" content="#3d4a2f">
+  <link rel="stylesheet" href="/static/vendor/pico.min.css">
+  <link rel="stylesheet" href="/static/app.css">
+  <script src="/static/vendor/htmx.min.js" defer></script>
+  {% block head %}{% endblock %}
+  <script src="/static/vendor/alpine.min.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <nav class="container-fluid">
+      <ul><li><a href="/" class="brand">🎨 Paint Locker</a></li></ul>
+      <ul class="navlinks">
+        <li><a href="/paints">Catalogue</a></li>
+        <li><a href="/storage">Storage</a></li>
+        <li><a href="/mixes">Mixes</a></li>
+        <li><a href="/colours">Colour</a></li>
+        <li><a href="/references">WW2 refs</a></li>
+        <li><a href="/shopping">Shopping</a></li>
+        <li><a href="/settings">Settings</a></li>
+      </ul>
+    </nav>
+    <form class="container-fluid globalsearch" action="/search" method="get" role="search">
+      <input type="search" name="q" placeholder="Search paints, mixes, notes, cells… (70.950, black, dunkelgelb, #9c8853)"
+             value="{{ q or '' }}" autocomplete="off"
+             hx-get="/search" hx-trigger="input changed delay:250ms, search" hx-target="#live-results" hx-push-url="false">
+    </form>
+    <div id="live-results" class="container-fluid live-results"></div>
+  </header>
+  <main class="container">
+    {% if msg %}<article class="flash ok">{{ msg }}</article>{% endif %}
+    {% if warn %}<article class="flash warn">⚠️ {{ warn }}</article>{% endif %}
+    {% block content %}{% endblock %}
+  </main>
+  <footer class="container muted small">Colours are approximate screen values. Record a measured colour when it matters.</footer>
+  <script>
+    if ('serviceWorker' in navigator) { navigator.serviceWorker.register('/sw.js').catch(() => {}); }
+    document.addEventListener('keydown', e => {
+      if (e.key === '/' && !['INPUT','TEXTAREA','SELECT'].includes(document.activeElement.tagName)) {
+        e.preventDefault(); document.querySelector('.globalsearch input').focus();
+      }
+      if (e.key === 'Escape') { const r = document.getElementById('live-results'); if (r) r.innerHTML = ''; }
+    });
+  </script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

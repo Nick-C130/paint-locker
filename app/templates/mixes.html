@@ -1,0 +1,15 @@
+{% extends "base.html" %}{% from "macros.html" import swatch, owned_badge %}
+{% block title %}Mixes{% endblock %}
+{% block content %}
+<h1>Mix recipes <a class="small" role="button" href="/mixes/lab">+ Mix lab</a></h1>
+<ul class="results-list">
+{% for m in mixes %}
+  <li>{{ swatch(m.display_hex) }}
+    <span class="grow"><a href="/mixes/{{ m.id }}"><b>{{ m.name }}</b></a>
+      <span class="muted small">{{ m.components|length }} component{{ 's' if m.components|length != 1 }} · {{ m.unit }}{% if m.intended_use %} · {{ m.intended_use }}{% endif %}</span></span>
+    {{ owned_badge(m.items|length) }}
+  </li>
+{% else %}<li class="muted">No mixes yet. Open the mix lab to make one.</li>{% endfor %}
+</ul>
+<p class="small"><a href="/export/mixes.csv">Export mixes CSV</a></p>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends "base.html" %}{% from "macros.html" import swatch %}
+{% block title %}Colour requests{% endblock %}
+{% block content %}
+<h1>Colour request log</h1>
+<p class="small muted">Every colour you look for is recorded here with how close your collection got at the time. The phase-2 purchase recommender will use this. <a href="/export/colour-requests.csv">Export CSV</a></p>
+<table class="compact striped">
+  <thead><tr><th>When</th><th>Target</th><th>From</th><th>Context</th><th>Best owned match</th><th>ΔE</th></tr></thead>
+  <tbody>
+  {% for r in reqs %}
+  <tr>
+    <td class="small">{{ r.created_at.strftime('%d %b %Y %H:%M') if r.created_at else '' }}</td>
+    <td>{{ swatch(r.target_hex, 'sm') }} <a href="/colours?hex={{ r.target_hex|urlencode }}">{{ r.target_hex }}</a></td>
+    <td class="small">{{ r.source.replace('_', ' ') }}</td>
+    <td class="small">{{ r.context }}</td>
+    <td class="small">{{ r.best_label or '—' }}</td>
+    <td>{{ '%.1f' % r.best_delta_e if r.best_delta_e is not none else '' }}</td>
+  </tr>
+  {% else %}<tr><td colspan="6" class="muted">Nothing logged yet.</td></tr>{% endfor %}
+  </tbody>
+</table>
+{% endblock %}

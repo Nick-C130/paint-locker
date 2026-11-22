@@ -1,0 +1,35 @@
+{% extends "base.html" %}{% from "macros.html" import swatch, owned_badge, de %}
+{% block title %}Colour search{% endblock %}
+{% block content %}
+<h1>Find a colour</h1>
+<form method="get" action="/colours" class="row" x-data="{h: '{{ hex or '#9C8853' }}'}">
+  <input type="color" x-model="h" style="flex:0 0 5rem; height:3rem">
+  <input name="hex" x-model="h" placeholder="#RRGGBB" required>
+  <label style="flex:0 0 auto"><input type="checkbox" name="owned" value="1" {% if owned %}checked{% endif %}> Only paints I own</label>
+  <button style="flex:0 0 auto">Search</button>
+</form>
+{% if hex %}
+<div class="row">
+  <div style="flex:0 0 8rem">{{ swatch(hex, 'lg') }}<p class="small">{{ hex }}</p></div>
+  <div>
+    {% if req and req.best_label %}<p>Best match you own: <b>{{ req.best_label }}</b> ({{ de(req.best_delta_e) }})</p>
+    {% elif req %}<p class="muted">You don't own anything to compare yet.</p>{% endif %}
+    <p class="small muted">This search was logged so the future purchase recommender knows which colours you look for. <a href="/colour-requests">See the log</a></p>
+    <p><a role="button" class="secondary" href="/mixes/lab?target={{ hex|urlencode }}">Try mixing it</a></p>
+  </div>
+</div>
+{% if owned_mixes %}
+<h3>Mixes you have</h3>
+<ul class="results-list">{% for m in owned_mixes %}<li>{{ swatch(m.hex, 'sm') }} <a class="grow" href="/mixes/{{ m.obj.id }}">{{ m.obj.name }}</a> {{ de(m.delta_e) }}</li>{% endfor %}</ul>
+{% endif %}
+<h3>{{ 'Closest paints you own' if owned else 'Closest paints in the catalogue' }}</h3>
+<ul class="results-list">
+{% for m in matches %}
+  <li>{{ swatch(m.hex, 'sm') }}
+    <span class="grow"><a href="/paints/{{ m.obj.id }}">{% if m.obj.code %}<code>{{ m.obj.code }}</code> {% endif %}{{ m.obj.name }}</a> <span class="muted small">{{ m.obj.line.brand.name }} {{ m.obj.line.name }} · {{ m.obj.type }}</span></span>
+    {{ owned_badge(counts.get(m.obj.id, 0)) }} {{ de(m.delta_e) }}
+  </li>
+{% else %}<li class="muted">No matches.</li>{% endfor %}
+</ul>
+{% endif %}
+{% endblock %}

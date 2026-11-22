@@ -1,0 +1,16 @@
+services:
+  paint-locker:
+    build: .
+    # or use the image built by GitHub Actions:
+    # image: ghcr.io/nick-c130/paint-locker:latest
+    container_name: paint-locker
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./data:/data
+    environment:
+      TZ: Australia/Sydney
+      # PAINTLOCKER_PASSWORD: change-me     # optional single shared password (HTTP basic auth)
+      # PAINTLOCKER_BACKUP_HOUR: "3"        # nightly backup time (container local time)
+      # PAINTLOCKER_BACKUP_KEEP: "14"       # how many nightly backups to keep

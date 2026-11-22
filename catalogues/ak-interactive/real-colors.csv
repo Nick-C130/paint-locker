@@ -1,0 +1,252 @@
+code,name,hex,type,finish,volume_ml,barcode,format,discontinued,tags
+RC001,"Flat Black, RAL 9005",#000000,lacquer,matt,,,,,Modern;Standard
+RC002,"Cream White, RAL 9001",#FEEECC,lacquer,matt,,,,,Modern;Standard
+RC003,"White Grey, RAL 9002",#F1EDE2,lacquer,matt,,,,,Standard;Modern
+RC004,"Flat White, RAL 9003",#FFFFFF,lacquer,matt,,,,,Modern;Standard
+RC005,"Signal Red, RAL 3020",#C5170E,lacquer,matt,,,,,Standard;Modern
+RC006,"Red, RAL 3000",#A61B18,lacquer,matt,,,,,Standard;Modern
+RC007,"Yellow, RAL 1003",#FDC109,lacquer,matt,,,,,Modern;Standard
+RC008,"Maize Yellow, RAL 1006",#FAB013,lacquer,matt,,,,,Modern;Standard
+RC009,"Orange, RAL 2004",#E85213,lacquer,matt,,,,,Standard;Modern
+RC010,"Pure Blue, RAL 5005",#2C3D73,lacquer,matt,,,,,Standard;Modern
+RC011,"Blue, RAL 5001",#233D54,lacquer,matt,,,,,Standard;Modern
+RC012,"Pure Green, RAL 6037",#1C6E30,lacquer,matt,,,,,Modern;Standard
+RC013,Off White,#E1D6BA,lacquer,matt,,,,,Modern;Standard
+RC014,Buff,#9A8260,lacquer,matt,,,,,Standard;Modern
+RC015,Gun Metal,#221F18,lacquer,matt,,,,,Standard;Modern
+RC016,Ochre,#A87B20,lacquer,matt,,,,,Standard;Modern
+RC017,Pale Blue,#698A91,lacquer,matt,,,,,Standard;Modern
+RC018,Pale Sand,#CBB590,lacquer,matt,,,,,Modern;Standard
+RC019,Deck Tan,#99907F,lacquer,matt,,,,,Modern;Standard
+RC020,Aluminium,#ADACA8,lacquer,matt,,,,,Modern;Standard
+RC021,Pale Grey,#879391,lacquer,matt,,,,,Modern;Standard
+RC022,Rubber Black,#1D1D1B,lacquer,matt,,,,,Standard;Modern
+RC023,Olive Drab Nº9 / Nº22,#423C1C,lacquer,matt,,,,,AFV;WWII
+RC024,Olive Drab Faded,#514217,lacquer,matt,,,,,WWII;AFV
+RC025,Dark Olive Drab Nº31,#414232,lacquer,matt,,,,,WWII;AFV
+RC026,Olive Drab Fs 34087,#39372A,lacquer,matt,,,,,WWII;AFV
+RC027,Forest Green Fs 34079,#42412C,lacquer,matt,,,,,WWII;AFV
+RC028,Interior Green Fs 34151,#6E6C2F,lacquer,matt,,,,,WWII;AFV
+RC029,Nº5 Earth Brown Fs 30099,#5A462D,lacquer,matt,,,,,WWII;AFV
+RC030,Nº6 Earth Yellow Fs 30257,#BD8D4D,lacquer,matt,,,,,AFV;WWII
+RC031,Nº8 Earth Red Fs 30117,#704729,lacquer,matt,,,,,WWII;AFV
+RC032,Desert Sand Fs 30279,#BB986E,lacquer,matt,,,,,AFV;WWII
+RC033,Khaki Green Nº3,#4F4231,lacquer,matt,,,,,AFV;WWII
+RC034,S.c.c. 1a Brown,#3A1F18,lacquer,matt,,,,,WWII;AFV
+RC035,S.c.c. 2 Brown,#855F2E,lacquer,matt,,,,,WWII;AFV
+RC036,S.c.c. 14 Blue Black,#1E2326,lacquer,matt,,,,,AFV;WWII
+RC037,S.c.c. 15 Olive Drab,#43412A,lacquer,matt,,,,,WWII;AFV
+RC038,Bsc Nº28 Silver Grey,#9F9D6A,lacquer,matt,,,,,WWII;AFV
+RC039,Bsc Nº34 Slate,#4F4A2C,lacquer,matt,,,,,AFV;WWII
+RC040,Bsc Nº61 Light Stone,#D2B25B,lacquer,matt,,,,,AFV;WWII
+RC041,Bsc Nº64 Portland Stone,#F1DFA1,lacquer,matt,,,,,WWII;AFV
+RC042,British Dark Olive Green Pfi,#4A442E,lacquer,matt,,,,,AFV;WWII
+RC043,British Desert Pink Zi,#F19161,lacquer,matt,,,,,WWII;AFV
+RC044,British Light Mud,#837D49,lacquer,matt,,,,,AFV;WWII
+RC045,Bsc Nº49 Light Purple Brown,#45241F,lacquer,matt,,,,,WWII;AFV
+RC046,Elfenbein – Ivory RAL 1001 (interior Color),#EBC691,lacquer,matt,,,,,AFV;WWII
+RC047,Olivgrün – Olive Green RAL 6003,#4E5220,lacquer,matt,,,,,AFV;WWII
+RC048,Feldgrau – Field Grey RAL 6006,#3D3F27,lacquer,matt,,,,,WWII;AFV
+RC049,Grün – Green RAL 6007,#2A2B19,lacquer,matt,,,,,WWII;AFV
+RC050,Dunkelgrün – Dark Green RAL 6009,#2F311C,lacquer,matt,,,,,AFV;WWII
+RC051,Marinegrau – Navy Grey RAL 7002,#80774E,lacquer,matt,,,,,WWII;AFV
+RC052,Grau – Grey RAL 7003 (RLM 02),#777255,lacquer,matt,,,,,AFV;WWII
+RC053,Graugrün – Gray Green RAL 7008,#837038,lacquer,matt,,,,,AFV;WWII
+RC054,Hellgrau – Light Grey RAL 7009 (interior Color),#5D5A49,lacquer,matt,,,,,WWII;AFV
+RC055,Blaugrau – Blue Gray RAL 7016,#303433,lacquer,matt,,,,,AFV;WWII
+RC056,Dunkelbraun – Dark Brown RAL 7017,#4E3D2D,lacquer,matt,,,,,WWII;AFV
+RC057,Dunkelgrau – Dark Gray RAL 7021,#1F2120,lacquer,matt,,,,,WWII;AFV
+RC058,Grau – Gray RAL 7027,#6F6448,lacquer,matt,,,,,WWII;AFV
+RC059,Dunkelgelb Nach Muster – Dark Yellow,#A98E47,lacquer,matt,,,,,WWII;AFV
+RC060,Dunkelgelb – Dark Yellow RAL 7028,#9C8853,lacquer,matt,,,,,AFV;WWII
+RC061,Dunkelgelb Ausgabe 44 – Dark Yellow RAL 7028 Ver. ’44,#B7A277,lacquer,matt,,,,,AFV;WWII
+RC062,Dunkelgelb – Dark Yellow (variant),#A78A50,lacquer,matt,,,,,AFV;WWII
+RC063,Gelbbraun – Yellow Brown – RAL 8000,#836839,lacquer,matt,,,,,WWII;AFV
+RC064,Erdgelb – Earth Yellow RAL 8002,#9F7022,lacquer,matt,,,,,WWII;AFV
+RC065,Braun – Brown RAL 8010,#604826,lacquer,matt,,,,,WWII;AFV
+RC066,Rot (rotbraun) – Red (red Brown) RAL 8013,#55160D,lacquer,matt,,,,,AFV;WWII
+RC067,Rot (rotbraun) Red (red Brown) RAL 8012,#6D2114,lacquer,matt,,,,,AFV;WWII
+RC068,Rotbraun – Red Brown RAL 8017,#3C251D,lacquer,matt,,,,,WWII;AFV
+RC069,Braun – Brown RAL 8020,#AE8557,lacquer,matt,,,,,WWII;AFV
+RC070,Common Protective – Zo,#3B301A,lacquer,matt,,,,,WWII;AFV
+RC071,Black 6rp,#17120C,lacquer,matt,,,,,AFV;WWII
+RC072,Protective K,#494923,lacquer,matt,,,,,WWII;AFV
+RC073,Protective 4bo,#504C27,lacquer,matt,,,,,WWII;AFV
+RC074,Dark Brown 6k,#452B1C,lacquer,matt,,,,,WWII;AFV
+RC075,Sand 7k,#84632D,lacquer,matt,,,,,AFV;WWII
+RC076,Protective Green 1920’s – 1930’s,#504A26,lacquer,matt,,,,,WWII;AFV
+RC077,Zb Au Basic Protector,#433E21,lacquer,matt,,,,,WWII;AFV
+RC078,Apc Interior Green Fs 24533,#A4B483,lacquer,matt,,,,,AFV
+RC079,Carc Tan 686a Fs 33446,#B49457,lacquer,matt,,,,,AFV
+RC080,Nato Green RAL 6031-f9,#313A1D,lacquer,matt,,,,,AFV
+RC081,Nato Brown RAL 8027-f9,#433021,lacquer,matt,,,,,AFV
+RC082,Nato Black RAL 9021-f9,#1F1E19,lacquer,matt,,,,,AFV
+RC083,Green Fs 34102,#43481F,lacquer,matt,,,,,AFV
+RC084,Sand Fs 30277,#887348,lacquer,matt,,,,,AFV
+RC085,Field Drab Fs 30118,#6B5325,lacquer,matt,,,,,AFV
+RC086,Gelboliv (initial) RAL 6014,#544820,lacquer,matt,,,,,AFV
+RC087,Gelboliv (late) RAL 6014,#41381B,lacquer,matt,,,,,AFV
+RC088,Sandbeige RAL 1039-f9,#AD976E,lacquer,matt,,,,,AFV
+RC089,Graubeige – Grey Beige RAL 1040-f9,#988050,lacquer,matt,,,,,AFV
+RC090,Helloliv – Light Olive RAL 6040-f9,#5F5025,lacquer,matt,,,,,AFV
+RC091,Tarngrau RAL 7050-f9,#665543,lacquer,matt,,,,,AFV
+RC092,Sandbraun RAL 8031-f9,#8C7450,lacquer,matt,,,,,AFV
+RC093,British Sand Yellow,#D8953A,lacquer,matt,,,,,AFV
+RC094,Idf Modern Grey,#6C562D,lacquer,matt,,,,,AFV
+RC095,Idf Sand Grey 1970s-1980s,#73643D,lacquer,matt,,,,,AFV
+RC096,Idf Early Sand Yellow,#927E4C,lacquer,matt,,,,,AFV
+RC097,Uae Sand Dull,#9F8964,lacquer,matt,,,,,AFV
+RC098,Russian Modern Green,#454924,lacquer,matt,,,,,AFV
+RC099,Russian Greyish Yellow,#C7AE85,lacquer,matt,,,,,AFV
+RC100,Russian Grey Green,#515137,lacquer,matt,,,,,AFV
+RC101,Egyptian Desert Sand,#D9BD96,lacquer,matt,,,,,AFV
+RC102,Syrian Republican Guard Desert Yellow,#DFB048,lacquer,matt,,,,,AFV
+RC103,Libyan Army Desert Grey,#B4A796,lacquer,matt,,,,,AFV
+RC104,Iraqi Army Desert Sand,#DFD3B9,lacquer,matt,,,,,AFV
+RC105,"Spanish Green, Fs 3011",#4E5534,lacquer,matt,,,,,AFV
+RC206,Russian Cockpit Torquise,#6EC0B4,lacquer,matt,,,,,Air
+RC207,Leuchtorange-luminous Orange RAL 2005,#E64E1F,lacquer,matt,,,,,Air
+RC208,Graublau-grey Blue RAL 5008,#2C3A45,lacquer,matt,,,,,Air
+RC209,Olive Green/usmc Green RAL 6003/fs34095,#3C4830,lacquer,matt,,,,,Air
+RC210,Silbergrau -silver Grey RAL 7001,#9FA4A8,lacquer,matt,,,,,Air
+RC211,Grüngrau-green Grey RAL 7009 (modern),#5E6158,lacquer,matt,,,,,Air
+RC212,Basaltgrau-basalt Grey RAL 7012,#565E60,lacquer,matt,,,,,Air
+RC213,Steingrau-stone Grey RAL 7030,#918C86,lacquer,matt,,,,,Air
+RC214,Lichtgrau-light Grey RAL 7035,#C5C7C4,lacquer,matt,,,,,Air
+RC215,Staubgrau-dusty Grey RAL 7037,#7A7C7B,lacquer,matt,,,,,Air
+RC216,Quarzgrau-quartz Grey RAL 7039,#6B6660,lacquer,matt,,,,,Air
+RC217,Seidengrau-silk Grey RAL 7044,#B7B5A9,lacquer,matt,,,,,Air
+RC218,Olive Braun-olive Brown RAL 8008,#724A26,lacquer,matt,,,,,Air
+RC219,Mno 2036 Smalt Khaki Avion,#7D775F,lacquer,matt,,,,,Air
+RC220,Light Gull Grey Fs 16440,#B6B6AE,lacquer,matt,,,,,Air;WWII
+RC221,Adc Grey Fs 16473,#A0A9A6,lacquer,matt,,,,,Air
+RC222,Insignia White Fs 17875,#E5E7DA,lacquer,matt,,,,,Air
+RC223,Tan Fs 20400,#C69B78,lacquer,matt,,,,,Air
+RC224,Brown Fs 30140,#7A6051,lacquer,matt,,,,,WWII;Air
+RC225,Dark Tan Fs 30219,#8F7463,lacquer,matt,,,,,WWII;Air
+RC226,Sand Fs 33531,#C8B6A2,lacquer,matt,,,,,Air
+RC227,Radome Tan Fs 33613,#E7C7A1,lacquer,matt,,,,,WWII;Air
+RC228,Usmc Sand Fs 33711,#E1C9A5,lacquer,matt,,,,,Air
+RC229,Us Army Helo Drab Fs 34031,#464742,lacquer,matt,,,,,Air
+RC230,Dull Dark Green Fs 34092,#485750,lacquer,matt,,,,,WWII;Air
+RC231,Field Green Fs 34097,#5A644B,lacquer,matt,,,,,Air
+RC232,Pale Green Fs 34227,#7A866E,lacquer,matt,,,,,Air;WWII
+RC233,Green Fs 34258,#7F8159,lacquer,matt,,,,,Air;WWII
+RC234,Aggressor Blue Fs 35109,#4C6B7D,lacquer,matt,,,,,Air
+RC235,Intermediate Blue Fs 35164,#627282,lacquer,matt,,,,,Air;WWII
+RC236,Blue Fs 35190,#618A9E,lacquer,matt,,,,,Air
+RC237,Medium Grey Fs 35237,#7C878D,medium,matt,,,,,Air
+RC238,Light Blue Fs 35414,#88A2A3,lacquer,matt,,,,,Air
+RC239,Air Superiority Blue Fs 35450,#8AB0C3,lacquer,matt,,,,,Air
+RC240,Light Sky Blue Fs 35526,#A4BCBE,lacquer,matt,,,,,Air
+RC241,Duck Egg Blue Fs 35622,#C5CFC6,lacquer,matt,,,,,Air
+RC242,Dark Eggplant Grey Fs 36076,#4E525B,lacquer,matt,,,,,Air
+RC243,Grey Fs 36081,#58595B,lacquer,matt,,,,,Air
+RC244,Medium Gunship Grey Fs 36118,#5D616A,medium,matt,,,,,Air;WWII
+RC245,Have Glass Grey,#747472,lacquer,matt,,,,,Air
+RC246,F-15 Dark Grey (mod Eagle) Fs 36176,#6E7881,lacquer,matt,,,,,Air
+RC247,Dark Gull Grey Fs 36231,#7F8386,lacquer,matt,,,,,Air;WWII
+RC248,Aggressor Grey Fs 36251,#828385,lacquer,matt,,,,,Air
+RC249,Medium Grey Fs 36270,#84898C,medium,matt,,,,,Air
+RC250,Light Sea Grey Fs 36307,#96978F,lacquer,matt,,,,,Air;WWII
+RC251,Dark Ghost Grey Fs 36320,#8A949D,lacquer,matt,,,,,Air
+RC252,Light Ghost Grey Fs 36375,#9DA4AC,lacquer,matt,,,,,Air
+RC253,Light Grey Fs 36495,#C3C7C6,lacquer,matt,,,,,Air
+RC254,Camouflage Grey Fs 36622,#C2C0B3,lacquer,matt,,,,,Air
+RC255,M-485 Light Grey,#9E9A8E,lacquer,matt,,,,,Air;WWII
+RC256,M-485 Blue Grey,#70848B,lacquer,matt,,,,,Air;WWII
+RC257,Sea Blue,#3D444C,lacquer,matt,,,,,WWII;Air
+RC258,Dark Sea Blue,#36434C,lacquer,matt,,,,,Air;WWII
+RC259,Dark Olive Drab 41,#564F3F,lacquer,matt,,,,,WWII;Air
+RC260,Medium Green 42,#495241,medium,matt,,,,,WWII;Air
+RC261,Neutral Grey 43,#6F6F6F,lacquer,matt,,,,,Air;WWII
+RC262,Us Interior Yellow Green,#848158,lacquer,matt,,,,,WWII;Air
+RC263,Zinc Chromate Yellow,#D1BB4E,lacquer,matt,,,,,WWII;Air
+RC264,Bronze Green,#32402F,lacquer,matt,,,,,Air;WWII
+RC265,RLM 02 RLM -grau (1938),#979481,lacquer,matt,,,,,WWII;Air
+RC266,RLM 02 RLM -grau (1941),#817C5E,lacquer,matt,,,,,Air;WWII
+RC267,RLM 04,#F1A502,lacquer,matt,,,,,WWII;Air
+RC268,RLM 61 / RAL 8019,#5A504E,lacquer,matt,,,,,Air;WWII
+RC269,RLM 62,#66694E,lacquer,matt,,,,,Air;WWII
+RC270,RLM 63,#7D7A67,lacquer,matt,,,,,WWII;Air
+RC271,RLM 65 (1938),#87A0A4,lacquer,matt,,,,,WWII;Air
+RC272,RLM 65 (1941),#91A197,lacquer,matt,,,,,WWII;Air
+RC273,RLM 66 (1941),#51524C,lacquer,matt,,,,,Air;WWII
+RC274,RLM 70,#464940,lacquer,matt,,,,,WWII;Air
+RC275,RLM 71,#504E42,lacquer,matt,,,,,WWII;Air
+RC276,RLM 72,#454641,lacquer,matt,,,,,WWII;Air
+RC277,RLM 73,#414840,lacquer,matt,,,,,Air;WWII
+RC278,RLM 74,#5A5954,lacquer,matt,,,,,WWII;Air
+RC279,RLM 75,#6E6E6E,lacquer,matt,,,,,Air;WWII
+RC280,RLM 78 (1941),#80979F,lacquer,matt,,,,,WWII;Air
+RC281,RLM 78 (1942),#889D98,lacquer,matt,,,,,Air;WWII
+RC282,RLM 79 (1941),#E7A159,lacquer,matt,,,,,WWII;Air
+RC283,RLM 79 (1942),#9C704D,lacquer,matt,,,,,Air;WWII
+RC284,RLM 80,#575644,lacquer,matt,,,,,WWII;Air
+RC285,Raf Sky Grey / Fs 26373,#A2A6A5,lacquer,matt,,,,,WWII;Air
+RC286,Raf Dark Green,#4F5143,lacquer,matt,,,,,WWII;Air
+RC287,Raf Dark Earth,#5D4A29,lacquer,matt,,,,,Air;WWII
+RC288,Raf Ocean Grey,#666D75,lacquer,matt,,,,,WWII;Air
+RC289,Raf Medium Sea Grey Bs381c/637,#808D93,medium,matt,,,,,Air;WWII
+RC290,Raf Sky / Fs 34424,#B1BA8D,lacquer,matt,,,,,Air;WWII
+RC291,Raf Azure Blue,#7D9FC4,lacquer,matt,,,,,Air;WWII
+RC292,Raf Middle Stone,#A37C3B,lacquer,matt,,,,,WWII;Air
+RC293,Raf Cockpit Grey-green,#969F82,lacquer,matt,,,,,Air;WWII
+RC294,Raf Dark Slate Grey,#5E5E52,lacquer,matt,,,,,WWII;Air
+RC295,Raf Extra Dark Sea Grey Bs381c/640,#4C565F,lacquer,matt,,,,,WWII;Air
+RC296,Raf Dark Sea Grey Bs381c/638,#646B75,lacquer,matt,,,,,WWII;Air
+RC297,Raf Pru Blue Bs381c/636,#597A81,lacquer,matt,,,,,Air
+RC298,Raf Light Aircraft Grey Bs381c/627,#C3C5B8,lacquer,matt,,,,,Air
+RC299,Raf Camouflage (barley) Grey Bs381c/626,#96A6A6,lacquer,matt,,,,,Air
+RC300,Raf Dark Camouflage Grey Bs381c/629,#888888,lacquer,matt,,,,,Air
+RC301,Raf Camouflage Beige (hemp) Bs 381c/389,#97946B,lacquer,matt,,,,,Air
+RC302,Ijn J3 Hai-iro (grey),#BBBFB0,lacquer,matt,,,,,WWII;Air
+RC303,Ijn J3 Sp (amber Grey),#B0B795,lacquer,matt,,,,,Air;WWII
+RC304,Ijn D1 Deep Green Black,#133527,lacquer,matt,,,,,Air;WWII
+RC305,Ijn D2 Green Black,#1A4F3D,lacquer,matt,,,,,Air;WWII
+RC306,Ijn M3 (m) Mitsubishi Interior Green,#7F873C,lacquer,matt,,,,,WWII;Air
+RC307,Ijn M3 (n) Nakajima Interior Green,#6D7647,lacquer,matt,,,,,WWII;Air
+RC308,Ae-9 / Aii Light Grey,#E0DCB9,lacquer,matt,,,,,WWII;Air
+RC309,Aii Green,#343F21,lacquer,matt,,,,,WWII;Air
+RC310,Aii Light Blue,#7FA4AA,lacquer,matt,,,,,WWII;Air
+RC311,A-18f Light Grey-blue,#89A49D,lacquer,matt,,,,,WWII;Air
+RC312,A-19f Grass Green,#506336,lacquer,matt,,,,,Air;WWII
+RC313,Amt-1 Light Brown,#8B806C,lacquer,matt,,,,,WWII;Air
+RC314,A-21m Light Yellowish Brown,#898675,lacquer,matt,,,,,Air;WWII
+RC315,Amt-4 / A-24m Green,#4A471C,lacquer,matt,,,,,Air;WWII
+RC316,Amt-7 Light Blue,#678DA4,lacquer,matt,,,,,Air;WWII
+RC317,Amt-11 Blue Grey,#4E5F66,lacquer,matt,,,,,Air;WWII
+RC318,Amt-12 Dark Grey,#4E5F66,lacquer,matt,,,,,WWII;Air
+RC319,A-14 Interior Steel Grey,#647177,lacquer,matt,,,,,Air;WWII
+RC320,RLM 76 Version 1,#A9B4A4,lacquer,matt,,,,,Air;WWII
+RC321,RLM 76 Version 2,#AEBEBE,lacquer,matt,,,,,Air;WWII
+RC322,RLM 76 Late War Variation,#C1C19D,lacquer,matt,,,,,Air;WWII
+RC323,RLM 81 Version 1,#575644,lacquer,matt,,,,,Air;WWII
+RC324,RLM 81 Version 2,#464C3E,lacquer,matt,,,,,Air;WWII
+RC325,RLM 81 Version 3,#5A5044,lacquer,matt,,,,,WWII;Air
+RC326,RLM 82,#4D5B4A,lacquer,matt,,,,,WWII;Air
+RC327,RLM 83,#384452,lacquer,matt,,,,,WWII;Air
+RC328,Ija 1 Hairyokushoku (grey-green),#A4A788,lacquer,matt,,,,,WWII;Air
+RC329,Ija 3 Hairanshoku (grey Indigo),#464C48,lacquer,matt,,,,,Air;WWII
+RC330,Ija 7 Ohryuko Nana Go Shoku (olive Brown),#56502E,lacquer,matt,,,,,Air;WWII
+RC331,Ija 21 Midori Iro (green),#414E30,lacquer,matt,,,,,WWII;Air
+RC332,Ija 27 Ao Midori Iro (blue-green),#1D3327,lacquer,matt,,,,,Air;WWII
+RC333,Ija 29 Ki Midori Iro (yellow-green),#828B3C,lacquer,matt,,,,,Air;WWII
+RC334,Ija 30 Karekusa Iro (dry Grass Colour),#958247,lacquer,matt,,,,,WWII;Air
+RC335,Ija 31 Cha Kasshoku (tea Colour),#694E39,lacquer,matt,,,,,WWII;Air
+RC336,Mig-25/mig-31 Grey,#889DA0,lacquer,matt,,,,,Air
+RC337,Mig-29 Light Grey,#8099A0,lacquer,matt,,,,,Air
+RC338,Mig-29 Grey Green,#65847E,lacquer,matt,,,,,Air
+RC339,RLM 66 (1938),#353D3F,lacquer,matt,,,,,WWII;Air
+RC340,Kenttävihrea-olive Green Fs 34096,#545648,lacquer,matt,,,,,WWII;Air
+RC341,Schwarzgrau-black Grey RAL 7021,#313234,lacquer,matt,,,,,Air
+RC342,Dark Green Fs 34064,#4B4B43,lacquer,matt,,,,,Air
+RC500,Flat Varnish,#F0F0F0,varnish,matt,,,,,Standard;Modern
+RC501,Satin Varnish,#DCDCDC,varnish,satin,,,,,Modern;Standard
+RC502,Gloss Varnish,#E5E5E5,varnish,gloss,,,,,Modern;Standard
+RC503,Clear Red,#BD0A0D,varnish,matt,,,,,Clear;Modern;Standard
+RC504,Clear Blue,#1C69A1,varnish,matt,,,,,Modern;Standard;Clear
+RC505,Clear Green,#3A683A,varnish,matt,,,,,Clear;Standard;Modern
+RC506,Clear Orange,#DE7927,varnish,matt,,,,,Modern;Clear;Standard
+RC507,Clear Yellow,#ECC31B,varnish,matt,,,,,Modern;Standard;Clear
+RC508,Clear Smoke,#4C4845,varnish,matt,,,,,Standard;Clear;Modern

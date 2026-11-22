@@ -1,0 +1,14 @@
+{% extends "base.html" %}{% from "macros.html" import swatch %}
+{% block title %}WW2 reference colours{% endblock %}
+{% block content %}
+<h1>WW2 reference colours</h1>
+<p class="muted small">Historical standards (RAL, RLM, FS/ANA, British SCC/BSC, Soviet). Screen colours are approximate and taken from AK Real Colors chips; real-world samples vary a lot. Add your own by dropping a CSV in <code>catalogues/reference/</code>.</p>
+{% for nation, group in refs|groupby('nation') %}
+<h3>{{ nation }}</h3>
+<ul class="results-list">
+{% for r in group %}
+  <li>{{ swatch(r.hex, 'sm') }} <a class="grow" href="/references/{{ r.id }}"><b>{{ r.system }} {{ r.code }}</b> {{ r.name }}</a> <span class="muted small">{{ r.aliases }}</span></li>
+{% endfor %}
+</ul>
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,41 @@
+{% macro swatch(hex, size='md', title='') -%}
+<span class="swatch swatch-{{ size }}{% if not hex %} swatch-none{% endif %}" style="{% if hex %}background:{{ hex }}{% endif %}" title="{{ title or hex or 'no colour' }}"></span>
+{%- endmacro %}
+
+{% macro paint_link(p) -%}
+<a href="/paints/{{ p.id }}">{{ swatch(p.display_hex, 'sm') }} {% if p.code %}<code>{{ p.code }}</code> {% endif %}{{ p.name }}</a>
+<span class="muted small">{{ p.line.brand.name }} {{ p.line.name }}</span>
+{%- endmacro %}
+
+{% macro locations(items) -%}
+{% for it in items %}{% if it.cell %}<a class="loc" href="/storage/{{ it.cell.unit_id }}?highlight=item:{{ it.id }}">{{ it.cell.unit.name }} {{ it.cell.label }}</a>{% else %}<a class="loc unsorted" href="/items/{{ it.id }}">unsorted</a>{% endif %}{% if not loop.last %} {% endif %}{% endfor %}
+{%- endmacro %}
+
+{% macro owned_badge(n) -%}
+{% if n %}<span class="badge owned">owned ×{{ n }}</span>{% else %}<span class="badge">not owned</span>{% endif %}
+{%- endmacro %}
+
+{% macro notes(entity_type, entity_id) -%}
+<section class="notes-wrap">
+  <h3>Comments &amp; photos</h3>
+  <div hx-get="/notes/{{ entity_type }}/{{ entity_id }}" hx-trigger="load" hx-swap="outerHTML"><p class="muted">Loading…</p></div>
+</section>
+{%- endmacro %}
+
+{% macro de(value) -%}
+<span class="de" title="CIEDE2000 colour difference: under 1 is invisible, under 3 very close">ΔE {{ '%.1f' % value }}</span> <span class="muted small">{{ value|de_words }}</span>
+{%- endmacro %}
+
+{% macro cell_select(groups, suggestion, name='cell_id', current=None, allow_auto=False) -%}
+<select name="{{ name }}">
+  {% if allow_auto %}<option value="auto">Next free cell (auto)</option>{% endif %}
+  <option value="" {% if not suggestion and not current %}selected{% endif %}>Unsorted (no cell)</option>
+  {% for g in groups %}
+  <optgroup label="{{ g.unit.name }}{% if g.fits %} ✓ fits{% elif g.fits is sameas false %} ⚠ not tagged for this bottle{% endif %}">
+    {% for c in g.cells %}
+    <option value="{{ c.id }}" {% if (current and c.id == current.id) or (not current and suggestion and c.id == suggestion.id) %}selected{% endif %}>{{ g.unit.name }} {{ c.label }}</option>
+    {% endfor %}
+  </optgroup>
+  {% endfor %}
+</select>
+{%- endmacro %}

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Storage{% endblock %}
+{% block content %}
+<h1>Storage <a class="small" role="button" href="/storage/new">+ New unit</a></h1>
+<div class="row">
+{% for u in units %}
+  {% set used = u.cells|selectattr('items')|list|length %}
+  {% set usable = u.cells|rejectattr('disabled')|list|length %}
+  <article>
+    <header><a href="/storage/{{ u.id }}"><b>{{ u.name }}</b></a> <span class="muted small">{{ u.rows }} rows × {{ u.cols }} columns</span></header>
+    <p>{{ used }} / {{ usable }} cells used</p>
+    <progress value="{{ used }}" max="{{ usable or 1 }}"></progress>
+    <p class="small">{% for f in u.formats %}<span class="badge">{{ f.name }}</span> {% else %}<span class="muted">No bottle formats tagged (accepts anything)</span>{% endfor %}</p>
+    <p class="small muted">{{ u.location }}</p>
+    <footer><a href="/storage/{{ u.id }}/bulk">Bulk shelf entry</a> · <a href="/storage/{{ u.id }}/edit">Edit</a></footer>
+  </article>
+{% else %}<p class="muted">No storage units yet.</p>{% endfor %}
+</div>
+<p><a href="/items?unsorted=1">Unsorted bottles</a></p>
+{% endblock %}

@@ -1,0 +1,394 @@
+code,name,hex,type,finish,volume_ml,barcode,format,discontinued,tags
+AK004,Dunkelgelb Shadow,#373121,acrylic,matt,,,,,AFV
+AK005,Dunkelgelb Dark Base,#695322,acrylic,matt,,,,,AFV
+AK006,Dunkelgelb Base,#847136,acrylic,matt,,,,,AFV
+AK007,Dunkelgelb Light Base,#A08D41,acrylic,matt,,,,,AFV
+AK008,Dunkelgelb High Light,#D8C664,acrylic,matt,,,,,AFV
+AK009,Dunkelgelb Shine,#F7EA8C,acrylic,matt,,,,,AFV
+AK029,Russian 4bo Shadow,#373330,acrylic,matt,,,,,AFV
+AK030,Russian 4bo Dark Base,#373528,acrylic,matt,,,,,AFV
+AK031,Russian 4bo Base,#535B36,acrylic,matt,,,,,AFV
+AK032,Russian 4bo Light Base,#5E663D,acrylic,matt,,,,,AFV
+AK033,Russian 4bo High Light,#727C48,acrylic,matt,,,,,AFV
+AK034,Russian 4bo Shine,#99A76C,acrylic,matt,,,,,AFV
+AK092,RAL Cremeweiss,#E6DB9B,acrylic,matt,,,,,AFV
+AK122,Oif & Oef – US Vehicles Base,#B8A178,acrylic,matt,,,,,AFV
+AK125,Red Primer Shadow,#382D29,primer,matt,,,,,AFV
+AK126,Red Primer Dark Base,#43342F,primer,matt,,,,,AFV
+AK127,Red Primer Base,#4F392E,primer,matt,,,,,AFV
+AK128,Red Primer Light Base,#624537,primer,matt,,,,,AFV
+AK129,Red Primer High Light,#704B39,primer,matt,,,,,AFV
+AK130,Red Primer Shine,#AC724A,primer,matt,,,,,AFV
+AK132,Olive Drab Shadow,#3D3C2A,acrylic,matt,,,,,AFV
+AK133,Olive Drab Dark Base,#4A4833,acrylic,matt,,,,,AFV
+AK134,Olive Drab Base,#555032,acrylic,matt,,,,,AFV
+AK135,Olive Drab Light Base,#615C36,acrylic,matt,,,,,AFV
+AK136,Olive Drab High Lights,#6B6243,acrylic,matt,,,,,AFV
+AK137,Olive Drab Shine,#877A4D,acrylic,matt,,,,,AFV
+AK139,Aluminium Chipping,#D0D0D0,metallic,metallic,,,,,AFV
+AK161,Dunkelgrau Shadow,#3C3C3A,acrylic,matt,,,,,AFV
+AK162,Dunkelgrau Dark Base,#3B4141,acrylic,matt,,,,,AFV
+AK163,Dunkelgrau Base,#454744,acrylic,matt,,,,,AFV
+AK164,Dunkelgrau Light Base,#4D4D4B,acrylic,matt,,,,,AFV
+AK165,Dunkelgrau High Light,#61615F,acrylic,matt,,,,,AFV
+AK166,Dunkelgrau Shine,#A8A7A5,acrylic,matt,,,,,AFV
+AK168,Rotbraun Base,#43322A,acrylic,matt,,,,,AFV
+AK169,Rotbraun Shadow,#6C422C,acrylic,matt,,,,,AFV
+AK170,Rotbraun Light,#825133,acrylic,matt,,,,,AFV
+AK171,Olivgrün Shadow,#4A4F39,acrylic,matt,,,,,AFV
+AK172,Olivgrün Base,#5F7537,acrylic,matt,,,,,AFV
+AK173,Olivgrün Light,#849547,acrylic,matt,,,,,AFV
+AK2002,RLM 02,#5A5E45,air,matt,,,,,Air
+AK2003,RLM 65,#829A84,air,matt,,,,,Air
+AK2004,RLM 66,#2D2E29,air,matt,,,,,Air
+AK2005,RLM 70,#272924,air,matt,,,,,Air
+AK2006,RLM 71,#3E4130,air,matt,,,,,Air
+AK2007,RLM 74,#423F2E,air,matt,,,,,Air
+AK2008,RLM 75,#40413C,air,matt,,,,,Air
+AK2009,RLM 76,#93A58B,air,matt,,,,,Air
+AK2011,Raf Dark Green,#2E2E26,air,matt,,,,,Air
+AK2012,Raf Dark Earth,#4A4132,air,matt,,,,,Air
+AK2013,Raf Medium Sea Grey,#6B6B63,air,matt,,,,,Air
+AK2014,Raf Ocean Grey,#4F5458,air,matt,,,,,Air
+AK2015,Raf Sky,#A9C29B,air,matt,,,,,Air
+AK2016,Raf Middle Stone,#867338,air,matt,,,,,Air
+AK2017,Raf Azure Blue,#38668A,air,matt,,,,,Air
+AK2018,Aircraft Grey Green,#494E38,air,matt,,,,,Air
+AK2021,RLM 72,#1F1F1D,air,matt,,,,,Air
+AK2022,RLM 73,#22231B,air,matt,,,,,Air
+AK2023,RLM 78,#6A807E,air,matt,,,,,Air
+AK2024,RLM 79,#694724,air,matt,,,,,Air
+AK2025,RLM 80,#332F23,air,matt,,,,,Air
+AK2026,RLM 61 / RLM 81,#3C3429,air,matt,,,,,Air
+AK2027,RLM 62 / RLM 82,#3D472C,air,matt,,,,,Air
+AK2028,RLM 83,#1B1E27,air,matt,,,,,Air
+AK2034,RLM 63,#819071,air,matt,,,,,Air
+AK2051,FS 16440 Light Gull Gray,#A6A68A,air,matt,,,,,Air
+AK2052,FS 17875 White,#FBFBFB,air,matt,,,,,Air
+AK2053,FS 33613 Radome Tan,#EDB94C,air,matt,,,,,Air
+AK2054,FS 35164 Intermediate Blue,#364143,air,matt,,,,,Air
+AK2055,FS 36307 Light Sea Grey,#847E5C,air,matt,,,,,Air
+AK2056,FS 35237 Medium Grey,#61696B,air,matt,,,,,Air
+AK2057,FS 36375 Light Ghost Grey,#A4A38F,air,matt,,,,,Air
+AK2058,FS 36320 Dark Ghost Green,#757E7B,air,matt,,,,,Air
+AK2061,J3 Hai-iro (grey),#828771,air,matt,,,,,Air
+AK2062,J3 Sp (amber Grey),#807641,air,matt,,,,,Air
+AK2063,D1 Deep Green Black,#181F18,air,matt,,,,,Air
+AK2064,D2 Green Black,#1A2425,air,matt,,,,,Air
+AK2065,C2 Trainer Yellow,#E08D15,air,matt,,,,,Air
+AK2066,Q1 Anti-glare Blue-blacl,#151716,air,matt,,,,,Air
+AK2067,M3 (m) Mitsubishi Interior Green,#545C2D,air,matt,,,,,Air
+AK2068,M3 (n) Kakajima Interior Green,#4A4A30,air,matt,,,,,Air
+AK2091,RLM 04,#F8AC09,air,matt,,,,,Air
+AK2101,FS 34079 Dark Green,#36382A,air,matt,,,,,Air
+AK2102,FS 34102 Medium Green,#484735,air,matt,,,,,Air
+AK2103,FS 30219 Dark Tan,#6B4C2D,air,matt,,,,,Air
+AK2104,FS 36622 Camouflage Grey,#A19E8D,air,matt,,,,,Air
+AK2105,Grey (fs 36081),#25221D,air,matt,,,,,Air
+AK2106,Dull Dark Green (fs 34092) 17 Ml,#252F24,air,matt,,,,,Air
+AK2111,FS 30279 Desert Tan,#805C38,air,matt,,,,,Air
+AK2141,FS 36270 Medium Grey 17 Ml,#767F86,air,matt,,,,,Air
+AK2142,FS 36251 Agressor Grey,#75807C,air,matt,,,,,Air
+AK2143,FS 36176 F-15 Dark Grey,#6E7A90,air,matt,,,,,Air
+AK2144,FS 36118 Medium Gunship Grey,#4A5664,air,matt,,,,,Air
+AK2145,FS 35450 Air Superiority Blue,#6E7A90,air,matt,,,,,Air
+AK2146,FS 16473 Adc Grey,#AEBBC1,air,matt,,,,,Air
+AK2147,FS 37886 Offwhite,#EEE5DC,air,matt,,,,,Air
+AK2151,FS 33531 Sand,#D9C0A2,air,matt,,,,,Air
+AK2152,FS 34227 Green,#779579,air,matt,,,,,Air
+AK2153,FS 34258 Green,#80915A,air,matt,,,,,Air
+AK2154,FS 35622 Light Blue 17 Ml,#CDDBCE,air,matt,,,,,Air
+AK2161,Mno 2036 Smalt Khaki Avion,#868267,air,matt,,,,,Air
+AK2162,RAL 5008 Grey-blue (graublau),#293A42,air,matt,,,,,Air
+AK2163,RAL 7044 Silk Grey (seidengrau),#B7B5A9,air,matt,,,,,Air
+AK2164,RAL 8008 Olive Brown (olivbraun)17ml,#9F7B5B,air,matt,,,,,Air
+AK2171,RAL 2005 Luminous Orange (leuchtorange),#DA7F0D,air,matt,,,,,Air
+AK2172,RAL 6014 Yellow Olive (gelboliv),#6E705B,air,matt,,,,,Air
+AK2173,RAL 7001 Silver Grey (silbergrau),#A5B2BA,air,matt,,,,,Air
+AK2174,RAL 7012 Basalt Grey,#778C91,air,matt,,,,,Air
+AK2175,RAL 7030 Stone (steingrau) Grey,#908D84,air,matt,,,,,Air
+AK2201,Dark Olive Drab 41,#524F40,air,matt,,,,,Air
+AK2202,Medium Green 42,#4B5443,air,matt,,,,,Air
+AK2203,Neutral Grey 43,#696E72,air,matt,,,,,Air
+AK2204,Ana613 Olive Drab,#5A564A,air,matt,,,,,Air
+AK2205,Bronze Green,#283524,air,matt,,,,,Air
+AK2206,Yellow Green,#898555,air,matt,,,,,Air
+AK2207,Zinc Chromate Yellow,#E2D200,air,matt,,,,,Air
+AK2231,M-485 Light Gray,#959686,air,matt,,,,,Air
+AK2232,M-485 Blue Gray,#6B7E85,air,matt,,,,,Air
+AK2233,Sea Blue,#232F3B,air,matt,,,,,Air
+AK2234,Dark Sea Blue,#082533,air,matt,,,,,Air
+AK2241,A-14 Interior Steel Grey,#4A4A4A,air,matt,,,,,Air
+AK2242,Amt-4 (a-24m) Green,#2C2B19,air,matt,,,,,Air
+AK2243,Amt-7 (a-26m) Black,#0A0A0A,air,matt,,,,,Air
+AK2244,Amt-7 (a-28m) Light Blue,#688490,air,matt,,,,,Air
+AK2245,Amt-11 Blue Grey,#353638,air,matt,,,,,Air
+AK2246,Amt-12 Dark Grey,#292929,air,matt,,,,,Air
+AK2247,Amt-1 Light Brown,#635B48,air,matt,,,,,Air
+AK2248,A-21m Light Yellowish Brown,#83744B,air,matt,,,,,Air
+AK2251,Ae-9/aii Light Grey,#858C62,air,matt,,,,,Air
+AK2252,Aii Green,#343F21,air,matt,,,,,Air
+AK2253,Aii Light Blue,#7FA6AD,air,matt,,,,,Air
+AK2254,A-18f Light Grey-blue,#87A6A0,air,matt,,,,,Air
+AK2255,A-19f Grass Green,#536639,air,matt,,,,,Air
+AK2261,HairAKyokushoku (grey-green),#A7A898,air,matt,,,,,Air
+AK2262,HairAKanshoku (grey Indigo),#485B59,air,matt,,,,,Air
+AK2263,Ohryuko Nana Go Shoru (olive Brown),#4E472A,air,matt,,,,,Air
+AK2264,Midori Iro (green),#304327,air,matt,,,,,Air
+AK2265,Ao Midori Iro (blue -green),#0D352C,air,matt,,,,,Air
+AK2266,Ki Midori Iro (yellow-green),#766F27,air,matt,,,,,Air
+AK2267,Karekusa Iro (dry Grass),#87784F,air,matt,,,,,Air
+AK2268,Cha Kasshoku (tea Colour),#685245,air,matt,,,,,Air
+AK2271,WWI German Fokker Grey,#3A3F39,air,matt,,,,,Air
+AK2272,WWI German Light Green,#404D31,air,matt,,,,,Air
+AK2273,WWI German Dark Green,#262A29,air,matt,,,,,Air
+AK2274,WWI German Mauve,#4D3C4C,air,matt,,,,,Air
+AK2275,WWI German Red Brown,#482D1A,air,matt,,,,,Air
+AK2276,WWI German Light Blue,#9FB0BA,air,matt,,,,,Air
+AK2277,WWI German Lilac,#523839,air,matt,,,,,Air
+AK2278,WWI German Grey-green Primer,#70735E,air,matt,,,,,Air
+AK2281,Pc10 Early,#403D2C,air,matt,,,,,Air
+AK2282,Pc10 Late,#36362A,air,matt,,,,,Air
+AK2283,Pc12,#3E352C,air,matt,,,,,Air
+AK2284,Battleship Grey,#768A89,air,matt,,,,,Air
+AK2291,Clear Doped Linen,#C8BB8F,air,matt,,,,,Air
+AK2292,Clear Doped Lenen Ver.2,#DCC985,air,matt,,,,,Air
+AK2293,Bleached Linen,#F5E8B4,air,matt,,,,,Air
+AK2301,Cockpit Turqoise,#367665,air,matt,,,,,Air
+AK2302,Radome Green,#3F5232,air,matt,,,,,Air
+AK2303,Interior Green,#41472D,air,matt,,,,,Air
+AK2304,Cockpit Grey,#858579,air,matt,,,,,Air
+AK3002,Black Uniform Base,#2A2319,acrylic,matt,,,,,Figures
+AK3003,Basalt Grey / Black Uniform,#41413F,acrylic,matt,,,,,Figures
+AK3004,Stone Grey,#53524D,acrylic,matt,,,,,Figures
+AK3005,Grey Brown,#4D4948,acrylic,matt,,,,,Figures
+AK3006,Black Grey / Bla Uniform,#2B2321,acrylic,matt,,,,,Figures
+AK3007,Black Rubber,#211917,acrylic,matt,,,,,Figures
+AK3011,Base Flesh -17-,#6E4937,acrylic,matt,,,,,Figures
+AK3012,Light Flesh -16-,#AD7449,acrylic,matt,,,,,Figures
+AK3013,Highlight Flesh,#F0B069,acrylic,matt,,,,,Figures
+AK3014,Shadow Flesh -29-,#78342B,acrylic,matt,,,,,Figures
+AK3015,Dark Shadow Flesh,#48231D,acrylic,matt,,,,,Figures
+AK3016,Reddish Black,#3D2823,acrylic,matt,,,,,Figures
+AK3021,Chocolate Brown,#5E4A32,acrylic,matt,,,,,Figures
+AK3022,Orange Tan,#CC864A,acrylic,matt,,,,,Figures
+AK3023,Dark Green,#293029,acrylic,matt,,,,,Figures
+AK3024,Light Green,#778F39,acrylic,matt,,,,,Figures
+AK3025,Medium Green,#41462F,medium,matt,,,,,Figures
+AK3026,Tan / Global Light,#946E3F,acrylic,matt,,,,,Figures
+AK3027,White -1-,#F5F5F5,acrylic,matt,,,,,Figures
+AK3028,Ivory -2-,#DEF2CD,acrylic,matt,,,,,Figures
+AK3029,Faded White -3-,#E7E4DD,acrylic,matt,,,,,Figures
+AK3031,Brown Leather,#574531,acrylic,matt,,,,,Figures
+AK3032,Orange / Strong Ochre,#FC6C16,acrylic,matt,,,,,Figures
+AK3033,Light Sand,#BB9F6D,acrylic,matt,,,,,Figures
+AK3035,Silver & Metal Midtones,#D2D2D2,metallic,metallic,,,,,Figures
+AK3036,Gilt Metal -85-,#B09B00,metallic,metallic,,,,,Figures
+AK3037,Basic Intense Yellow,#FFCF00,acrylic,matt,,,,,Figures
+AK3038,Faded Yellow -5-,#FFAF10,acrylic,matt,,,,,Figures
+AK3039,Golden Yellow,#FFC057,acrylic,matt,,,,,Figures
+AK3041,Khaki / Splittermuster Base,#59553A,acrylic,matt,,,,,Figures
+AK3043,Bronze Green,#3A4131,metallic,metallic,,,,,Figures
+AK3044,Faded Green,#3E382A,acrylic,matt,,,,,Figures
+AK3045,Beige / Splittermuster Light,#818F6C,acrylic,matt,,,,,Figures
+AK3047,Pale Sand -7-,#FFE090,acrylic,matt,,,,,Figures
+AK3048,Red / Vermilion Cadmium Red.,#E32A18,acrylic,matt,,,,,Figures
+AK3049,Intense Red,#E34518,acrylic,matt,,,,,Figures
+AK3051,Brown Grey,#3F3128,acrylic,matt,,,,,Figures
+AK3052,Golden Flesh,#D59442,acrylic,matt,,,,,Figures
+AK3053,Dark Brown,#33291F,acrylic,matt,,,,,Figures
+AK3054,Beige Brown,#8F5E36,acrylic,matt,,,,,Figures
+AK3056,Brown Black,#2B2622,acrylic,matt,,,,,Figures
+AK3057,Light Red -33-,#F65539,acrylic,matt,,,,,Figures
+AK3058,Intermediate Grey,#648C45,acrylic,matt,,,,,Figures
+AK3059,Deep Green -51-,#325736,acrylic,matt,,,,,Figures
+AK3061,Medium Red Brown / Waffen Spring/ Summer Base -18-,#574539,medium,matt,,,,,Figures
+AK3062,Cork Brown / Waffen Spring/ Summer Highlight -25-,#876645,acrylic,matt,,,,,Figures
+AK3063,Golden Olive / Waffen Spring / Summer Light Green Spots -52-,#94AD48,acrylic,matt,,,,,Figures
+AK3064,Green Black / Waffen Spring/ Summer Dark Spots -40-,#1D2A19,acrylic,matt,,,,,Figures
+AK3067,Deck Tan / Grey Highlights -69-,#968F72,acrylic,matt,,,,,Figures
+AK3068,Turquoise -76-,#0F3E44,acrylic,matt,,,,,Figures
+AK3069,Intense Blue -77-,#19628F,acrylic,matt,,,,,Figures
+AK3071,Dark Olive Green / M-43 Uniform Green Olive -43-,#434B26,acrylic,matt,,,,,Figures
+AK3072,Ocher Khaki / M-44 Uniform Green Ocher Khaki -24-,#CA9C24,acrylic,matt,,,,,Figures
+AK3073,Red Brown / Red Brown Leather -19-,#8E311F,acrylic,matt,,,,,Figures
+AK3074,Brown Olive Drab / US Olive Drab -39-,#41372D,acrylic,matt,,,,,Figures
+AK3075,US Field Drab -23-,#926723,acrylic,matt,,,,,Figures
+AK3076,Canvas Tone -65-,#9F8F53,wash,matt,,,,,Figures
+AK3077,Deep Sky Blue -78-,#3398C4,acrylic,matt,,,,,Figures
+AK3078,Light Blue -79-,#7EC3E0,acrylic,matt,,,,,Figures
+AK3079,American Blue -80-,#649E92,acrylic,matt,,,,,Figures
+AK3081,British Uniform / WWI British Uniform Base -21-,#5E4B2D,acrylic,matt,,,,,Figures
+AK3082,Dark Sand / WWI British Uniform Light -11-,#826933,acrylic,matt,,,,,Figures
+AK3083,Umber / British Uniform Shadow -35-,#2B2620,acrylic,matt,,,,,Figures
+AK3084,Pure Black -84-,#000000,acrylic,matt,,,,,Figures
+AK3085,Glaze Medium -90-,#B7B7B7,medium,matt,,,,,Figures
+AK3086,Gun Metal -88-,#7E7E7E,metallic,metallic,,,,,Figures
+AK3087,Bronze -89-,#B78629,metallic,metallic,,,,,Figures
+AK3088,Copper -87-,#BB7956,metallic,metallic,,,,,Figures
+AK3094,Violet -70-,#543A7B,acrylic,matt,,,,,Figures
+AK3095,Dark Violet -71-,#2C223D,acrylic,matt,,,,,Figures
+AK3101,Greyish Blue / WWI French Uniform Base -75-,#3B4F50,acrylic,matt,,,,,Figures
+AK3102,Light Grey / WWI French Uniform Light -63-,#8C9576,acrylic,matt,,,,,Figures
+AK3103,Dark Sea Blue / WWI French Uniform Shadow -72-,#151F20,acrylic,matt,,,,,Figures
+AK3111,Golden Sand / Desert Uniform Base -10-,#907131,acrylic,matt,,,,,Figures
+AK3112,Desert Yellow / Desert Uniform Lights -8-,#C49B4B,acrylic,matt,,,,,Figures
+AK3114,Green Uniform Base -48-,#3E402B,acrylic,matt,,,,,Figures
+AK3115,Olive Green / Green Uniform Lights -66-,#636033,acrylic,matt,,,,,Figures
+AK3116,Dark Blue Green / Green Uniform Shadows -41-,#2D2E1E,acrylic,matt,,,,,Figures
+AK3121,Russian Uniform Lights -54-,#878A43,acrylic,matt,,,,,Figures
+AK3122,Russian Uniform Base -49-,#5D5D37,acrylic,matt,,,,,Figures
+AK3123,Russian Uniform Shadow -46-,#494A2B,acrylic,matt,,,,,Figures
+AK3124,Prussian Blue / Blue Tank Crew Lights -74-,#2C3D4D,acrylic,matt,,,,,Figures
+AK3125,Dark Blue / Blue Tank Crew Base -73-,#1F282F,acrylic,matt,,,,,Figures
+AK3126,Emblem Red -30-,#9E1F0C,acrylic,matt,,,,,Figures
+AK3141,Olive Grey / Field Grey Base -55-,#484534,acrylic,matt,,,,,Figures
+AK3142,Granite Grey / Field Grey Base 2 -56-,#45473A,acrylic,matt,,,,,Figures
+AK3143,Grey Green / Filed Grey Lights -68-,#787A53,acrylic,matt,,,,,Figures
+AK3144,Dark Grey / Field Grey Shadows -57-,#2F2A24,acrylic,matt,,,,,Figures
+AK3145,Medium Grey / German Grey Uniform -58-,#2A3436,medium,matt,,,,,Figures
+AK3146,Grey Blue / Grey Blue / German Grey Uniform Light -62-,#64706E,acrylic,matt,,,,,Figures
+AK4002,Bullet Metal Case,#C7910B,metallic,metallic,,,,,AFV
+AK4003,Matt Red,#873A2A,acrylic,matt,,,,,AFV
+AK4004,Periscope Shade,#282E2C,wash,matt,,,,,AFV
+AK4005,Exhaust Silencer,#47392E,acrylic,matt,,,,,AFV
+AK4006,Buff Light Shade,#B39D52,wash,matt,,,,,AFV
+AK4007,Buff Dark Shade,#857748,wash,matt,,,,,AFV
+AK4008,Black Grey,#2B2B2B,acrylic,matt,,,,,AFV
+AK4013,Usmc Forest Green Nr28 (fs34079),#3F422F,acrylic,matt,,,,,AFV
+AK4021,Olive Drab Lustreless,#515232,acrylic,matt,,,,,AFV
+AK4022,Australian Tan,#AE9463,acrylic,matt,,,,,AFV
+AK4023,Australian Black,#32352E,acrylic,matt,,,,,AFV
+AK4031,Bsc. Nº64 Portland Stone,#D5D098,acrylic,matt,,,,,AFV
+AK4032,Silver Grey,#9BA37A,metallic,metallic,,,,,AFV
+AK4033,Bsc. Nº34 Slate,#535444,acrylic,matt,,,,,AFV
+AK4034,Bsc. Nº31 Light Stone,#9E8F4E,acrylic,matt,,,,,AFV
+AK4035,Khaki Green Nº3 (new Service Colour),#413E2D,acrylic,matt,,,,,AFV
+AK4036,Bsc. Nº49 Purple Brown,#473231,acrylic,matt,,,,,AFV
+AK4041,WWI Brithish Khaki Brown Highlights,#615233,acrylic,matt,,,,,AFV
+AK4042,British Khaki Brown Base,#534431,acrylic,matt,,,,,AFV
+AK4043,WWI Brithish Khaki Brown Base,#3B3422,acrylic,matt,,,,,AFV
+AK4051,French Milky Coffee,#927A4A,acrylic,matt,,,,,AFV
+AK4052,French Artillery Grey,#5D6769,acrylic,matt,,,,,AFV
+AK4053,French Brown,#533A24,acrylic,matt,,,,,AFV
+AK4054,French Green 1,#3C442F,acrylic,matt,,,,,AFV
+AK4055,French Green 2,#30332A,acrylic,matt,,,,,AFV
+AK4071,Bsc. Nº61 Khaki Drab,#544937,acrylic,matt,,,,,AFV
+AK4072,Dark Olive Green Pfi Disruptive,#404234,acrylic,matt,,,,,AFV
+AK4081,French Army Desert Sand (sable Désert Ir),#C39C65,acrylic,matt,,,,,AFV
+AK4082,French Army Green (vert Kaki),#4A4D44,acrylic,matt,,,,,AFV
+AK4083,French Army Grey-blue (gris/bleu Moyen Clair A625),#40484A,acrylic,matt,,,,,AFV
+AK4131,Greyish Yellow,#BBB27B,acrylic,matt,,,,,AFV
+AK4132,Mustard Yellow,#C09F40,acrylic,matt,,,,,AFV
+AK4133,Pale Grey,#74857D,acrylic,matt,,,,,AFV
+AK4134,Green Khaki,#4D4D35,acrylic,matt,,,,,AFV
+AK4135,Base Green (protective),#383725,acrylic,matt,,,,,AFV
+AK4141,Pale Tan,#F0C871,acrylic,matt,,,,,AFV
+AK4142,Orange Brown,#A8773C,acrylic,matt,,,,,AFV
+AK4143,Red Brown,#42332C,acrylic,matt,,,,,AFV
+AK4144,Light Yellow Green,#6D7441,acrylic,matt,,,,,AFV
+AK4145,Blue Gray,#668297,acrylic,matt,,,,,AFV
+AK4146,Olive Green,#4A4A32,acrylic,matt,,,,,AFV
+AK4211,Olive Drab Nº9,#323325,acrylic,matt,,,,,AFV
+AK4214,Light Green Nº5,#4A4A26,acrylic,matt,,,,,AFV
+AK4221,Nº5 Earth Brown,#382B1B,acrylic,matt,,,,,AFV
+AK4222,Nº6 Earth Yellow,#8A6133,acrylic,matt,,,,,AFV
+AK4223,Nº8 Earth Red,#572C1C,acrylic,matt,,,,,AFV
+AK4224,Nº13 Desert Sand,#97836B,acrylic,matt,,,,,AFV
+AK4225,Ocean Gray,#555B67,acrylic,matt,,,,,AFV
+AK4242,Pla Intense Green,#65803B,acrylic,matt,,,,,AFV
+AK4251,Pla Dark Blue,#304246,acrylic,matt,,,,,AFV
+AK4252,Pla Sea Blue,#1D2941,acrylic,matt,,,,,AFV
+AK4253,Pla Intermediate Blue,#285A75,acrylic,matt,,,,,AFV
+AK4254,Pla Light Blue,#93DBEA,acrylic,matt,,,,,AFV
+AK4255,Pla Cool Blue White,#B6D4CC,acrylic,matt,,,,,AFV
+AK5001,Deck Blue 20 B,#272F31,acrylic,matt,,,,,Naval
+AK5002,Haze Grey 5 H,#767467,acrylic,matt,,,,,Naval
+AK5003,Ocean Gray 5o,#464A49,acrylic,matt,,,,,Naval
+AK5004,Navy Blue 5 N,#333438,acrylic,matt,,,,,Naval
+AK5005,Sea Blue 5 S,#363B37,acrylic,matt,,,,,Naval
+AK5006,Light Grey 5 L,#C4C7B4,acrylic,matt,,,,,Naval
+AK5031,RN Hull Red,#572711,acrylic,matt,,,,,Naval
+AK5032,Wooden Deck,#D4B78B,acrylic,matt,,,,,Naval
+AK5033,507a Admirality Dark Grey,#455056,acrylic,matt,,,,,Naval
+AK5034,507b Admirality Medium Grey,#585E5A,medium,matt,,,,,Naval
+AK5035,507c Admirality Light Grey,#909599,acrylic,matt,,,,,Naval
+AK5036,B5 Dark Blue Grey,#626D67,acrylic,matt,,,,,Naval
+AK5041,Semtex Green,#3C4725,acrylic,matt,,,,,Naval
+AK5042,Western Appoaches Green,#709369,acrylic,matt,,,,,Naval
+AK5043,Pb20 Dark Blue,#1B1F2A,acrylic,matt,,,,,Naval
+AK5044,Western Appoaches Blue,#C1D1C6,acrylic,matt,,,,,Naval
+AK5045,B20 Light Grey,#80837A,acrylic,matt,,,,,Naval
+AK5046,MS3 Medium Green Grey,#6B6F60,medium,matt,,,,,Naval
+AK700,RAL 8020 Gelbbraun,#D6AF6E,acrylic,matt,,,,,AFV
+AK701,RAL 7027 Grau,#ACA08A,acrylic,matt,,,,,AFV
+AK702,RAL 8000 Gelbbraun,#877C5C,acrylic,matt,,,,,AFV
+AK703,RAL 7008 Graugrün,#5B4F37,acrylic,matt,,,,,AFV
+AK704,RAL 7021 Dunkelgrau,#303028,acrylic,matt,,,,,AFV
+AK705,RAL 7008 Graugrün Opt 2,#666E3F,acrylic,matt,,,,,AFV
+AK706,Light Rust,#BE7845,acrylic,matt,,,,,AFV;General
+AK707,Medium Rust,#915533,medium,matt,,,,,AFV;General
+AK708,Dark Rust,#73402B,acrylic,matt,,,,,AFV;General
+AK709,Old Rust,#4D3827,acrylic,matt,,,,,General;AFV
+AK710,Shadow Rust,#4B3D32,acrylic,matt,,,,,General;AFV
+AK711,Chipping Color,#362E2B,acrylic,matt,,,,,General;AFV
+AK713,RAL 7028 Dg I Dunkelgelb,#9E8B50,acrylic,matt,,,,,AFV
+AK714,RAL 7028 Dg Iii Dunkelgelb,#D1B65D,acrylic,matt,,,,,AFV
+AK715,RAL 6011 Resedagrün,#546038,acrylic,matt,,,,,AFV
+AK716,RAL 6011b Resedagrün,#4C5631,acrylic,matt,,,,,AFV
+AK717,RAL 8012 Rotbraun,#6E3D1D,acrylic,matt,,,,,AFV
+AK718,RAL 8017 Schokobraun,#453424,acrylic,matt,,,,,AFV
+AK719,Satin Black,#262626,acrylic,satin,,,,,General
+AK720,Rubber / Tires,#383838,acrylic,matt,,,,,General
+AK721,Rusty Tracks,#4D3B27,acrylic,matt,,,,,General;AFV
+AK722,Dark Tracks,#3F3B2F,acrylic,matt,,,,,AFV;General
+AK723,Dust,#AB9765,acrylic,matt,,,,,General
+AK724,Dry Light Mud,#AC914E,acrylic,matt,,,,,General;AFV
+AK725,New Iraqui Army Sand,#CCB277,acrylic,matt,,,,,AFV
+AK726,British Sand Yellow,#EEB041,acrylic,matt,,,,,AFV
+AK727,RAL 8031 F9 German Sand Brown,#C8946F,acrylic,matt,,,,,AFV
+AK728,RAL 8031 F9 German Sand Beige,#BAAC7D,acrylic,matt,,,,,AFV
+AK729,RAL 7050 F7 German Sand Beige,#696A48,acrylic,matt,,,,,AFV
+AK730,Wooden Deck,#AD9557,acrylic,matt,,,,,Naval;General
+AK731,RAL 8013 Schiffsbodenfarbe Iii Rot 5,#793E2E,acrylic,matt,,,,,AFV
+AK732,RAL 7038 Hellgrau,#BAB6AB,acrylic,matt,,,,,AFV
+AK733,RAL 7037 Dunkelgrau,#5A5752,acrylic,matt,,,,,AFV
+AK734,RAL 7037 Dunkelgrau 51,#707068,acrylic,matt,,,,,AFV
+AK735,Flat Black,#2B2C27,acrylic,matt,,,,,General
+AK736,Spanish Green Acrylic Color,#5A5336,acrylic,matt,,,,,AFV
+AK738,White Acrylic Color,#FFFFFF,acrylic,matt,,,,,General
+AK739,Yellow Acrylic Color,#FCC834,acrylic,matt,,,,,AFV
+AK740,Red Acrylic Color,#BE4331,acrylic,matt,,,,,General
+AK746,4b0 Russian Green,#53573E,acrylic,matt,,,,,AFV
+AK747,6k Russian Brown,#52493A,acrylic,matt,,,,,AFV
+AK748,7k Russian Tan,#766A44,acrylic,matt,,,,,AFV
+AK749,3b Au Basic Protector,#3B4039,acrylic,matt,,,,,General
+AK750,Protective Green,#43493B,acrylic,matt,,,,,AFV
+AK751,Washable White Paint,#FFFFFF,acrylic,matt,,,,,AFV
+AK752,RAL 6003 Olivgrün Opt.1,#46483D,acrylic,matt,,,,,AFV
+AK753,RAL 7028 Dunkelgelb (initial),#92864A,acrylic,matt,,,,,AFV
+AK754,RAL 7017 Dunkelbraun,#575040,acrylic,matt,,,,,AFV
+AK755,RAL 6003 Olivgrün Opt.2,#4C4D3B,acrylic,matt,,,,,AFV
+AK756,Polizei / Waffen Ss Grün,#46564C,acrylic,matt,,,,,AFV
+AK778,Freshly Cut Timber,#C4B186,acrylic,matt,,,,,General
+AK779,Wood Base,#A5976A,acrylic,matt,,,,,General
+AK780,Dark Wood Grain,#614635,acrylic,matt,,,,,General
+AK781,Wood Grain,#503A2D,acrylic,matt,,,,,General
+AK782,Varnished Wood,#7A5336,varnish,matt,,,,,General
+AK783,Weathered Wood,#463D34,acrylic,matt,,,,,General
+AK784,Light Grey,#A09D8C,acrylic,matt,,,,,General
+AK785,Middle Grey,#8B8B81,acrylic,matt,,,,,AFV;General
+AK786,Light Grey Brown,#B4A270,acrylic,matt,,,,,General
+AK787,Medium Grey,#907E5A,medium,matt,,,,,General
+AK788,Medium Brown,#695032,medium,matt,,,,,General;AFV
+AK789,Burnt Umber,#3D362E,acrylic,matt,,,,,AFV;General
+AK790,Idf Sinai Grey Modern,#585147,acrylic,matt,,,,,AFV
+AK791,Idf Sinai Grey 82,#4C5248,acrylic,matt,,,,,AFV
+AK792,Idf Sand Grey 73,#797655,acrylic,matt,,,,,AFV
+AK793,Idf Green,#524B38,acrylic,matt,,,,,AFV
+AK794,Sla Blue,#566868,acrylic,matt,,,,,AFV
+AK795,Laf Green,#33362D,acrylic,matt,,,,,AFV
+AK796,Nato Green,#45473A,acrylic,matt,,,,,AFV
+AK797,Nato Brown,#654931,acrylic,matt,,,,,AFV
+AK798,Gun Metal,#5C5C5C,metallic,metallic,,,,,AFV
+AK799,Nato Black,#2F2B2C,acrylic,matt,,,,,AFV

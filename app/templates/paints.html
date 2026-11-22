@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Catalogue{% endblock %}
+{% block content %}
+<h1>Catalogue <a class="small" role="button" href="/paints/new">+ New paint</a></h1>
+<form id="filters" hx-get="/paints" hx-target="#paint-table" hx-trigger="change, input from:#fq delay:300ms" hx-push-url="true">
+  <div class="grid">
+    <input id="fq" type="search" name="q" value="{{ f.q }}" placeholder="Filter by name, code, tag…">
+    <select name="brand">
+      <option value="">All brands</option>
+      {% for b in brands %}<option value="{{ b.id }}" {% if f.brand == b.id %}selected{% endif %}>{{ b.name }}</option>{% endfor %}
+    </select>
+    <select name="line">
+      <option value="">All lines</option>
+      {% for b in brands %}<optgroup label="{{ b.name }}">{% for l in b.lines %}<option value="{{ l.id }}" {% if f.line == l.id %}selected{% endif %}>{{ l.name }}</option>{% endfor %}</optgroup>{% endfor %}
+    </select>
+  </div>
+  <div class="grid">
+    <select name="type"><option value="">Any type</option>{% for t in PAINT_TYPES %}<option {% if f.type == t %}selected{% endif %}>{{ t }}</option>{% endfor %}</select>
+    <select name="finish"><option value="">Any finish</option>{% for t in FINISHES %}<option {% if f.finish == t %}selected{% endif %}>{{ t }}</option>{% endfor %}</select>
+    <select name="owned">
+      <option value="">Owned or not</option>
+      <option value="yes" {% if f.owned == 'yes' %}selected{% endif %}>Owned</option>
+      <option value="no" {% if f.owned == 'no' %}selected{% endif %}>Not owned</option>
+    </select>
+  </div>
+</form>
+<div id="paint-table">{% include "partials/paint_table.html" %}</div>
+{% endblock %}

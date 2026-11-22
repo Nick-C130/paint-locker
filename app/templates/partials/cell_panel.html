@@ -1,0 +1,47 @@
+{% from "macros.html" import swatch %}
+<article>
+  <header><b>{{ cell.full_label }}</b>{% if cell.disabled %} <span class="badge">disabled</span>{% endif %}</header>
+  {% for w in warnings %}<p class="flash warn small">⚠️ {{ w }}</p>{% endfor %}
+  {% for it in cell.items %}
+    <p>{{ swatch(it.hex) }} <a href="/items/{{ it.id }}">{{ it.full_label }}</a></p>
+    <p>
+      {% if it.paint_id %}<a class="small" href="/paints/{{ it.paint_id }}">Paint page</a>{% else %}<a class="small" href="/mixes/{{ it.mix_id }}">Mix page</a>{% endif %} ·
+      <a class="small" href="/items/{{ it.id }}">Move / details</a>
+    </p>
+    <form class="inline" method="post" action="/items/{{ it.id }}/move"><input type="hidden" name="cell_id" value=""><input type="hidden" name="back" value="/storage/{{ cell.unit_id }}"><button class="small outline">Take out (unsorted)</button></form>
+  {% endfor %}
+  {% if not cell.items and not cell.disabled %}
+    <div x-data="{q:'', res:[]}">
+      <label>Put a paint or mix here
+        <input type="search" x-model="q" placeholder="Code or name…" autofocus
+               @input.debounce.200ms="res = q ? await (await fetch('/api/search?q='+encodeURIComponent(q))).json() : []">
+      </label>
+      <div class="picker-results">
+        <template x-for="r in res" :key="r.kind + r.id">
+          <form method="post" action="/cells/{{ cell.id }}/assign">
+            <input type="hidden" :name="r.kind === 'mix' ? 'mix_id' : 'paint_id'" :value="r.id">
+            <button class="outline secondary" type="submit">
+              <span class="swatch swatch-sm" :style="'background:' + (r.hex || '#eee')"></span>
+              <span x-text="r.label"></span>
+              <span class="badge owned" x-show="r.owned" x-text="'owned ×' + r.owned"></span>
+            </button>
+          </form>
+        </template>
+      </div>
+    </div>
+    {% if unsorted %}
+    <form method="post" action="/cells/{{ cell.id }}/assign">
+      <label>…or an unsorted bottle
+        <select name="item_id">{% for it in unsorted %}<option value="{{ it.id }}">{{ it.full_label }}</option>{% endfor %}</select>
+      </label>
+      <button class="small">Store here</button>
+    </form>
+    {% endif %}
+  {% endif %}
+  <footer>
+    <form class="inline" method="post" action="/cells/{{ cell.id }}/toggle-disabled"><button class="small outline secondary">{{ 'Enable cell' if cell.disabled else 'Disable cell' }}</button></form>
+    <details class="inline-form"><summary>Cell comments</summary>
+      <div hx-get="/notes/cell/{{ cell.id }}" hx-trigger="toggle once from:closest details" hx-swap="innerHTML"></div>
+    </details>
+  </footer>
+</article>

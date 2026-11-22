@@ -1,0 +1,40 @@
+{% extends "base.html" %}{% from "macros.html" import swatch, cell_select, notes %}
+{% block title %}Bottle #{{ item.id }}{% endblock %}
+{% block content %}
+<p class="muted">Bottle #{{ item.id }} · {{ 'mix batch' if item.kind == 'mix' else 'bought paint' }}</p>
+<h1>{{ swatch(item.hex) }}
+  {% if item.paint %}<a href="/paints/{{ item.paint_id }}">{{ item.paint.full_label }}</a>{% else %}<a href="/mixes/{{ item.mix_id }}">Mix: {{ item.mix.name }}</a>{% endif %}</h1>
+<p>Location:
+  {% if item.cell %}<a href="/storage/{{ item.cell.unit_id }}?highlight=item:{{ item.id }}"><b>{{ item.cell.full_label }}</b></a>{% else %}<b>Unsorted</b>{% endif %}
+  {% if item.effective_format %} · <span class="badge">{{ item.effective_format.name }}</span>{% endif %}
+</p>
+{% if warning %}<p class="flash warn">⚠️ {{ warning }}</p>{% endif %}
+<div class="row">
+<article>
+  <header>Move</header>
+  <form method="post" action="/items/{{ item.id }}/move">
+    {{ cell_select(groups, None, current=item.cell) }}
+    <button>Move</button>
+  </form>
+</article>
+<article>
+  <header>Details</header>
+  <form method="post" action="/items/{{ item.id }}/edit">
+    <label>Bottle format
+      <select name="format_id"><option value="">Default</option>{% for f in formats %}<option value="{{ f.id }}" {% if item.format_id == f.id %}selected{% endif %}>{{ f.name }}</option>{% endfor %}</select>
+    </label>
+    <div class="grid">
+      <label>{{ 'Made on' if item.kind == 'mix' else 'Bought on' }} <input type="date" name="acquired_on" value="{{ item.acquired_on or '' }}"></label>
+      <label>Volume (ml) <input type="number" step="0.1" name="volume_ml" value="{{ item.volume_ml or '' }}"></label>
+    </div>
+    <label>Short note <input name="notes" value="{{ item.notes }}"></label>
+    <button class="secondary">Save</button>
+  </form>
+</article>
+</div>
+<p>
+  {% if item.paint %}<form class="inline" method="post" action="/items/{{ item.id }}/used-up"><input type="hidden" name="shopping" value="1"><button class="secondary">Used up → add to shopping list</button></form>{% endif %}
+  <form class="inline" method="post" action="/items/{{ item.id }}/used-up"><button class="outline secondary">Used up / remove</button></form>
+</p>
+{{ notes('item', item.id) }}
+{% endblock %}

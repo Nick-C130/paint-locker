@@ -1,0 +1,96 @@
+{% extends "base.html" %}{% from "macros.html" import swatch, locations, owned_badge, notes, de %}
+{% block title %}{{ paint.label }}{% endblock %}
+{% block content %}
+<div class="row">
+  <div style="flex:0 0 8rem">{{ swatch(paint.display_hex, 'lg') }}</div>
+  <div>
+    <p class="muted"><a href="/brands/{{ paint.line.brand_id }}">{{ paint.line.brand.name }}</a> · <a href="/paints?line={{ paint.line_id }}">{{ paint.line.name }}</a></p>
+    <h1>{% if paint.code %}<code>{{ paint.code }}</code> {% endif %}{{ paint.name }}</h1>
+    <p>
+      <span class="badge">{{ paint.type }}</span> <span class="badge">{{ paint.finish }}</span>
+      {% if paint.volume_ml %}<span class="badge">{{ '%g' % paint.volume_ml }} ml</span>{% endif %}
+      {% if paint.effective_format %}<span class="badge">{{ paint.effective_format.name }}</span>{% endif %}
+      {% if paint.discontinued %}<span class="badge warn">discontinued</span>{% endif %}
+      {% if paint.source == 'user' %}<span class="badge">added by you</span>{% endif %}
+      {% for t in paint.tags.split(';') if t %}<span class="badge">#{{ t }}</span> {% endfor %}
+    </p>
+    <p class="small muted">Catalogue colour {{ paint.hex or 'unknown' }}{% if paint.measured_hex %} · measured {{ paint.measured_hex }} (used for matching){% endif %}{% if paint.barcode %} · EAN {{ paint.barcode }}{% endif %}</p>
+    {% if non_mixing %}<p class="small muted">⚠ {{ paint.type|capitalize }} paints don't mix like ordinary acrylics; mix previews with it are rough.</p>{% endif %}
+    <p>
+      <a role="button" href="/add?paint_id={{ paint.id }}">+ Add bottle</a>
+      <a role="button" class="secondary" href="/mixes/lab?paint_id={{ paint.id }}">Mix with this</a>
+      <a role="button" class="outline" href="/paints/{{ paint.id }}/edit">Edit</a>
+    </p>
+  </div>
+</div>
+
+<h2>My bottles {{ owned_badge(items|length) }}</h2>
+{% if items %}
+<ul class="results-list">
+{% for it in items %}
+  <li><span class="grow"><a href="/items/{{ it.id }}">Bottle #{{ it.id }}</a>{% if it.acquired_on %} <span class="muted small">bought {{ it.acquired_on }}</span>{% endif %}</span>
+    {{ locations([it]) }}
+    <form class="inline" method="post" action="/items/{{ it.id }}/used-up"><input type="hidden" name="shopping" value="1"><button class="small secondary" title="Remove it and add to shopping list">Used up → shopping list</button></form>
+    <form class="inline" method="post" action="/items/{{ it.id }}/used-up"><button class="small outline secondary" title="Remove it">Used up</button></form>
+  </li>
+{% endfor %}
+</ul>
+{% else %}<p class="muted">You don't own this one. <form class="inline" method="post" action="/shopping"><input type="hidden" name="paint_id" value="{{ paint.id }}"><button class="small outline">Add to shopping list</button></form></p>{% endif %}
+
+<div class="row">
+<section>
+  <h3>Equivalents in other brands</h3>
+  <p class="muted small">Computed from catalogue colours, so treat as a hint.</p>
+  <ul class="results-list">
+  {% for m in other_brands %}
+    <li>{{ swatch(m.hex, 'sm') }} <span class="grow"><a href="/paints/{{ m.obj.id }}">{% if m.obj.code %}<code>{{ m.obj.code }}</code> {% endif %}{{ m.obj.name }}</a> <span class="muted small">{{ m.obj.line.brand.name }} {{ m.obj.line.name }}</span></span> {{ de(m.delta_e) }}</li>
+  {% else %}<li class="muted">No colour on file.</li>{% endfor %}
+  </ul>
+</section>
+<section>
+  <h3>Similar colours</h3>
+  <ul class="results-list">
+  {% for m in similar %}
+    <li>{{ swatch(m.hex, 'sm') }} <span class="grow"><a href="/paints/{{ m.obj.id }}">{% if m.obj.code %}<code>{{ m.obj.code }}</code> {% endif %}{{ m.obj.name }}</a> <span class="muted small">{{ m.obj.line.brand.name }} {{ m.obj.line.name }}</span></span> {{ de(m.delta_e) }}</li>
+  {% endfor %}
+  </ul>
+  {% if paint.display_hex %}<a class="small" href="/colours?hex={{ paint.display_hex|urlencode }}&owned=1&source=closest_owned&context={{ ('Closest owned to ' ~ paint.full_label)|urlencode }}">Closest paints I own →</a>{% endif %}
+</section>
+</div>
+
+<div class="row">
+<section>
+  <h3>Mixes using it</h3>
+  <ul class="results-list">{% for m in mixes %}<li>{{ swatch(m.display_hex, 'sm') }} <a href="/mixes/{{ m.id }}">{{ m.name }}</a></li>{% else %}<li class="muted">None yet.</li>{% endfor %}</ul>
+</section>
+<section>
+  <h3>Reference colours</h3>
+  <ul class="results-list">
+  {% for l in links %}
+    <li>{{ swatch(l.reference.hex, 'sm') }} <a class="grow" href="/references/{{ l.reference.id }}">{{ l.reference.label }}</a>
+      <form class="inline" method="post" action="/references/unlink/{{ l.id }}"><input type="hidden" name="back" value="/paints/{{ paint.id }}"><button class="small outline secondary">unlink</button></form></li>
+  {% endfor %}
+  </ul>
+  <form method="post" action="/references/link" class="row">
+    <input type="hidden" name="entity_type" value="paint"><input type="hidden" name="entity_id" value="{{ paint.id }}"><input type="hidden" name="back" value="/paints/{{ paint.id }}">
+    <select name="reference_id">{% for r in refs_all %}<option value="{{ r.id }}">{{ r.label }} ({{ r.nation }})</option>{% endfor %}</select>
+    <button class="small" style="flex:0">Link</button>
+  </form>
+</section>
+</div>
+
+{% if paint.source == 'user' %}
+<details>
+  <summary class="small">Delete or merge this paint</summary>
+  <form method="post" action="/paints/{{ paint.id }}/delete" class="inline"><button class="small secondary">Delete</button></form>
+  <form method="post" action="/paints/{{ paint.id }}/merge" class="row" x-data="{q:'',res:[],into:''}">
+    <input type="search" placeholder="Merge into… (search)" x-model="q" @input.debounce.250ms="res = q ? await (await fetch('/api/search?kinds=paint&q='+encodeURIComponent(q))).json() : []">
+    <input type="hidden" name="into_id" :value="into">
+    <select x-model="into"><template x-for="r in res" :key="r.id"><option :value="r.id" x-text="r.label"></option></template></select>
+    <button class="small" style="flex:0" :disabled="!into">Merge</button>
+  </form>
+</details>
+{% endif %}
+
+{{ notes('paint', paint.id) }}
+{% endblock %}

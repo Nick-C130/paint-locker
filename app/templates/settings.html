@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}Settings{% endblock %}
+{% block content %}
+<h1>Settings</h1>
+<div class="row">
+<article>
+  <header>Mixing</header>
+  <form method="post" action="/settings">
+    <label>Drops per ml (for dropper bottles) <input type="number" step="0.5" name="drops_per_ml" value="{{ dpm }}"></label>
+    <button class="small">Save</button>
+  </form>
+</article>
+<article>
+  <header>Export &amp; backup</header>
+  <ul>
+    <li><a href="/export/json">Full JSON export</a></li>
+    <li><a href="/export/inventory.csv">Inventory CSV</a> · <a href="/export/mixes.csv">Mixes CSV</a> · <a href="/export/colour-requests.csv">Colour requests CSV</a></li>
+    <li><a href="/export/db">Download the SQLite database</a></li>
+  </ul>
+  <form method="post" action="/backup-now"><button class="small secondary">Back up now</button></form>
+  <p class="small muted">Nightly backup at {{ backup_hour }}:00 into <code>data/backups</code>, keeping {{ backup_keep }}. Copying the whole <code>data</code> folder is a complete backup.</p>
+  {% if backups %}<details><summary class="small">{{ backups|length }} backups</summary><ul class="small">{% for b in backups %}<li><a href="/backups/{{ b.name }}">{{ b.name }}</a></li>{% endfor %}</ul></details>{% endif %}
+</article>
+</div>
+
+<h2 id="formats">Bottle formats</h2>
+<p class="small muted">Tag storage units with the formats they hold. Product lines set a default format, a paint can override it, and a bottle can override it again.</p>
+<table class="compact">
+  <thead><tr><th>Name</th><th>Volume (ml)</th><th>Notes</th><th>Racks</th><th></th></tr></thead>
+  <tbody>
+  {% for f in formats %}
+  <tr>
+    <td><input form="fmt-{{ f.id }}" name="name" value="{{ f.name }}"></td>
+    <td><input form="fmt-{{ f.id }}" name="volume_ml" type="number" step="0.1" value="{{ f.volume_ml if f.volume_ml is not none else '' }}"></td>
+    <td><input form="fmt-{{ f.id }}" name="notes" value="{{ f.notes }}"></td>
+    <td>{{ usage[f.id] }}</td>
+    <td><form id="fmt-{{ f.id }}" method="post" action="/formats/{{ f.id }}/edit"><button class="small">Save</button></form></td>
+  </tr>
+  {% endfor %}
+  <tr>
+    <td><input form="fmt-new" name="name" placeholder="New format, e.g. 22 ml dropper" required></td>
+    <td><input form="fmt-new" name="volume_ml" type="number" step="0.1"></td>
+    <td><input form="fmt-new" name="notes"></td><td></td>
+    <td><form id="fmt-new" method="post" action="/formats"><button class="small">Add</button></form></td>
+  </tr>
+  </tbody>
+</table>
+{% for f in formats if usage[f.id] == 0 %}{% if loop.first %}<p class="small">Delete an unused format: {% endif %}<form class="inline" method="post" action="/formats/{{ f.id }}/delete"><button class="small outline secondary">{{ f.name }} ✕</button></form> {% if loop.last %}</p>{% endif %}{% endfor %}
+
+<h2>Catalogue</h2>
+<p>{{ stats.paints }} paints in {{ stats.lines }} product lines from {{ stats.brands }} brands ({{ stats.user_paints }} added by you).</p>
+<p class="small muted">The catalogue is re-imported automatically when the CSV files under <code>catalogues/</code> change. Hex values are approximate.</p>
+<form class="inline" method="post" action="/catalogue/reimport"><button class="small secondary">Re-import now</button></form>
+<form class="inline" method="post" action="/search/rebuild"><button class="small outline secondary">Rebuild search index</button></form>
+<p class="small"><a href="/import">Bulk import a CSV</a> · <a href="/colour-requests">Colour request log</a></p>
+
+<h2>Security</h2>
+<p class="small">Password protection is <b>{{ 'on' if password_on else 'off' }}</b>. Set <code>PAINTLOCKER_PASSWORD</code> to turn on a single shared password (HTTP basic auth). The app expects to sit behind your own proxy or VPN.</p>
+{% endblock %}

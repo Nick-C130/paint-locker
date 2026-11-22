@@ -1,0 +1,44 @@
+{% extends "base.html" %}{% from "macros.html" import swatch, locations %}
+{% block content %}
+<div class="row">
+  <article class="stat"><b>{{ stats.bottles }}</b>bottles</article>
+  <article class="stat"><b>{{ stats.owned_paints }}</b>different paints</article>
+  <article class="stat"><b>{{ stats.mixes }}</b>mix recipes</article>
+  <article class="stat"><b>{{ stats.catalogue }}</b>paints in catalogue</article>
+</div>
+{% if stats.unsorted %}<p class="flash warn">{{ stats.unsorted }} bottle{{ 's' if stats.unsorted > 1 }} not in a cell yet. <a href="/items?unsorted=1">Sort them</a></p>{% endif %}
+
+<h2>Storage</h2>
+{% if not units %}
+<article>
+  <p>No storage units yet. Start by describing your racks: rows, columns and which bottle sizes they hold.</p>
+  <a role="button" href="/storage/new">Create a storage unit</a>
+</article>
+{% else %}
+<div class="row">
+{% for u in units %}
+  {% set used = u.cells|selectattr('items')|list|length %}
+  {% set usable = u.cells|rejectattr('disabled')|list|length %}
+  <article>
+    <header><a href="/storage/{{ u.id }}"><b>{{ u.name }}</b></a> <span class="muted small">{{ u.rows }}×{{ u.cols }}</span></header>
+    {{ used }} / {{ usable }} cells used
+    <progress value="{{ used }}" max="{{ usable or 1 }}"></progress>
+    <div class="small muted">{% for f in u.formats %}<span class="badge">{{ f.name }}</span> {% endfor %}{{ u.location }}</div>
+    <footer><a href="/storage/{{ u.id }}/bulk" class="small">Bulk shelf entry →</a></footer>
+  </article>
+{% endfor %}
+</div>
+{% endif %}
+
+<h2>Recently added</h2>
+{% if recent %}
+<ul class="results-list">
+{% for it in recent %}
+  <li>{{ swatch(it.hex, 'sm') }} <a class="grow" href="/items/{{ it.id }}">{{ it.full_label }}</a> {{ locations([it]) }}</li>
+{% endfor %}
+</ul>
+{% else %}
+<p class="muted">Nothing yet. Search for a paint above (try <code>70.950</code>) and press “Add bottle”.</p>
+{% endif %}
+<p><a href="/paints/new">Add a paint that isn't in the catalogue</a> · <a href="/import">Bulk import a CSV</a></p>
+{% endblock %}

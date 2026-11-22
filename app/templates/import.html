@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Import paints{% endblock %}
+{% block content %}
+<h1>Bulk import paints from CSV</h1>
+<p>Columns (header row required): <code>code,name,hex,type,finish,volume_ml,barcode,format,discontinued,tags</code>. Only <code>name</code> is required. Rows are matched by code (or name when there's no code) within the line, so re-importing updates rather than duplicates.</p>
+<form method="post" action="/import" enctype="multipart/form-data">
+  <div class="grid">
+    <label>Brand <input name="brand" list="brands" required></label>
+    <label>Product line <input name="line" list="lines" required></label>
+  </div>
+  <datalist id="brands">{% for b in brands %}<option value="{{ b.name }}">{% endfor %}</datalist>
+  <datalist id="lines">{% for b in brands %}{% for l in b.lines %}<option value="{{ l.name }}">{{ b.name }}</option>{% endfor %}{% endfor %}</datalist>
+  <input type="file" name="file" accept=".csv,text/csv" required>
+  <button>Import</button>
+</form>
+<p class="small muted">To add a whole brand permanently (so it ships with the app), add the CSV under <code>catalogues/</code> and a row to <code>catalogues/lines.csv</code> instead.</p>
+{% endblock %}

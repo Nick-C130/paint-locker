@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Edit ' ~ paint.name if paint else 'New paint' }}{% endblock %}
+{% block content %}
+<h1>{{ 'Edit paint' if paint else 'Add a paint to the catalogue' }}</h1>
+{% if paint and paint.source == 'seed' %}<p class="muted small">This paint comes from the seeded catalogue. Name, code, colour and type are refreshed when the catalogue files change; your measured colour, format and notes are kept.</p>{% endif %}
+<form method="post" action="{{ '/paints/%d/edit' % paint.id if paint else '/paints' }}">
+  {% if not paint %}
+  <div class="grid">
+    <label>Brand <input name="brand" list="brands" required placeholder="e.g. Vallejo"></label>
+    <label>Product line <input name="line" list="lines" required placeholder="e.g. Model Color"></label>
+  </div>
+  <datalist id="brands">{% for b in brands %}<option value="{{ b.name }}">{% endfor %}</datalist>
+  <datalist id="lines">{% for b in brands %}{% for l in b.lines %}<option value="{{ l.name }}">{{ b.name }}</option>{% endfor %}{% endfor %}</datalist>
+  {% endif %}
+  <div class="grid">
+    <label>Code <input name="code" value="{{ paint.code if paint else '' }}" placeholder="70.950"></label>
+    <label>Name <input name="name" required value="{{ paint.name if paint else '' }}"></label>
+  </div>
+  <div class="grid">
+    <label>Catalogue colour <input type="color" name="hex" value="{{ (paint.hex if paint else '') or '#808080' }}"></label>
+    <label>Measured colour (optional) <input name="measured_hex" value="{{ (paint.measured_hex if paint else '') or '' }}" placeholder="#RRGGBB"></label>
+  </div>
+  <div class="grid">
+    <label>Type <select name="type">{% for t in PAINT_TYPES %}<option {% if paint and paint.type == t %}selected{% endif %}>{{ t }}</option>{% endfor %}</select></label>
+    <label>Finish <select name="finish">{% for t in FINISHES %}<option {% if paint and paint.finish == t %}selected{% endif %}>{{ t }}</option>{% endfor %}</select></label>
+    <label>Volume (ml) <input name="volume_ml" type="number" step="0.1" value="{{ paint.volume_ml if paint and paint.volume_ml else '' }}"></label>
+  </div>
+  <div class="grid">
+    <label>Bottle format
+      <select name="format_id">
+        <option value="">{{ 'Line default' ~ (' (' ~ paint.line.default_format.name ~ ')' if paint and paint.line.default_format else '') }}</option>
+        {% for f in formats %}<option value="{{ f.id }}" {% if paint and paint.format_id == f.id %}selected{% endif %}>{{ f.name }}</option>{% endfor %}
+      </select>
+    </label>
+    <label>Barcode (EAN) <input name="barcode" value="{{ paint.barcode if paint else '' }}"></label>
+  </div>
+  <label>Tags (comma separated) <input name="tags" value="{{ paint.tags.replace(';', ', ') if paint else '' }}" placeholder="German late war, skin tones"></label>
+  <label><input type="checkbox" name="discontinued" {% if paint and paint.discontinued %}checked{% endif %}> Discontinued</label>
+  <button type="submit">Save</button>
+</form>
+{% endblock %}

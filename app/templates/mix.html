@@ -1,0 +1,83 @@
+{% extends "base.html" %}{% from "macros.html" import swatch, locations, notes, de, cell_select %}
+{% block title %}{{ mix.name }}{% endblock %}
+{% block content %}
+<div class="row">
+  <div style="flex:0 0 8rem">{{ swatch(mix.display_hex, 'lg') }}</div>
+  <div>
+    <p class="muted"><a href="/mixes">Mix recipes</a>{% for t in mix.tags.split(';') if t %} · <span class="badge">#{{ t }}</span>{% endfor %}</p>
+    <h1>{{ mix.name }}</h1>
+    {% if mix.intended_use %}<p><b>For:</b> {{ mix.intended_use }}</p>{% endif %}
+    {% if mix.description %}<div>{{ mix.description|markdown }}</div>{% endif %}
+    <p class="small">
+      Estimated {{ swatch(mix.estimated_hex, 'sm') }} {{ mix.estimated_hex or '?' }}
+      {% if mix.measured_hex %} · measured {{ swatch(mix.measured_hex, 'sm') }} {{ mix.measured_hex }}{% if est_vs_measured is not none %} (estimate was off by {{ de(est_vs_measured) }}){% endif %}{% endif %}
+      {% if mix.target_hex %} · target {{ swatch(mix.target_hex, 'sm') }} {{ mix.target_hex }}{% if target_de is not none %} → {{ de(target_de) }}{% endif %}{% endif %}
+    </p>
+    <p><a role="button" href="/mixes/lab?mix_id={{ mix.id }}">Edit in mix lab</a></p>
+  </div>
+</div>
+{% if warnings %}<p class="flash warn small">⚠️ Includes paints that don't mix like ordinary acrylics ({{ warnings|join(', ') }}); the preview is rough.</p>{% endif %}
+
+<h2>Recipe <span class="muted small">amounts in {{ mix.unit }}</span></h2>
+<form method="get" class="row" style="align-items:center">
+  <label style="flex:0 0 auto">Scale to make</label>
+  <input type="number" name="ml" value="{{ '%g' % ml }}" min="0.5" step="0.5" style="flex:0 0 6rem">
+  <span style="flex:0 0 auto">ml</span><button class="small" style="flex:0 0 auto">Scale</button>
+  <span class="muted small" style="flex:1">using {{ '%g' % dpm }} drops per ml (<a href="/settings">change</a>)</span>
+</form>
+<table class="compact">
+  <thead><tr><th></th><th>Component</th><th>Amount</th><th>Share</th><th>For {{ '%g' % ml }} ml</th></tr></thead>
+  <tbody>
+  {% for c, s in rows %}
+    <tr>
+      <td>{{ swatch(c.hex, 'sm') }}</td>
+      <td>{% if c.paint %}<a href="/paints/{{ c.paint_id }}">{{ c.paint.full_label }}</a>{% else %}<a href="/mixes/{{ c.sub_mix_id }}">Mix: {{ c.sub_mix.name }}</a>{% endif %}</td>
+      <td>{{ '%g' % c.amount }} {{ mix.unit }}</td>
+      <td>{{ '%.0f' % (s.share * 100) }}%</td>
+      <td>{{ '%.1f' % s.ml }} ml ≈ {{ '%.0f' % s.drops }} drops</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+<div class="row">
+<article>
+  <header>Batches {{ locations(items) }}</header>
+  <form method="post" action="/mixes/{{ mix.id }}/batch">
+    <p class="small">{% if suggestion %}Suggested: <b>{{ suggestion.full_label }}</b>{% else %}No free fitting cell; it'll go to Unsorted.{% endif %}</p>
+    <label>Store in {{ cell_select(groups, suggestion) }}</label>
+    <div class="grid">
+      <label>Volume (ml) <input type="number" step="0.5" name="volume_ml" value="{{ '%g' % ml }}"></label>
+      <label>Bottle
+        <select name="format_id"><option value="">{{ mix.format.name if mix.format else 'Not set' }}</option>{% for f in formats %}<option value="{{ f.id }}">{{ f.name }}</option>{% endfor %}</select>
+      </label>
+      <label>Made on <input type="date" name="made_on" value="{{ today }}"></label>
+    </div>
+    <button>Make a batch</button>
+  </form>
+</article>
+<article>
+  <header>Record the real colour</header>
+  <form method="post" action="/mixes/{{ mix.id }}/measured" x-data="{h: '{{ mix.measured_hex or mix.estimated_hex or '#808080' }}'}" class="row">
+    <input type="color" x-model="h" style="flex:0 0 3.5rem;height:2.6rem"><input name="measured_hex" x-model="h">
+    <button class="small" style="flex:0">Save</button>
+  </form>
+  <p class="small muted">Photograph-based colour capture comes in phase 2. For now, pick the colour by eye or from a photo.</p>
+  <h4>Reference colours</h4>
+  <ul class="results-list">
+  {% for l in links %}<li>{{ swatch(l.reference.hex, 'sm') }} <a class="grow" href="/references/{{ l.reference.id }}">{{ l.reference.label }}</a>
+    <form class="inline" method="post" action="/references/unlink/{{ l.id }}"><input type="hidden" name="back" value="/mixes/{{ mix.id }}"><button class="small outline secondary">unlink</button></form></li>{% endfor %}
+  </ul>
+  <form method="post" action="/references/link" class="row">
+    <input type="hidden" name="entity_type" value="mix"><input type="hidden" name="entity_id" value="{{ mix.id }}"><input type="hidden" name="back" value="/mixes/{{ mix.id }}">
+    <select name="reference_id">{% for r in refs_all %}<option value="{{ r.id }}">{{ r.label }} ({{ r.nation }})</option>{% endfor %}</select>
+    <button class="small" style="flex:0">Link</button>
+  </form>
+</article>
+</div>
+{% if used_in %}<p>Used in: {% for m in used_in %}<a href="/mixes/{{ m.id }}">{{ m.name }}</a>{% if not loop.last %}, {% endif %}{% endfor %}</p>{% endif %}
+{{ notes('mix', mix.id) }}
+<details><summary class="small">Delete this mix</summary>
+  <form method="post" action="/mixes/{{ mix.id }}/delete"><button class="secondary small">Delete {{ mix.name }}</button></form>
+</details>
+{% endblock %}

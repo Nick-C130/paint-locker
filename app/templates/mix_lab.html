@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block title %}Mix lab{% endblock %}
+{% block head %}<script src="/static/vendor/spectral.min.js"></script><script src="/static/mixlab.js"></script>{% endblock %}
+{% block content %}
+<h1>Mix lab{% if initial.id %}: <a href="/mixes/{{ initial.id }}">{{ initial.name }}</a>{% endif %}</h1>
+<div x-data="mixLab({{ initial|tojson|forceescape }}, {{ refs|tojson|forceescape }}, {{ non_mixing|tojson|forceescape }}, {{ dpm }})" x-init="init()">
+<div class="lab">
+  <section>
+    <h4>1. Pick paints</h4>
+    <label><input type="checkbox" x-model="ownedOnly" @change="lookup()"> Only paints I own</label>
+    <input type="search" x-model="q" placeholder="Search code or name…" @input.debounce.200ms="lookup()">
+    <div class="picker-results">
+      <template x-for="r in res" :key="r.kind + r.id">
+        <button type="button" class="outline secondary" @click="add(r)">
+          <span class="swatch swatch-sm" :style="'background:' + (r.hex || '#eee')"></span>
+          <span x-text="r.label"></span>
+          <span class="badge owned" x-show="r.owned" x-text="'×' + r.owned"></span>
+        </button>
+      </template>
+    </div>
+  </section>
+
+  <section>
+    <h4>2. Set the ratio</h4>
+    <label>Amounts are in
+      <select x-model="m.unit"><option value="parts">parts</option><option value="drops">drops</option><option value="ml">ml</option></select>
+    </label>
+    <template x-for="(c, i) in m.components" :key="c.kind + c.id + '-' + i">
+      <div class="comp">
+        <span class="swatch swatch-sm" :style="'background:' + (c.hex || '#eee')"></span>
+        <span class="small"><span x-text="c.label"></span> <span class="badge warn" x-show="nonMixing.includes(c.type)" x-text="c.type"></span>
+          <span class="muted" x-text="'(' + pct(c) + '%)'"></span></span>
+        <input type="number" min="0" step="0.5" x-model.number="c.amount">
+        <button type="button" class="small outline secondary" @click="m.components.splice(i, 1)" title="Remove">✕</button>
+        <input type="range" min="0" :max="Math.max(10, c.amount * 2)" step="0.5" x-model.number="c.amount">
+      </div>
+    </template>
+    <p class="muted small" x-show="!m.components.length">Add two or more paints from the left.</p>
+    <div x-show="m.components.length">
+      <label>Make <input type="number" min="1" step="1" x-model.number="makeMl" style="width:6rem;display:inline-block"> ml:</label>
+      <ul class="small">
+        <template x-for="c in m.components"><li><span x-text="c.label"></span>: <b x-text="(share(c) * makeMl).toFixed(1) + ' ml'"></b> ≈ <span x-text="Math.round(share(c) * makeMl * dpm) + ' drops'"></span></li></template>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h4>3. Preview</h4>
+    <div class="preview"><div :style="'background:' + mixed"></div><div x-show="m.target_hex" :style="'background:' + m.target_hex"></div></div>
+    <p class="small"><b x-text="mixed"></b> estimated <span x-show="m.target_hex">· target <span x-text="m.target_hex"></span></span></p>
+    <p x-show="m.target_hex && mixed" class="small">Difference: <b x-text="'ΔE ' + de.toFixed(1)"></b> <span class="muted" x-text="deWords(de)"></span></p>
+    <label>Target colour
+      <div class="row" style="gap:.4rem"><input type="color" :value="m.target_hex || '#808080'" @change="setTarget($event.target.value)" style="flex:0 0 3.5rem;height:2.6rem"><input x-model="m.target_hex" @change="setTarget(m.target_hex)" placeholder="#RRGGBB"></div>
+    </label>
+    <select @change="setTarget($event.target.value)">
+      <option value="">…or a WW2 reference colour</option>
+      <template x-for="r in refs"><option :value="r.hex" x-text="r.label"></option></template>
+    </select>
+    <p class="small muted" x-show="targetNote" x-text="targetNote"></p>
+    <p class="small muted">Estimate uses spectral (Kubelka-Munk) mixing. Real paint varies; record the measured colour after mixing.</p>
+  </section>
+</div>
+
+<hr>
+<div class="row">
+  <div>
+    <label>Name <input x-model="m.name" required placeholder="e.g. Dunkelgelb base"></label>
+    <label>Intended use <input x-model="m.intended_use" placeholder="Late-war German vehicles"></label>
+    <label>Tags <input x-model="m.tags" placeholder="German, 1944"></label>
+  </div>
+  <div>
+    <label>Description <textarea x-model="m.description" rows="3"></textarea></label>
+    <div class="grid">
+      <label>Finish <select x-model="m.finish">{% for f in FINISHES %}<option>{{ f }}</option>{% endfor %}</select></label>
+      <label>Batch bottle
+        <select x-model="m.format_id"><option value="">Not set</option>{% for f in formats %}<option value="{{ f.id }}">{{ f.name }}</option>{% endfor %}</select>
+      </label>
+    </div>
+    <label>Measured colour (after mixing) <input x-model="m.measured_hex" placeholder="#RRGGBB"></label>
+  </div>
+</div>
+<div>
+  <button type="button" @click="save()" :disabled="saving">Save recipe</button>
+  <span class="flash warn small" x-show="error" x-text="error"></span>
+</div>
+</div>
+{% endblock %}
