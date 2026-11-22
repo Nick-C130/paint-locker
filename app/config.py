@@ -14,6 +14,7 @@ BACKUP_KEEP = int(os.environ.get("PAINTLOCKER_BACKUP_KEEP", "14"))
 BACKUPS_ENABLED = os.environ.get("PAINTLOCKER_BACKUPS", "1") not in ("0", "false", "no")
 SEED_ON_STARTUP = os.environ.get("PAINTLOCKER_SEED", "1") not in ("0", "false", "no")
 MAX_UPLOAD_MB = int(os.environ.get("PAINTLOCKER_MAX_UPLOAD_MB", "15"))
+MAX_RESTORE_MB = int(os.environ.get("PAINTLOCKER_MAX_RESTORE_MB", "4096"))
 
 
 def ensure_dirs() -> None:

@@ -9,6 +9,9 @@ All notable changes to Paint Locker. The format follows [Keep a Changelog](https
   grey card, collection alerts (low, single, duplicate, near-identical, old), shops and a shopping
   list grouped by shop, a stats page, and collection import from spreadsheets or a pasted list.
 * Recipes and projects are included in global search.
+* Full backup download (database + photos in one .zip) and restore from Settings, to move to another server.
+* Startup and request logging, `LOG_LEVEL`, `/health` and a Docker health check.
+* Phone and tablet layout: a menu button replaces the scrolling link bar, fluid rack grids, scrollable tables.
 
 ### Fixed
 * The container failed to start when built from a Windows checkout (CRLF in the entrypoint).

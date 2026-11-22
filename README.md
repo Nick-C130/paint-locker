@@ -81,6 +81,21 @@ INFO    paintlocker.request: 192.168.1.20 GET / 200 35ms
   Docker's health status (healthy/unhealthy in `docker ps` or Portainer) uses it too.
 * Set `LOG_LEVEL: debug` for more detail.
 
+### Moving to another server
+
+1. On the old server: **Settings → Move to another server → Download full backup**. You get one
+   `.zip` with the database and every photo (`paintlocker.db`, `uploads/`, and a small manifest).
+2. Start Paint Locker on the new server (it can be empty or already in use).
+3. On the new server: **Settings → Move to another server → Upload backup to restore**. It checks the
+   file, shows what's in it next to what's there now, and asks you to type `REPLACE`.
+4. Restoring replaces everything on the new server. What was there is saved first as
+   `data/backups/before-restore-<date>.zip`, which you can restore the same way to undo.
+
+Backups from an older Paint Locker are upgraded on restore. Backups from a newer version are refused
+until you update the server you're restoring to. Large photo collections are fine: uploads up to
+4 GB are accepted (`PAINTLOCKER_MAX_RESTORE_MB` to change). Without the web UI, stopping the
+container and copying the whole `data` folder does the same job.
+
 ### Backups
 
 * Nightly automatic backup into `data/backups` (SQLite online backup, safe while running).

@@ -14,7 +14,7 @@
   <div>
     {% if req and req.best_label %}<p>Best match you own: <b>{{ req.best_label }}</b> ({{ de(req.best_delta_e) }})</p>
     {% elif req %}<p class="muted">You don't own anything to compare yet.</p>{% endif %}
-    <p class="small muted">This search was logged so the future purchase recommender knows which colours you look for. <a href="/colour-requests">See the log</a></p>
+    <p class="small muted">This search was logged, so 🛍️ Buy next knows which colours you look for. <a href="/colour-requests">See the log</a></p>
     <p><a role="button" class="secondary" href="/mixes/lab?target={{ hex|urlencode }}">Try mixing it</a></p>
   </div>
 </div>

@@ -194,10 +194,11 @@ def create_app() -> FastAPI:
         shops,
         stats,
         storage,
+        transfer,
     )
 
     for r in (pages, catalogue, inventory, storage, mixes, notes, admin, scan, recommend,
-              recipes, projects, labels, capture, alerts, shops, stats, imports):
+              recipes, projects, labels, capture, alerts, shops, stats, imports, transfer):
         app.include_router(r.router)
     return app
 

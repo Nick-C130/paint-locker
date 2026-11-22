@@ -19,10 +19,14 @@
   <script src="/static/vendor/alpine.min.js" defer></script>
 </head>
 <body>
-  <header class="topbar">
+  <header class="topbar" x-data="{ menu: false }" @keydown.escape.window="menu = false">
     <nav class="container-fluid">
-      <ul><li><a href="/" class="brand">🖌️ Paint Locker</a></li></ul>
-      <ul class="navlinks">
+      <ul class="nav-brand"><li><a href="/" class="brand">🖌️ Paint Locker</a></li></ul>
+      <ul class="nav-tools">
+        <li><button type="button" class="theme-toggle" id="theme-toggle" title="Theme: auto / dark / light"></button></li>
+        <li><button type="button" class="menu-btn" @click="menu = !menu" :aria-expanded="menu" aria-controls="navlinks">☰<span class="menu-label"> Menu</span></button></li>
+      </ul>
+      <ul class="navlinks" id="navlinks" :class="{ open: menu }">
         <li><a href="/scan" title="Scan a barcode"><span class="ico">📷</span>Scan</a></li>
         <li><a href="/paints"><span class="ico">🎨</span>Catalogue</a></li>
         <li><a href="/storage"><span class="ico">🗄️</span>Storage</a></li>
@@ -33,8 +37,9 @@
         <li><a href="/references"><span class="ico">🎖️</span>WW2 refs</a></li>
         <li><a href="/shopping"><span class="ico">🛒</span>Shopping</a></li>
         <li><a href="/recommend"><span class="ico">🛍️</span>Buy next</a></li>
+        <li class="menu-only"><a href="/alerts"><span class="ico">⚠️</span>Alerts</a></li>
+        <li class="menu-only"><a href="/stats"><span class="ico">📊</span>Stats</a></li>
         <li><a href="/settings"><span class="ico">⚙️</span>Settings</a></li>
-        <li><button type="button" class="theme-toggle" id="theme-toggle" title="Theme: auto / dark / light"></button></li>
       </ul>
     </nav>
     <form class="container-fluid globalsearch" action="/search" method="get" role="search">

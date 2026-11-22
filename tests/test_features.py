@@ -218,3 +218,46 @@ def test_import_xlsx(client, session):
 def test_health_endpoint(client):
     r = client.get("/health")
     assert r.status_code == 200 and r.json()["status"] == "ok" and r.json()["database"] == "ok"
+
+
+def test_full_backup_and_restore(client, session, tmp_path):
+    import io
+    import zipfile
+
+    from app import config
+
+    # a photo, so uploads travel too
+    (config.UPLOAD_DIR / "test-photo.jpg").write_bytes(b"\xff\xd8fake")
+    r = client.get("/backup/full")
+    assert r.status_code == 200 and r.headers["content-type"] == "application/zip"
+    z = zipfile.ZipFile(io.BytesIO(r.content))
+    assert {"paintlocker.db", "paintlocker-backup.json", "uploads/test-photo.jpg"} <= set(z.namelist())
+    backup_bytes = r.content
+    bottles_before = session.query(InventoryItem).count()
+
+    # change something, then restore the backup over it
+    p = paint(session, "70.950")
+    add_bottle(client, p.id)
+    (config.UPLOAD_DIR / "test-photo.jpg").unlink()
+    session.close()
+
+    r = client.post("/restore/upload", files={"file": ("b.zip", backup_bytes, "application/zip")}, follow_redirects=False)
+    assert r.status_code == 303 and r.headers["location"].startswith("/restore/")
+    confirm = client.get(r.headers["location"])
+    assert confirm.status_code == 200 and "REPLACE" in confirm.text
+    # wrong confirmation changes nothing
+    client.post(r.headers["location"], data={"confirm": "yes"})
+    r2 = client.post(r.headers["location"], data={"confirm": "REPLACE"}, follow_redirects=False)
+    assert r2.status_code == 303 and "Restored" in r2.headers["location"]
+    from app import db
+
+    with db.SessionLocal() as s:
+        assert s.query(InventoryItem).count() == bottles_before
+    assert (config.UPLOAD_DIR / "test-photo.jpg").exists()
+    assert list(config.BACKUP_DIR.glob("before-restore-*.zip"))
+    assert client.get("/").status_code == 200
+
+
+def test_restore_rejects_junk(client):
+    r = client.post("/restore/upload", files={"file": ("x.zip", b"not a zip", "application/zip")}, follow_redirects=False)
+    assert r.status_code == 303 and "warn=" in r.headers["location"]

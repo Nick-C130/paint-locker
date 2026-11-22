@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Restore a backup{% endblock %}
+{% block content %}
+<h1>Restore this backup?</h1>
+<p class="flash warn">⚠️ This <b>replaces everything on this server</b> (bottles, racks, mixes, recipes, projects, comments, photos and settings) with the backup's contents. A safety copy of what's here now is saved to <code>data/backups</code> first.</p>
+<table class="compact">
+  <thead><tr><th></th><th>In the backup</th><th>On this server now</th></tr></thead>
+  <tbody>
+  {% for k in info.counts %}<tr><td>{{ k|capitalize }}</td><td><b>{{ info.counts[k] }}</b></td><td>{{ current.get(k, '–') }}</td></tr>{% endfor %}
+  <tr><td>Photo files</td><td><b>{{ info.photos }}</b></td><td></td></tr>
+  </tbody>
+</table>
+<p class="small muted">
+  {% if info.manifest.created %}Made {{ info.manifest.created.replace('T', ' ') }}{% endif %}
+  {% if info.manifest.version %} by Paint Locker {{ info.manifest.version[:12] }}{% endif %} · schema {{ info.schema }} · {{ '%.1f' % size_mb }} MB.
+  Backups from older versions are upgraded automatically.
+</p>
+<form method="post" action="/restore/{{ token }}">
+  <label>Type <b>REPLACE</b> to confirm <input name="confirm" autocomplete="off" required pattern="[Rr][Ee][Pp][Ll][Aa][Cc][Ee]"></label>
+  <button>Replace this server's data</button>
+</form>
+<form method="post" action="/restore/{{ token }}/cancel"><button class="secondary outline">Cancel</button></form>
+{% endblock %}

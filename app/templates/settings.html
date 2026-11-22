@@ -23,6 +23,19 @@
 </article>
 </div>
 
+<article id="move">
+  <header>🚚 Move to another server</header>
+  <ol class="small">
+    <li>Here: <a role="button" class="small" href="/backup/full">⬇️ Download full backup</a> (one .zip: the database and every photo).</li>
+    <li>On the other Paint Locker: Settings → Move to another server → upload that file. You'll see what's in it and confirm before anything is replaced.</li>
+  </ol>
+  <form method="post" action="/restore/upload" enctype="multipart/form-data" class="row">
+    <input type="file" name="file" accept=".zip,application/zip" required>
+    <button class="secondary" style="flex:0 0 auto">Upload backup to restore…</button>
+  </form>
+  <p class="small muted">Restoring replaces everything here, after saving a safety copy to <code>data/backups</code>. A backup from an older version is upgraded; one from a newer version is refused until you update this server.</p>
+</article>
+
 <h2 id="formats">Bottle formats</h2>
 <p class="small muted">Tag storage units with the formats they hold. Product lines set a default format, a paint can override it, and a bottle can override it again.</p>
 <table class="compact">

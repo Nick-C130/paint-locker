@@ -1,5 +1,5 @@
 <div class="grid-wrap" id="grid">
-<div class="rack" style="grid-template-columns: 1.5rem repeat({{ unit.cols }}, max-content)">
+<div class="rack" style="--cols: {{ unit.cols }}; grid-template-columns: 1.5rem repeat({{ unit.cols }}, max-content)">
   <div></div>
   {% for c in range(unit.cols) %}<div class="hdr">{{ c + 1 }}</div>{% endfor %}
   {% for row in grid %}
