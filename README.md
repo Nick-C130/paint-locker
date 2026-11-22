@@ -67,6 +67,10 @@ GitHub Actions also builds a multi-arch (amd64 + arm64) image on every push to `
   live spectral (Kubelka-Munk) preview via spectral.js, compare against a target colour or WW2
   reference colour with a ΔE score, scale to “make 10 ml” in ml and drops (drops per ml is a
   setting). Save as a recipe; the server recomputes the estimate with a Python port of the same maths.
+* **Mix suggestions (reverse mixing)**: give the mix lab a target colour (or press “Try mixing it”
+  on a colour search, or “Mix it” on a WW2 reference) and it suggests 1-, 2- and 3-paint mixes
+  from paints you own, with ratios and ΔE; “Use” loads one into the lab. The colour search page shows
+  the top three too. Washes, contrast/speed paints, metallics and mediums are left out.
 * **Water, thinners and flow improvers** in mixes: “💧 + Water” and “+ Flow improver / thinner /
   medium” in the mix lab. They count towards the ratio (e.g. `2 : 1 : 1`) and the dilution %
   (with a rough consistency: thinned, glaze, wash…) but don't change the estimated colour; a strip
@@ -95,7 +99,7 @@ GitHub Actions also builds a multi-arch (amd64 + arm64) image on every push to `
   tool for duplicates you added.
 * Works on a phone; installable to the home screen (PWA manifest).
 
-Not in v1 (phase 2, per the plan): the purchase recommender, reverse mixing, camera colour capture, painting recipes, printable QR labels.
+Not in v1 (phase 2, per the plan): the purchase recommender, camera colour capture, painting recipes, printable QR labels.
 
 ## The paint catalogue
 

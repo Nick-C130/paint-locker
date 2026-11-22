@@ -7,7 +7,8 @@ from sqlalchemy import select, text
 from sqlalchemy.orm import Session, selectinload
 
 from .. import search as fts
-from ..colour import delta_e, normalise_hex
+from ..colour import delta_e, describe_delta_e, normalise_hex
+from ..mixsolver import suggest_mixes
 from ..db import get_session
 from ..models import (
     ADDITIVE_TYPES,
@@ -20,6 +21,7 @@ from ..models import (
     MixComponent,
     MixRecipe,
     Paint,
+    ProductLine,
     ReferenceColour,
     ReferenceLink,
     StorageCell,
@@ -78,6 +80,7 @@ def mix_lab(
     mix_id: int | None = None,
     paint_id: int | None = None,
     target: str = "",
+    combo: str = "",
     session: Session = Depends(get_session),
 ):
     mix = session.get(MixRecipe, mix_id) if mix_id else None
@@ -94,6 +97,19 @@ def mix_lab(
         "format_id": mix.format_id if mix else None,
         "components": [_component_json(c) for c in mix.components] if mix else [],
     }
+    if combo and not mix:
+        # "id:parts,id:parts" from a mix suggestion
+        for part in combo.split(","):
+            pid, _, amt = part.partition(":")
+            p = session.get(Paint, int(pid)) if pid.isdigit() else None
+            if p:
+                try:
+                    a = float(amt or 1)
+                except ValueError:
+                    a = 1.0
+                initial["components"].append(
+                    {"kind": "paint", "id": p.id, "label": p.full_label, "hex": p.display_hex, "type": p.type, "amount": a}
+                )
     if paint_id and not mix:
         p = session.get(Paint, paint_id)
         if p:
@@ -185,6 +201,40 @@ async def api_colour_request(request: Request, session: Session = Depends(get_se
         "ok": True,
         "best_label": req.best_label,
         "best_delta_e": req.best_delta_e,
+    }
+
+
+@router.get("/api/mix-suggestions")
+def api_mix_suggestions(hex: str, max_paints: int = 3, session: Session = Depends(get_session)):
+    """Reverse mixing: combinations of paints you own that get close to a target colour."""
+    target = normalise_hex(hex)
+    if not target:
+        raise HTTPException(400, "Bad colour")
+    owned = session.scalars(
+        select(Paint)
+        .where(Paint.id.in_(select(InventoryItem.paint_id).where(InventoryItem.paint_id.is_not(None))))
+        .where(Paint.type.not_in(NON_MIXING_TYPES))
+        .options(selectinload(Paint.line).selectinload(ProductLine.brand))
+    ).all()
+    if not owned:
+        return {"target": target, "owned_mixable": 0, "suggestions": []}
+    sugg = suggest_mixes(list(owned), target, limit=8, max_paints=max(1, min(3, max_paints)))
+    return {
+        "target": target,
+        "owned_mixable": len(owned),
+        "suggestions": [
+            {
+                "hex": s.hex,
+                "delta_e": round(s.delta_e, 1),
+                "words": describe_delta_e(s.delta_e),
+                "ratio": s.ratio,
+                "components": [
+                    {"kind": "paint", "id": p.id, "label": p.full_label, "hex": p.display_hex, "type": p.type, "amount": a}
+                    for p, a in zip(s.paints, s.parts)
+                ],
+            }
+            for s in sugg
+        ],
     }
 
 

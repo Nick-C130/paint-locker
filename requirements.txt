@@ -5,3 +5,4 @@ alembic==1.20.1
 Jinja2==3.1.6
 python-multipart==0.0.34
 Markdown==3.11.3
+numpy==2.5.5

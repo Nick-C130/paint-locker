@@ -7,6 +7,7 @@ from sqlalchemy.orm import Session, selectinload
 from .. import search as fts
 from ..colour import normalise_hex
 from ..db import get_session
+from ..mixsolver import suggest_mixes
 from ..models import (
     BarcodeLink,
     NON_MIXING_TYPES,
@@ -253,7 +254,7 @@ def colour_search(
     session: Session = Depends(get_session),
 ):
     target = normalise_hex(hex)
-    matches, owned_mixes, req = [], [], None
+    matches, owned_mixes, req, mix_suggestions = [], [], None, []
     if target:
         matches = nearest_paints(session, target, limit=30, owned_only=bool(owned))
         owned_mixes = nearest_owned_mixes(session, target, limit=5)
@@ -263,9 +264,24 @@ def colour_search(
             source = "closest_owned" if source == "colour_search" else source
         req = log_colour_request(session, target, source, context)
         session.commit()
+        owned_mixable = session.scalars(
+            select(Paint)
+            .where(Paint.id.in_(select(InventoryItem.paint_id).where(InventoryItem.paint_id.is_not(None))))
+            .where(Paint.type.not_in(NON_MIXING_TYPES))
+            .options(selectinload(Paint.line).selectinload(ProductLine.brand))
+        ).all()
+        mix_suggestions = suggest_mixes(list(owned_mixable), target, limit=3)
     counts = owned_counts(session, [m.obj.id for m in matches])
     return render(
-        request, "colours.html", hex=target or "", owned=owned, matches=matches, owned_mixes=owned_mixes, counts=counts, req=req
+        request,
+        "colours.html",
+        hex=target or "",
+        owned=owned,
+        matches=matches,
+        owned_mixes=owned_mixes,
+        counts=counts,
+        req=req,
+        mix_suggestions=mix_suggestions,
     )
 
 

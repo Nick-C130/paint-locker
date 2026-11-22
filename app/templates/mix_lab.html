@@ -72,9 +72,33 @@
       <template x-for="r in refs"><option :value="r.hex" x-text="r.label"></option></template>
     </select>
     <p class="small muted" x-show="targetNote" x-text="targetNote"></p>
+    <div x-show="m.target_hex">
+      <div class="row" style="align-items:center;gap:.5rem">
+        <button type="button" class="small" style="flex:0 0 auto" @click="suggest()" :aria-busy="suggesting">Suggest mixes from my paints</button>
+        <label class="small" style="flex:0 0 auto"><input type="checkbox" x-model="twoOnly" @change="suggest()"> 2 paints max</label>
+      </div>
+      <p class="small muted" x-show="suggestNote" x-text="suggestNote"></p>
+    </div>
     <p class="small muted">Estimate uses spectral (Kubelka-Munk) mixing. Real paint varies; record the measured colour after mixing.</p>
   </section>
 </div>
+<section x-show="suggestions.length">
+  <h4>Suggested mixes for the target <span class="muted small">from paints you own</span></h4>
+  <div class="suggest-grid">
+      <template x-for="(s, i) in suggestions" :key="i">
+        <article style="padding:.5rem .75rem;margin:0">
+          <div style="display:flex;gap:.5rem;align-items:center">
+            <span class="swatch swatch-md" :style="'background:' + s.hex"></span>
+            <div style="flex:1" class="small">
+              <b x-text="'ΔE ' + s.delta_e"></b> <span class="muted" x-text="s.words"></span> · ratio <b x-text="s.ratio"></b>
+              <template x-for="c in s.components"><div><span class="swatch swatch-sm" :style="'background:' + c.hex"></span> <span x-text="c.amount + ' × ' + c.label"></span></div></template>
+            </div>
+            <button type="button" class="small outline" style="flex:0 0 auto" @click="useSuggestion(s)">Use</button>
+          </div>
+        </article>
+      </template>
+  </div>
+</section>
 
 <hr>
 <div class="row">

@@ -256,3 +256,24 @@ def test_dashboard_mini_rack(client):
     html = client.get("/").text
     assert "mini-rack" in html and 'class="mc"' in html
     assert "mini-rack" in client.get("/storage").text
+
+
+def test_mix_suggestions_from_owned_paints(client, session):
+    # own a few basics so there is something to mix from
+    for code in ("70.915", "70.925", "70.950", "70.951", "70.988", "70.921"):
+        p = paint_by_code(session, code)
+        client.post("/items", data={"paint_id": p.id, "cell_id": ""})
+    r = client.get("/api/mix-suggestions", params={"hex": "#9C8853"}).json()
+    assert r["owned_mixable"] >= 5
+    s = r["suggestions"]
+    assert s and s[0]["delta_e"] < 10
+    assert all(1 <= len(x["components"]) <= 3 for x in s)
+    assert s[0]["ratio"].count(":") == len(s[0]["components"]) - 1
+    two = client.get("/api/mix-suggestions", params={"hex": "#9C8853", "max_paints": 2}).json()["suggestions"]
+    assert all(len(x["components"]) <= 2 for x in two)
+    # colours page shows them and links into the lab with the combo preloaded
+    page = client.get("/colours", params={"hex": "#9C8853"}).text
+    assert "Mixes you could make" in page
+    combo = ",".join(f'{c["id"]}:{c["amount"]:g}' for c in s[0]["components"])
+    lab = client.get("/mixes/lab", params={"target": "#9C8853", "combo": combo}).text
+    assert s[0]["components"][0]["label"].split(": ")[-1] in lab

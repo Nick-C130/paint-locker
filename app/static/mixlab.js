@@ -55,7 +55,29 @@ function mixLab(initial, refs, nonMixing, dpm, additiveTypes) {
     m: initial, refs, nonMixing, dpm, additiveTypes: additiveTypes || ['medium', 'varnish'],
     q: '', res: [], ownedOnly: false, makeMl: 10,
     saving: false, error: '', targetNote: '',
-    init() {},
+    suggestions: [], suggesting: false, suggestNote: '', twoOnly: false,
+    init() {
+      // Arrived from "Try mixing it" with a target and nothing in the mix yet: suggest straight away.
+      if (normHex(this.m.target_hex) && !this.m.components.length) this.suggest();
+    },
+    async suggest() {
+      const t = normHex(this.m.target_hex);
+      if (!t) return;
+      this.suggesting = true; this.suggestNote = '';
+      const r = await fetch('/api/mix-suggestions?hex=' + encodeURIComponent(t) + '&max_paints=' + (this.twoOnly ? 2 : 3));
+      const d = await r.json().catch(() => ({}));
+      this.suggesting = false;
+      this.suggestions = d.suggestions || [];
+      if (!d.owned_mixable) this.suggestNote = "You don't own any mixable paints yet. Add some bottles first (washes, contrast/speed paints, metallics and mediums are left out).";
+      else if (!this.suggestions.length) this.suggestNote = 'No suggestions found.';
+      else this.suggestNote = 'Mixed from the ' + d.owned_mixable + ' paints you own (estimates; test on a palette first).';
+    },
+    useSuggestion(s) {
+      const additives = this.m.components.filter(c => this.isAdditive(c));
+      this.m.components = s.components.map(c => ({ ...c })).concat(additives);
+      this.m.unit = 'parts';
+      if (!this.m.name) this.m.name = 'Mix for ' + normHex(this.m.target_hex);
+    },
     get total() { return this.m.components.reduce((s, c) => s + (Number(c.amount) || 0), 0); },
     share(c) { return this.total ? (Number(c.amount) || 0) / this.total : 0; },
     pct(c) { return Math.round(this.share(c) * 100); },
@@ -111,6 +133,7 @@ function mixLab(initial, refs, nonMixing, dpm, additiveTypes) {
       });
       const d = await r.json().catch(() => ({}));
       this.targetNote = d.best_label ? 'Closest you already own: ' + d.best_label + ' (ΔE ' + d.best_delta_e + ')' : '';
+      this.suggest();
     },
     async save() {
       this.error = '';

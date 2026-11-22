@@ -18,6 +18,18 @@
     <p><a role="button" class="secondary" href="/mixes/lab?target={{ hex|urlencode }}">Try mixing it</a></p>
   </div>
 </div>
+{% if mix_suggestions %}
+<h3>Mixes you could make from your paints</h3>
+<ul class="results-list">
+{% for s in mix_suggestions %}
+  <li>{{ swatch(s.hex) }}
+    <span class="grow small">{% for p in s.paints %}<b>{{ '%g' % s.parts[loop.index0] }}</b> × {{ p.full_label }}{% if not loop.last %} + {% endif %}{% endfor %}</span>
+    {{ de(s.delta_e) }}
+    <a class="small" role="button" href="/mixes/lab?target={{ hex|urlencode }}&combo={% for p in s.paints %}{{ p.id }}:{{ '%g' % s.parts[loop.index0] }}{% if not loop.last %},{% endif %}{% endfor %}">Open in mix lab</a>
+  </li>
+{% endfor %}
+</ul>
+{% endif %}
 {% if owned_mixes %}
 <h3>Mixes you have</h3>
 <ul class="results-list">{% for m in owned_mixes %}<li>{{ swatch(m.hex, 'sm') }} <a class="grow" href="/mixes/{{ m.obj.id }}">{{ m.obj.name }}</a> {{ de(m.delta_e) }}</li>{% endfor %}</ul>

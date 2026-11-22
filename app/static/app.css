@@ -119,3 +119,4 @@ details.inline-form summary { font-size: .9em; }
 .mini-rack .mc { aspect-ratio: 1; border-radius: 2px; border: 1px solid rgba(0,0,0,.25); min-width: 0; }
 .mini-rack .mc.empty { background: var(--pl-cell-bg); border: 1px dashed var(--pl-cell-border); }
 .mini-rack .mc.off { background: transparent; border-color: transparent; }
+.suggest-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr)); gap: .6rem; }
