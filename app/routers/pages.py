@@ -109,13 +109,39 @@ def search_page(request: Request, q: str = "", session: Session = Depends(get_se
 
 
 @router.get("/api/search")
-def api_search(q: str = "", kinds: str = "paint,mix", owned: int = 0, session: Session = Depends(get_session)):
-    """JSON search for pickers (mix lab, bulk shelf entry)."""
+def api_search(
+    q: str = "", kinds: str = "paint,mix", owned: int = 0, ptypes: str = "", session: Session = Depends(get_session)
+):
+    """JSON search for pickers (mix lab, bulk shelf entry). ptypes filters paints by type (e.g. medium,varnish)."""
     q = q.strip()
-    if not q:
+    paint_types = [t for t in ptypes.split(",") if t]
+    if not q and not paint_types:
         return []
     types = tuple(k for k in kinds.split(",") if k in fts.INDEXED)
-    res = load_results(session, q, types=types, limit=25)
+    if q:
+        res = load_results(session, q, types=types, limit=25 if not paint_types else 200)
+    else:
+        res = {"paints": [], "mixes": []}
+    if paint_types:
+        if not q:
+            res["paints"] = list(
+                session.scalars(
+                    select(Paint)
+                    .where(Paint.type.in_(paint_types))
+                    .options(selectinload(Paint.line).selectinload(ProductLine.brand), selectinload(Paint.items))
+                    .order_by(Paint.name)
+                ).all()
+            )
+        res["paints"] = sorted(
+            [p for p in res["paints"] if p.type in paint_types], key=lambda p: (
+                0 if p.items else 1,
+                0 if p.line.name == "Auxiliaries" else 1,
+                0 if p.type == "medium" else 1,
+                p.line.brand.name,
+                p.name,
+            )
+        )
+        res["mixes"] = []
     out = []
     counts = owned_counts(session, [p.id for p in res["paints"]])
     for p in res["paints"]:
@@ -148,4 +174,4 @@ def api_search(q: str = "", kinds: str = "paint,mix", owned: int = 0, session: S
                 "format": m.format.name if m.format else None,
             }
         )
-    return out[:25]
+    return out[: 100 if paint_types else 25]

@@ -10,6 +10,8 @@ from .. import search as fts
 from ..colour import delta_e, normalise_hex
 from ..db import get_session
 from ..models import (
+    ADDITIVE_TYPES,
+    BUILTIN_ADDITIVES,
     FINISHES,
     MIX_UNITS,
     NON_MIXING_TYPES,
@@ -23,6 +25,7 @@ from ..models import (
     StorageCell,
 )
 from ..services import (
+    describe_dilution,
     drops_per_ml,
     log_colour_request,
     mix_contains,
@@ -38,6 +41,8 @@ router = APIRouter()
 
 
 def _component_json(c: MixComponent) -> dict:
+    if c.additive:
+        return {"kind": "additive", "id": c.additive, "label": c.label, "hex": None, "type": "additive", "amount": c.amount}
     if c.paint:
         return {
             "kind": "paint",
@@ -103,7 +108,8 @@ def mix_lab(
         initial=initial,
         formats=formats,
         refs=[{"label": r.label, "hex": r.hex} for r in refs if r.hex],
-        non_mixing=sorted(NON_MIXING_TYPES),
+        non_mixing=sorted(NON_MIXING_TYPES - ADDITIVE_TYPES),
+        additive_types=sorted(ADDITIVE_TYPES),
         dpm=drops_per_ml(session),
     )
 
@@ -117,6 +123,8 @@ async def api_mix_save(request: Request, session: Session = Depends(get_session)
     comps = data.get("components") or []
     if not comps:
         raise HTTPException(400, "Add at least one paint")
+    if all(c.get("kind") == "additive" for c in comps):
+        raise HTTPException(400, "Add at least one paint as well as water")
     mix = session.get(MixRecipe, data["id"]) if data.get("id") else None
     if data.get("id") and not mix:
         raise HTTPException(404)
@@ -139,7 +147,11 @@ async def api_mix_save(request: Request, session: Session = Depends(get_session)
         amount = float(c.get("amount") or 0)
         if amount <= 0:
             continue
-        if c.get("kind") == "mix":
+        if c.get("kind") == "additive":
+            if c.get("id") not in BUILTIN_ADDITIVES:
+                raise HTTPException(400, "Unknown additive")
+            mix.components.append(MixComponent(additive=c["id"], amount=amount, position=pos))
+        elif c.get("kind") == "mix":
             sub_id = int(c["id"])
             if mix_contains(session, sub_id, mix.id):
                 raise HTTPException(400, "A mix can't contain itself")
@@ -206,7 +218,7 @@ def mix_detail(request: Request, mix_id: int, ml: float = 10, session: Session =
     formats = session.scalars(select(BottleFormat).order_by(BottleFormat.name)).all()
     target_de = delta_e(mix.target_hex, mix.display_hex) if mix.target_hex and mix.display_hex else None
     est_vs_measured = delta_e(mix.estimated_hex, mix.measured_hex) if mix.estimated_hex and mix.measured_hex else None
-    warnings = [c.label for c in mix.components if c.paint and c.paint.type in NON_MIXING_TYPES]
+    warnings = [c.label for c in mix.components if c.paint and c.paint.type in NON_MIXING_TYPES and not c.is_additive]
     return render(
         request,
         "mix.html",
@@ -224,6 +236,8 @@ def mix_detail(request: Request, mix_id: int, ml: float = 10, session: Session =
         target_de=target_de,
         est_vs_measured=est_vs_measured,
         warnings=warnings,
+        dilution=mix.dilution,
+        dilution_words=describe_dilution(mix.dilution),
         today=date.today().isoformat(),
     )
 

@@ -39,3 +39,13 @@
   {% endfor %}
 </select>
 {%- endmacro %}
+
+{% macro mini_rack(u) -%}
+<a href="/storage/{{ u.id }}" class="mini-rack" style="grid-template-columns: repeat({{ u.cols }}, 1fr)" title="Open {{ u.name }}">
+  {% for c in u.cells|sort(attribute='row,col') %}
+    {% if c.disabled %}<span class="mc off"></span>
+    {% elif c.items %}{% set it = c.items[0] %}<span class="mc" style="background:{{ it.hex or '#888' }}" title="{{ c.label }}: {{ it.full_label }}"></span>
+    {% else %}<span class="mc empty" title="{{ c.label }}: empty"></span>{% endif %}
+  {% endfor %}
+</a>
+{%- endmacro %}

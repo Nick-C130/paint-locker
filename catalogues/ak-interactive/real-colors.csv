@@ -135,19 +135,19 @@ RC233,Green Fs 34258,#7F8159,lacquer,matt,,,,,Air;WWII
 RC234,Aggressor Blue Fs 35109,#4C6B7D,lacquer,matt,,,,,Air
 RC235,Intermediate Blue Fs 35164,#627282,lacquer,matt,,,,,Air;WWII
 RC236,Blue Fs 35190,#618A9E,lacquer,matt,,,,,Air
-RC237,Medium Grey Fs 35237,#7C878D,medium,matt,,,,,Air
+RC237,Medium Grey Fs 35237,#7C878D,lacquer,matt,,,,,Air
 RC238,Light Blue Fs 35414,#88A2A3,lacquer,matt,,,,,Air
 RC239,Air Superiority Blue Fs 35450,#8AB0C3,lacquer,matt,,,,,Air
 RC240,Light Sky Blue Fs 35526,#A4BCBE,lacquer,matt,,,,,Air
 RC241,Duck Egg Blue Fs 35622,#C5CFC6,lacquer,matt,,,,,Air
 RC242,Dark Eggplant Grey Fs 36076,#4E525B,lacquer,matt,,,,,Air
 RC243,Grey Fs 36081,#58595B,lacquer,matt,,,,,Air
-RC244,Medium Gunship Grey Fs 36118,#5D616A,medium,matt,,,,,Air;WWII
+RC244,Medium Gunship Grey Fs 36118,#5D616A,lacquer,matt,,,,,Air;WWII
 RC245,Have Glass Grey,#747472,lacquer,matt,,,,,Air
 RC246,F-15 Dark Grey (mod Eagle) Fs 36176,#6E7881,lacquer,matt,,,,,Air
 RC247,Dark Gull Grey Fs 36231,#7F8386,lacquer,matt,,,,,Air;WWII
 RC248,Aggressor Grey Fs 36251,#828385,lacquer,matt,,,,,Air
-RC249,Medium Grey Fs 36270,#84898C,medium,matt,,,,,Air
+RC249,Medium Grey Fs 36270,#84898C,lacquer,matt,,,,,Air
 RC250,Light Sea Grey Fs 36307,#96978F,lacquer,matt,,,,,Air;WWII
 RC251,Dark Ghost Grey Fs 36320,#8A949D,lacquer,matt,,,,,Air
 RC252,Light Ghost Grey Fs 36375,#9DA4AC,lacquer,matt,,,,,Air
@@ -158,7 +158,7 @@ RC256,M-485 Blue Grey,#70848B,lacquer,matt,,,,,Air;WWII
 RC257,Sea Blue,#3D444C,lacquer,matt,,,,,WWII;Air
 RC258,Dark Sea Blue,#36434C,lacquer,matt,,,,,Air;WWII
 RC259,Dark Olive Drab 41,#564F3F,lacquer,matt,,,,,WWII;Air
-RC260,Medium Green 42,#495241,medium,matt,,,,,WWII;Air
+RC260,Medium Green 42,#495241,lacquer,matt,,,,,WWII;Air
 RC261,Neutral Grey 43,#6F6F6F,lacquer,matt,,,,,Air;WWII
 RC262,Us Interior Yellow Green,#848158,lacquer,matt,,,,,WWII;Air
 RC263,Zinc Chromate Yellow,#D1BB4E,lacquer,matt,,,,,WWII;Air
@@ -187,7 +187,7 @@ RC285,Raf Sky Grey / Fs 26373,#A2A6A5,lacquer,matt,,,,,WWII;Air
 RC286,Raf Dark Green,#4F5143,lacquer,matt,,,,,WWII;Air
 RC287,Raf Dark Earth,#5D4A29,lacquer,matt,,,,,Air;WWII
 RC288,Raf Ocean Grey,#666D75,lacquer,matt,,,,,WWII;Air
-RC289,Raf Medium Sea Grey Bs381c/637,#808D93,medium,matt,,,,,Air;WWII
+RC289,Raf Medium Sea Grey Bs381c/637,#808D93,lacquer,matt,,,,,Air;WWII
 RC290,Raf Sky / Fs 34424,#B1BA8D,lacquer,matt,,,,,Air;WWII
 RC291,Raf Azure Blue,#7D9FC4,lacquer,matt,,,,,Air;WWII
 RC292,Raf Middle Stone,#A37C3B,lacquer,matt,,,,,WWII;Air
@@ -244,9 +244,9 @@ RC342,Dark Green Fs 34064,#4B4B43,lacquer,matt,,,,,Air
 RC500,Flat Varnish,#F0F0F0,varnish,matt,,,,,Standard;Modern
 RC501,Satin Varnish,#DCDCDC,varnish,satin,,,,,Modern;Standard
 RC502,Gloss Varnish,#E5E5E5,varnish,gloss,,,,,Modern;Standard
-RC503,Clear Red,#BD0A0D,varnish,matt,,,,,Clear;Modern;Standard
-RC504,Clear Blue,#1C69A1,varnish,matt,,,,,Modern;Standard;Clear
-RC505,Clear Green,#3A683A,varnish,matt,,,,,Clear;Standard;Modern
-RC506,Clear Orange,#DE7927,varnish,matt,,,,,Modern;Clear;Standard
-RC507,Clear Yellow,#ECC31B,varnish,matt,,,,,Modern;Standard;Clear
-RC508,Clear Smoke,#4C4845,varnish,matt,,,,,Standard;Clear;Modern
+RC503,Clear Red,#BD0A0D,lacquer,matt,,,,,Clear;Modern;Standard
+RC504,Clear Blue,#1C69A1,lacquer,matt,,,,,Modern;Standard;Clear
+RC505,Clear Green,#3A683A,lacquer,matt,,,,,Clear;Standard;Modern
+RC506,Clear Orange,#DE7927,lacquer,matt,,,,,Modern;Clear;Standard
+RC507,Clear Yellow,#ECC31B,lacquer,matt,,,,,Modern;Standard;Clear
+RC508,Clear Smoke,#4C4845,lacquer,matt,,,,,Standard;Clear;Modern

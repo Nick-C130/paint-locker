@@ -174,7 +174,7 @@ AK3021,Chocolate Brown,#5E4A32,acrylic,matt,,,,,Figures
 AK3022,Orange Tan,#CC864A,acrylic,matt,,,,,Figures
 AK3023,Dark Green,#293029,acrylic,matt,,,,,Figures
 AK3024,Light Green,#778F39,acrylic,matt,,,,,Figures
-AK3025,Medium Green,#41462F,medium,matt,,,,,Figures
+AK3025,Medium Green,#41462F,acrylic,matt,,,,,Figures
 AK3026,Tan / Global Light,#946E3F,acrylic,matt,,,,,Figures
 AK3027,White -1-,#F5F5F5,acrylic,matt,,,,,Figures
 AK3028,Ivory -2-,#DEF2CD,acrylic,matt,,,,,Figures
@@ -202,7 +202,7 @@ AK3056,Brown Black,#2B2622,acrylic,matt,,,,,Figures
 AK3057,Light Red -33-,#F65539,acrylic,matt,,,,,Figures
 AK3058,Intermediate Grey,#648C45,acrylic,matt,,,,,Figures
 AK3059,Deep Green -51-,#325736,acrylic,matt,,,,,Figures
-AK3061,Medium Red Brown / Waffen Spring/ Summer Base -18-,#574539,medium,matt,,,,,Figures
+AK3061,Medium Red Brown / Waffen Spring/ Summer Base -18-,#574539,acrylic,matt,,,,,Figures
 AK3062,Cork Brown / Waffen Spring/ Summer Highlight -25-,#876645,acrylic,matt,,,,,Figures
 AK3063,Golden Olive / Waffen Spring / Summer Light Green Spots -52-,#94AD48,acrylic,matt,,,,,Figures
 AK3064,Green Black / Waffen Spring/ Summer Dark Spots -40-,#1D2A19,acrylic,matt,,,,,Figures
@@ -246,7 +246,7 @@ AK3141,Olive Grey / Field Grey Base -55-,#484534,acrylic,matt,,,,,Figures
 AK3142,Granite Grey / Field Grey Base 2 -56-,#45473A,acrylic,matt,,,,,Figures
 AK3143,Grey Green / Filed Grey Lights -68-,#787A53,acrylic,matt,,,,,Figures
 AK3144,Dark Grey / Field Grey Shadows -57-,#2F2A24,acrylic,matt,,,,,Figures
-AK3145,Medium Grey / German Grey Uniform -58-,#2A3436,medium,matt,,,,,Figures
+AK3145,Medium Grey / German Grey Uniform -58-,#2A3436,acrylic,matt,,,,,Figures
 AK3146,Grey Blue / Grey Blue / German Grey Uniform Light -62-,#64706E,acrylic,matt,,,,,Figures
 AK4002,Bullet Metal Case,#C7910B,metallic,metallic,,,,,AFV
 AK4003,Matt Red,#873A2A,acrylic,matt,,,,,AFV
@@ -311,7 +311,7 @@ AK5006,Light Grey 5 L,#C4C7B4,acrylic,matt,,,,,Naval
 AK5031,RN Hull Red,#572711,acrylic,matt,,,,,Naval
 AK5032,Wooden Deck,#D4B78B,acrylic,matt,,,,,Naval
 AK5033,507a Admirality Dark Grey,#455056,acrylic,matt,,,,,Naval
-AK5034,507b Admirality Medium Grey,#585E5A,medium,matt,,,,,Naval
+AK5034,507b Admirality Medium Grey,#585E5A,acrylic,matt,,,,,Naval
 AK5035,507c Admirality Light Grey,#909599,acrylic,matt,,,,,Naval
 AK5036,B5 Dark Blue Grey,#626D67,acrylic,matt,,,,,Naval
 AK5041,Semtex Green,#3C4725,acrylic,matt,,,,,Naval
@@ -319,7 +319,7 @@ AK5042,Western Appoaches Green,#709369,acrylic,matt,,,,,Naval
 AK5043,Pb20 Dark Blue,#1B1F2A,acrylic,matt,,,,,Naval
 AK5044,Western Appoaches Blue,#C1D1C6,acrylic,matt,,,,,Naval
 AK5045,B20 Light Grey,#80837A,acrylic,matt,,,,,Naval
-AK5046,MS3 Medium Green Grey,#6B6F60,medium,matt,,,,,Naval
+AK5046,MS3 Medium Green Grey,#6B6F60,acrylic,matt,,,,,Naval
 AK700,RAL 8020 Gelbbraun,#D6AF6E,acrylic,matt,,,,,AFV
 AK701,RAL 7027 Grau,#ACA08A,acrylic,matt,,,,,AFV
 AK702,RAL 8000 Gelbbraun,#877C5C,acrylic,matt,,,,,AFV
@@ -327,7 +327,7 @@ AK703,RAL 7008 Graugrün,#5B4F37,acrylic,matt,,,,,AFV
 AK704,RAL 7021 Dunkelgrau,#303028,acrylic,matt,,,,,AFV
 AK705,RAL 7008 Graugrün Opt 2,#666E3F,acrylic,matt,,,,,AFV
 AK706,Light Rust,#BE7845,acrylic,matt,,,,,AFV;General
-AK707,Medium Rust,#915533,medium,matt,,,,,AFV;General
+AK707,Medium Rust,#915533,acrylic,matt,,,,,AFV;General
 AK708,Dark Rust,#73402B,acrylic,matt,,,,,AFV;General
 AK709,Old Rust,#4D3827,acrylic,matt,,,,,General;AFV
 AK710,Shadow Rust,#4B3D32,acrylic,matt,,,,,General;AFV
@@ -374,13 +374,13 @@ AK778,Freshly Cut Timber,#C4B186,acrylic,matt,,,,,General
 AK779,Wood Base,#A5976A,acrylic,matt,,,,,General
 AK780,Dark Wood Grain,#614635,acrylic,matt,,,,,General
 AK781,Wood Grain,#503A2D,acrylic,matt,,,,,General
-AK782,Varnished Wood,#7A5336,varnish,matt,,,,,General
+AK782,Varnished Wood,#7A5336,acrylic,matt,,,,,General
 AK783,Weathered Wood,#463D34,acrylic,matt,,,,,General
 AK784,Light Grey,#A09D8C,acrylic,matt,,,,,General
 AK785,Middle Grey,#8B8B81,acrylic,matt,,,,,AFV;General
 AK786,Light Grey Brown,#B4A270,acrylic,matt,,,,,General
-AK787,Medium Grey,#907E5A,medium,matt,,,,,General
-AK788,Medium Brown,#695032,medium,matt,,,,,General;AFV
+AK787,Medium Grey,#907E5A,acrylic,matt,,,,,General
+AK788,Medium Brown,#695032,acrylic,matt,,,,,General;AFV
 AK789,Burnt Umber,#3D362E,acrylic,matt,,,,,AFV;General
 AK790,Idf Sinai Grey Modern,#585147,acrylic,matt,,,,,AFV
 AK791,Idf Sinai Grey 82,#4C5248,acrylic,matt,,,,,AFV

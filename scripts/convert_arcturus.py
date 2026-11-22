@@ -114,7 +114,7 @@ BRANDS: dict[str, dict] = {
             "shade": ("Shade", "wash", "matt", 18, CITADEL_POT, False, FRONTLINE),
             "contrast": ("Contrast", "contrast", "satin", 18, CITADEL_POT, False, FRONTLINE),
             "dry": ("Dry", "acrylic", "matt", 12, CITADEL_POT, False, FRONTLINE),
-            "tech": ("Technical", "medium", "matt", 12, CITADEL_POT, False, FRONTLINE),
+            "tech": ("Technical", "acrylic", "matt", 12, CITADEL_POT, False, FRONTLINE),
             "air": ("Air", "air", "matt", 24, CITADEL_POT, False, FRONTLINE),
             "spray": ("Spray", "primer", "matt", 400, SPRAY, False, FRONTLINE),
             "foundation": ("Foundation (legacy)", "acrylic", "matt", 12, CITADEL_POT, True, ""),
@@ -132,7 +132,7 @@ BRANDS: dict[str, dict] = {
             "Intense (3rd Gen)": ("g3", None, "Intense"),
             "Pastel (3rd Gen)": ("g3", None, "Pastel"),
             "Ink (3rd Gen)": ("g3", "ink", "Ink"),
-            "Auxiliary (3rd Gen)": ("g3", "medium", "Auxiliary"),
+            "Auxiliary (3rd Gen)": ("g3", None, "Auxiliary"),
             "Primer (3rd Gen)": ("g3primer", None),
             "AFV": ("legacy", None, "AFV"),
             "Air": ("legacy", "air", "Air"),
@@ -236,11 +236,20 @@ def slugify(s: str) -> str:
     return re.sub(r"[^a-z0-9]+", "-", s).strip("-")
 
 
+MEDIUM_RE = re.compile(
+    r"\b(thinner|retarder|flow improver|cleaner|mask|maskol|glue|crackle)\b"
+    r"|\bmedium\b\s*(-\d+-)?\s*$"  # "Glaze Medium", "Lahmian Medium" but not "Medium Green"
+    r"|^(airbrush|speedpaint|contrast|glaze|matte?|gloss|satin|metal|drying) medium\b",
+    re.IGNORECASE,
+)
+VARNISH_RE = re.compile(r"\bvarnish\b|'ardcoat|^(flat |gloss |matt?e? )?clear$", re.IGNORECASE)
+
+
 def infer_type(name: str, default: str) -> str:
     n = name.lower()
-    if re.search(r"\b(thinner|retarder|flow improver|medium|cleaner|mask|glue|texture|gel|crackle|cement)\b", n):
+    if MEDIUM_RE.search(n):
         return "medium"
-    if re.search(r"\bvarnish|\bclear\b|gloss coat|matt coat|'ardcoat|lahmian medium", n):
+    if VARNISH_RE.search(n.strip()):
         return "varnish"
     if re.search(r"\bprimer\b", n):
         return "primer"

@@ -1,0 +1,4 @@
+brand,line,file,default_type,default_finish,default_volume_ml,default_format,discontinued,stocked_by,source
+Vallejo,Auxiliaries,extra/vallejo-auxiliaries.csv,medium,matt,17,17-18 ml dropper,,Frontline Hobbies,"Hand-entered; add codes and sizes as you go"
+The Army Painter,Auxiliaries,extra/army-painter-auxiliaries.csv,medium,matt,18,17-18 ml dropper,,Frontline Hobbies,"Hand-entered; add codes and sizes as you go"
+Citadel,Auxiliaries,extra/citadel-auxiliaries.csv,medium,matt,24,Citadel pot,,Frontline Hobbies,"Hand-entered; add codes and sizes as you go"

@@ -53,7 +53,7 @@ GitHub Actions also builds a multi-arch (amd64 + arm64) image on every push to `
   mixes that use it, linked reference colours, comments and photos.
 * **Quick add**: “+ Add bottle” suggests the next free cell in a rack tagged for that bottle's format.
   Add several bottles at once; owned and bottle count fall out of the bottles you add.
-* **Storage grids**: racks as full rows × columns grids (A1 or 1-1 labels), one bottle per cell,
+* **Storage grids** (with a mini colour map of each rack on the home page): racks as full rows × columns grids (A1 or 1-1 labels), one bottle per cell,
   disabled cells for irregular racks. Cells show the paint's colour and code. Click a cell to fill or
   inspect it, drag a bottle to move it (onto a full cell to swap), and search results link to the
   rack with the bottle highlighted.
@@ -67,6 +67,10 @@ GitHub Actions also builds a multi-arch (amd64 + arm64) image on every push to `
   live spectral (Kubelka-Munk) preview via spectral.js, compare against a target colour or WW2
   reference colour with a ΔE score, scale to “make 10 ml” in ml and drops (drops per ml is a
   setting). Save as a recipe; the server recomputes the estimate with a Python port of the same maths.
+* **Water, thinners and flow improvers** in mixes: “💧 + Water” and “+ Flow improver / thinner /
+  medium” in the mix lab. They count towards the ratio (e.g. `2 : 1 : 1`) and the dilution %
+  (with a rough consistency: thinned, glaze, wash…) but don't change the estimated colour; a strip
+  shows roughly how one coat looks over light and dark primer at that dilution.
 * **Mix batches**: “Make a batch” creates a bottle of the mix and stores it in a cell like any paint.
   Record the measured colour after mixing; the mix page shows how far off the estimate was.
 * **Colour request log**: every colour search, “closest I own”, reference lookup and mix-lab target
@@ -116,6 +120,9 @@ Seeded brands and lines (4,214 paints):
 * **AK Interactive**: 3rd Generation Acrylics, 3rd Gen Air, 3rd Gen Primer, Real Colors, pre-3rd Gen acrylics
 * **Scale 75**: Scalecolor, Fantasy & Games, Warfront, Artist, Instant Colors, Metal n' Alchemy, Inktensity, FX, Soil Works, Primers
 * **Turbo Dork**, **Tamiya** (Acrylic Mini, LP, TS and AS sprays), and **Ammo by Mig** acrylics
+
+Hand-maintained extras live in `catalogues/lines-extra.csv` (currently Vallejo, Army Painter and
+Citadel flow improvers, thinners and mediums, entered by name; add codes and sizes as you go).
 
 **Gaps:** Two Thin Coats and Abteilung 502 aren't seeded because there's no open dataset for them yet.
 Add them with Settings → Import CSV, or drop CSV files into `catalogues/` and a row into `lines.csv`.

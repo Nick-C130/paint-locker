@@ -14,18 +14,18 @@ X-2,White,#FFFFFF,acrylic,matt,,,,,Gloss
 X-20A,Acrylic thinner,#FFFFFF,medium,matt,,,,,Gloss
 X-21,Flat base,#FFFFFF,acrylic,matt,,,,,Gloss
 X-22,Clear,#FFFFFF,varnish,matt,,,,,Gloss
-X-23,Clear blue,#34B3D1,varnish,matt,,,,,Gloss
-X-24,Clear yellow,#FFE600,varnish,matt,,,,,Gloss
-X-25,Clear green,#1A9641,varnish,matt,,,,,Gloss
-X-26,Clear orange,#FE8C14,varnish,matt,,,,,Gloss
-X-27,Clear red,#FA0026,varnish,matt,,,,,Gloss
+X-23,Clear blue,#34B3D1,acrylic,matt,,,,,Gloss
+X-24,Clear yellow,#FFE600,acrylic,matt,,,,,Gloss
+X-25,Clear green,#1A9641,acrylic,matt,,,,,Gloss
+X-26,Clear orange,#FE8C14,acrylic,matt,,,,,Gloss
+X-27,Clear red,#FA0026,acrylic,matt,,,,,Gloss
 X-28,Park green,#33A44D,acrylic,matt,,,,,Gloss
 X-3,Royal blue,#1D2D53,acrylic,matt,,,,,Gloss
 X-31,Titanium gold,#CBBB72,metallic,metallic,,,,,Gloss
 X-32,Titanium silver,#CCCCB8,metallic,metallic,,,,,Gloss
 X-33,Bronze,#672622,metallic,metallic,,,,,Gloss
 X-34,Metallic brown,#993F06,metallic,metallic,,,,,Gloss
-X-35,Semi-gloss clear,#FFFFFF,varnish,gloss,,,,,Gloss
+X-35,Semi-gloss clear,#FFFFFF,acrylic,gloss,,,,,Gloss
 X-4,Blue,#09347B,acrylic,matt,,,,,Gloss
 X-5,Green,#00441B,acrylic,matt,,,,,Gloss
 X-6,Orange,#FF7F00,acrylic,matt,,,,,Gloss
@@ -41,10 +41,10 @@ XF-14,J.A. grey,#B3CA8E,acrylic,matt,,,,,Flat
 XF-15,Flat flesh,#FDCDA1,acrylic,matt,,,,,Flat
 XF-16,Flat aluminum,#CCCCCC,metallic,metallic,,,,,Flat
 XF-17,Sea blue,#2E3B43,acrylic,matt,,,,,Flat
-XF-18,Medium blue,#485B5F,medium,matt,,,,,Flat
+XF-18,Medium blue,#485B5F,acrylic,matt,,,,,Flat
 XF-19,Sky grey,#ADB7C0,acrylic,matt,,,,,Flat
 XF-2,Flat white,#FFFFFF,acrylic,matt,,,,,Flat
-XF-20,Medium grey,#A3AA96,medium,matt,,,,,Flat
+XF-20,Medium grey,#A3AA96,acrylic,matt,,,,,Flat
 XF-21,Sky,#B8BE77,acrylic,matt,,,,,Flat
 XF-22,RLM grey,#7B8D7D,acrylic,matt,,,,,Flat
 XF-23,Light blue,#8FB5AD,acrylic,matt,,,,,Flat
@@ -93,7 +93,7 @@ XF-8,Flat blue,#284C7B,acrylic,matt,,,,,Flat
 XF-80,Royal light gray,#C1CAC8,acrylic,matt,,,,,Flat
 XF-81,Dark green 2 (RAF),#FFFFFF,acrylic,matt,,,,,Flat
 XF-82,Ocean gray 2 (RAF),#FFFFFF,acrylic,matt,,,,,Flat
-XF-83,Medium sea gray 2 (RAF),#FFFFFF,medium,matt,,,,,Flat
+XF-83,Medium sea gray 2 (RAF),#FFFFFF,acrylic,matt,,,,,Flat
 XF-84,Dark iron,#FFFFFF,metallic,metallic,,,,,Flat
 XF-85,Rubber black,#FFFFFF,acrylic,matt,,,,,Flat
 XF-86,Flat clear,#FFFFFF,varnish,matt,,,,,Flat

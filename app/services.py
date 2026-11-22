@@ -151,7 +151,23 @@ def mix_contains(session: Session, mix_id: int, target_id: int, depth: int = 0) 
 
 
 def recompute_mix(mix: MixRecipe) -> None:
-    mix.estimated_hex = compute_mix_hex([(c.hex, c.amount) for c in mix.components])
+    # Water, thinners and mediums dilute the paint but don't change its colour.
+    mix.estimated_hex = compute_mix_hex([(c.hex, c.amount) for c in mix.components if not c.is_additive])
+
+
+def describe_dilution(d: float) -> str:
+    """Rough consistency for a given share of water/thinner/medium."""
+    if d <= 0:
+        return "neat paint"
+    if d < 0.2:
+        return "lightly thinned"
+    if d < 0.4:
+        return "thinned (good for layering/airbrushing)"
+    if d < 0.6:
+        return "glaze consistency"
+    if d < 0.85:
+        return "wash consistency"
+    return "filter / very thin"
 
 
 # ---------------------------------------------------------------- colour matching

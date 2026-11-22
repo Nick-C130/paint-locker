@@ -50,17 +50,35 @@ function normHex(h) {
   return /^#[0-9a-fA-F]{6}$/.test(h) ? h.toUpperCase() : '';
 }
 
-function mixLab(initial, refs, nonMixing, dpm) {
+function mixLab(initial, refs, nonMixing, dpm, additiveTypes) {
   return {
-    m: initial, refs, nonMixing, dpm,
+    m: initial, refs, nonMixing, dpm, additiveTypes: additiveTypes || ['medium', 'varnish'],
     q: '', res: [], ownedOnly: false, makeMl: 10,
     saving: false, error: '', targetNote: '',
     init() {},
     get total() { return this.m.components.reduce((s, c) => s + (Number(c.amount) || 0), 0); },
     share(c) { return this.total ? (Number(c.amount) || 0) / this.total : 0; },
     pct(c) { return Math.round(this.share(c) * 100); },
+    isAdditive(c) { return c.kind === 'additive' || this.additiveTypes.includes(c.type); },
+    get ratio() { return this.m.components.map(c => +(Number(c.amount) || 0).toFixed(2)).join(' : '); },
+    get dilution() {
+      const add = this.m.components.filter(c => this.isAdditive(c)).reduce((s, c) => s + (Number(c.amount) || 0), 0);
+      return this.total ? add / this.total : 0;
+    },
+    get consistency() {
+      const d = this.dilution;
+      return d <= 0 ? 'neat paint' : d < 0.2 ? 'lightly thinned' : d < 0.4 ? 'thinned, good for layering/airbrushing'
+        : d < 0.6 ? 'glaze consistency' : d < 0.85 ? 'wash consistency' : 'filter / very thin';
+    },
+    // Very rough: how opaque one coat looks. Neat paint ≈ fully opaque; heavily thinned ≈ a tint.
+    get coatOpacity() { return Math.max(0.08, 1 - this.dilution * 0.95).toFixed(2); },
+    addWater() { this.m.components.push({ kind: 'additive', id: 'water', label: 'Water', hex: null, type: 'additive', amount: 1 }); },
+    async showAdditives() {
+      this.q = '';
+      this.res = await (await fetch('/api/search?kinds=paint&ptypes=' + this.additiveTypes.join(',') + (this.ownedOnly ? '&owned=1' : ''))).json();
+    },
     get mixed() {
-      const parts = this.m.components.filter(c => c.hex && Number(c.amount) > 0);
+      const parts = this.m.components.filter(c => c.hex && Number(c.amount) > 0 && !this.isAdditive(c));
       if (!parts.length) return '';
       if (parts.length === 1) return parts[0].hex.toUpperCase();
       return spectral.mix(...parts.map(c => [new spectral.Color(c.hex), Number(c.amount)])).toString();

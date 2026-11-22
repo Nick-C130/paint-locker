@@ -30,6 +30,10 @@ PAINT_TYPES = [
 FINISHES = ["matt", "satin", "gloss", "metallic"]
 # Types that don't behave like ordinary opaque acrylics in a mix.
 NON_MIXING_TYPES = {"wash", "contrast", "metallic", "primer", "varnish", "medium", "pigment"}
+# Thinners, flow improvers, mediums and varnishes: they dilute or change finish, not colour.
+ADDITIVE_TYPES = {"medium", "varnish"}
+# Built-in mix components that aren't catalogue paints.
+BUILTIN_ADDITIVES = {"water": "Water"}
 MIX_UNITS = ["parts", "drops", "ml"]
 ENTITY_TYPES = ["brand", "line", "paint", "item", "mix", "unit", "cell", "reference"]
 
@@ -230,6 +234,17 @@ class MixRecipe(Base):
     def label(self) -> str:
         return self.name
 
+    @property
+    def dilution(self) -> float:
+        """Share of the recipe that is water/thinner/medium (0-1)."""
+        total = sum(c.amount for c in self.components)
+        return sum(c.amount for c in self.components if c.is_additive) / total if total else 0.0
+
+    @property
+    def ratio(self) -> str:
+        """Amounts as a ratio, e.g. "2 : 1 : 1"."""
+        return " : ".join(f"{c.amount:g}" for c in self.components)
+
 
 class MixComponent(Base):
     __tablename__ = "mix_components"
@@ -237,12 +252,20 @@ class MixComponent(Base):
     mix_id: Mapped[int] = mapped_column(ForeignKey("mix_recipes.id", ondelete="CASCADE"), index=True)
     paint_id: Mapped[int | None] = mapped_column(ForeignKey("paints.id"))
     sub_mix_id: Mapped[int | None] = mapped_column(ForeignKey("mix_recipes.id"))
+    additive: Mapped[str | None] = mapped_column(String(20))  # built-in additive, e.g. "water"
     amount: Mapped[float] = mapped_column(Float, default=1)
     position: Mapped[int] = mapped_column(Integer, default=0)
 
     mix: Mapped[MixRecipe] = relationship(back_populates="components", foreign_keys=[mix_id])
     paint: Mapped[Paint | None] = relationship()
     sub_mix: Mapped[MixRecipe | None] = relationship(foreign_keys=[sub_mix_id])
+
+    @property
+    def is_additive(self) -> bool:
+        """Water, thinner, flow improver, medium or varnish: dilutes rather than tints."""
+        if self.additive:
+            return True
+        return bool(self.paint and self.paint.type in ADDITIVE_TYPES)
 
     @property
     def hex(self) -> str | None:
@@ -258,6 +281,8 @@ class MixComponent(Base):
             return self.paint.full_label
         if self.sub_mix:
             return f"Mix: {self.sub_mix.name}"
+        if self.additive:
+            return BUILTIN_ADDITIVES.get(self.additive, self.additive.title())
         return "?"
 
 

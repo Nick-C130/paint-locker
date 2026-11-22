@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "base.html" %}{% from "macros.html" import mini_rack %}
 {% block title %}Storage{% endblock %}
 {% block content %}
 <h1>Storage <a class="small" role="button" href="/storage/new">+ New unit</a></h1>
@@ -8,6 +8,7 @@
   {% set usable = u.cells|rejectattr('disabled')|list|length %}
   <article>
     <header><a href="/storage/{{ u.id }}"><b>{{ u.name }}</b></a> <span class="muted small">{{ u.rows }} rows × {{ u.cols }} columns</span></header>
+    {{ mini_rack(u) }}
     <p>{{ used }} / {{ usable }} cells used</p>
     <progress value="{{ used }}" max="{{ usable or 1 }}"></progress>
     <p class="small">{% for f in u.formats %}<span class="badge">{{ f.name }}</span> {% else %}<span class="muted">No bottle formats tagged (accepts anything)</span>{% endfor %}</p>

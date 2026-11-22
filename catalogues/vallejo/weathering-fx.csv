@@ -19,7 +19,7 @@ code,name,hex,type,finish,volume_ml,barcode,format,discontinued,tags
 73.818,Brown Engine Soot,#584E45,pigment,matt,,,,,
 73.819,Rain Marks,#6D635A,pigment,matt,,,,,
 73.820,Snow,#FFFFFF,pigment,matt,,,,,
-73.821,Rust Texture,#463C3A,medium,matt,,,,,
+73.821,Rust Texture,#463C3A,pigment,matt,,,,,
 73.822,Slimy Grime Dark,#484B3A,pigment,matt,,,,,
 73.825,Crushed Grass,#8E906B,pigment,matt,,,,,
 73.826,Mud and Grass,#4C4C44,pigment,matt,,,,,

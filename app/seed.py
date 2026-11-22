@@ -160,8 +160,10 @@ def import_catalogues(session: Session, catalogue_dir: Path | None = None) -> di
     catalogue_dir = catalogue_dir or config.CATALOGUE_DIR
     formats = ensure_formats(session)
     stats = {"lines": 0, "created": 0, "updated": 0, "references": 0}
-    manifest = catalogue_dir / "lines.csv"
-    if manifest.exists():
+    # lines.csv is generated from the upstream dataset; lines-extra.csv is hand-maintained.
+    for manifest in (catalogue_dir / "lines.csv", catalogue_dir / "lines-extra.csv"):
+        if not manifest.exists():
+            continue
         with open(manifest, newline="", encoding="utf-8") as fh:
             for entry in csv.DictReader(fh):
                 path = catalogue_dir / entry["file"]

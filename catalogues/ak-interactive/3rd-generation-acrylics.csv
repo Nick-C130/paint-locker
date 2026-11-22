@@ -8,11 +8,11 @@ AK11006,Silver Grey,#E2D7B7,metallic,metallic,,,,,Standard
 AK11007,Rock Grey,#C1B897,acrylic,matt,,,,,Standard
 AK11008,Grimy Grey,#DFC998,acrylic,matt,,,,,Standard
 AK11009,Warm Grey,#B6A88B,acrylic,matt,,,,,Standard
-AK11010,Medium Grey,#B6B8A3,medium,matt,,,,,Standard
+AK11010,Medium Grey,#B6B8A3,acrylic,matt,,,,,Standard
 AK11011,Blue Grey,#C7D0CD,acrylic,matt,,,,,Standard
 AK11012,Sky Grey,#BBBAB6,acrylic,matt,,,,,Standard
 AK11013,Pale Grey,#AEAFB4,acrylic,matt,,,,,Standard
-AK11014,Medium Sea Grey,#A19B81,medium,matt,,,,,Standard
+AK11014,Medium Sea Grey,#A19B81,acrylic,matt,,,,,Standard
 AK11015,Dark Sea Grey,#7B7873,acrylic,matt,,,,,Standard
 AK11016,Grey Green,#808064,acrylic,matt,,,,,Standard
 AK11017,Reddish Grey,#7B6B52,acrylic,matt,,,,,Standard
@@ -32,7 +32,7 @@ AK11030,Beige,#E2B848,acrylic,matt,,,,,Standard
 AK11031,Buff,#D1AC5C,acrylic,matt,,,,,Standard
 AK11032,Pale Sand,#EFD581,acrylic,matt,,,,,Standard
 AK11033,Dark Sand,#E6BC56,acrylic,matt,,,,,Standard
-AK11034,Medium Sand,#CC9B35,medium,matt,,,,,Standard
+AK11034,Medium Sand,#CC9B35,acrylic,matt,,,,,Standard
 AK11035,Sand Yellow,#E9BD3A,acrylic,matt,,,,,Standard
 AK11036,Ice Yellow,#FEEE8E,acrylic,matt,,,,,Standard
 AK11037,Pastel Yellow,#FDDA76,acrylic,matt,,,,,Pastel
@@ -52,7 +52,7 @@ AK11050,Light Flesh,#FFDFB6,acrylic,matt,,,,,Standard
 AK11051,Luminous Flesh,#EDC180,acrylic,matt,,,,,Standard
 AK11052,Basic Skin Tone,#F7B57B,wash,matt,,,,,Standard
 AK11053,Radiant Flesh,#FEB254,acrylic,matt,,,,,Standard
-AK11054,Medium Flesh Tone,#C98230,medium,matt,,,,,Standard
+AK11054,Medium Flesh Tone,#C98230,wash,matt,,,,,Standard
 AK11055,Sunny Skin Tone,#FFA84F,wash,matt,,,,,Standard
 AK11056,Dark Flesh,#EBA43A,acrylic,matt,,,,,Standard
 AK11057,Vampiric Flesh,#CFBC81,acrylic,matt,,,,,Standard
@@ -75,7 +75,7 @@ AK11074,Deep Purple,#7A4967,acrylic,matt,,,,,Intense
 AK11075,Violet Red,#573536,acrylic,matt,,,,,Standard
 AK11076,Pastel Peach,#F59A54,acrylic,matt,,,,,Pastel
 AK11077,Light Orange,#F07A3C,acrylic,matt,,,,,Standard
-AK11078,Medium Orange,#FA682C,medium,matt,,,,,Standard
+AK11078,Medium Orange,#FA682C,acrylic,matt,,,,,Standard
 AK11079,Burn Orange,#DB5E30,acrylic,matt,,,,,Standard
 AK11080,Deep Orange,#FE5E14,acrylic,matt,,,,,Intense
 AK11081,Fluorescent Orange,#FE5102,acrylic,matt,,,,,Standard
@@ -100,7 +100,7 @@ AK11099,Ocher Orange,#F5A75F,acrylic,matt,,,,,Standard
 AK11100,Light Brown,#CF8139,acrylic,matt,,,,,Standard
 AK11101,Orange Brown,#B1581E,acrylic,matt,,,,,Standard
 AK11102,Deep Brown,#854A2A,acrylic,matt,,,,,Intense
-AK11103,Medium Rust,#9C4B30,medium,matt,,,,,Standard
+AK11103,Medium Rust,#9C4B30,acrylic,matt,,,,,Standard
 AK11104,Saddle Brown,#683A2B,acrylic,matt,,,,,Standard
 AK11105,Light Rust,#DB5615,acrylic,matt,,,,,Standard
 AK11106,Mahogany Brown,#622A05,acrylic,matt,,,,,Standard
@@ -144,7 +144,7 @@ AK11144,Emerald,#036242,acrylic,matt,,,,,Standard
 AK11145,Lizard Green,#175A31,acrylic,matt,,,,,Standard
 AK11146,Dark Green,#224618,acrylic,matt,,,,,Standard
 AK11147,Olive Green,#4B5F20,acrylic,matt,,,,,Standard
-AK11148,Medium Olive Green,#3E501C,medium,matt,,,,,Standard
+AK11148,Medium Olive Green,#3E501C,acrylic,matt,,,,,Standard
 AK11149,Intermediate Green,#506E32,acrylic,matt,,,,,Standard
 AK11150,Gunship Green,#485335,acrylic,matt,,,,,Standard
 AK11151,Brownish Green,#57460E,acrylic,matt,,,,,Standard
@@ -180,7 +180,7 @@ AK11180,Imperial Blue,#192152,acrylic,matt,,,,,Standard
 AK11181,Dark Blue,#1E2D4C,acrylic,matt,,,,,Standard
 AK11182,Deep Blue,#1A4067,acrylic,matt,,,,,Intense
 AK11183,Amethyst Blue,#332A47,acrylic,matt,,,,,Standard
-AK11184,Medium Blue,#163A48,medium,matt,,,,,Standard
+AK11184,Medium Blue,#163A48,acrylic,matt,,,,,Standard
 AK11185,Star Blue,#014760,acrylic,matt,,,,,Standard
 AK11186,Light Prussian Blue,#132A38,acrylic,matt,,,,,Standard
 AK11187,Strong Dark Blue,#04151F,acrylic,matt,,,,,Standard
@@ -208,12 +208,12 @@ AK11209,Silver,#A0AAAC,metallic,metallic,,,,,Metallic
 AK11210,Natural Steel,#A7A6A1,metallic,metallic,,,,,Metallic
 AK11211,Oily Steel,#A7A491,metallic,metallic,,,,,Metallic
 AK11212,Gun Metal,#4E4E4C,metallic,metallic,,,,,Metallic
-AK11213,Clear Red,#C61215,varnish,matt,,,,,Standard
-AK11214,Clear Blue,#0D265C,varnish,matt,,,,,Standard
-AK11215,Clear Smoke,#734C21,varnish,matt,,,,,Standard
-AK11216,Clear Green,#029837,varnish,matt,,,,,Standard
-AK11217,Clear Yellow,#F49401,varnish,matt,,,,,Standard
-AK11218,Clear Orange,#EB5D0B,varnish,matt,,,,,Standard
+AK11213,Clear Red,#C61215,acrylic,matt,,,,,Standard
+AK11214,Clear Blue,#0D265C,acrylic,matt,,,,,Standard
+AK11215,Clear Smoke,#734C21,acrylic,matt,,,,,Standard
+AK11216,Clear Green,#029837,acrylic,matt,,,,,Standard
+AK11217,Clear Yellow,#F49401,acrylic,matt,,,,,Standard
+AK11218,Clear Orange,#EB5D0B,acrylic,matt,,,,,Standard
 AK11219,Sepia,#230D00,ink,matt,,,,,Ink
 AK11220,Turquoise,#005E5E,ink,matt,,,,,Ink
 AK11221,Skin,#943718,ink,matt,,,,,Ink
@@ -323,7 +323,7 @@ AK11408,Dot44 Brown Base,#554631,acrylic,matt,,,,,Figures
 AK11409,Orange Tan,#CA8B48,acrylic,matt,,,,,Figures
 AK11410,Dark Green,#212F22,acrylic,matt,,,,,Figures
 AK11411,Light Green,#788E43,acrylic,matt,,,,,Figures
-AK11412,Medium Green,#2B3B1E,medium,matt,,,,,Figures
+AK11412,Medium Green,#2B3B1E,acrylic,matt,,,,,Figures
 AK11413,Denison Tan Base,#8F6C46,acrylic,matt,,,,,Figures
 AK11414,Splittermuster Base,#756C45,acrylic,matt,,,,,Figures
 AK11415,Splittermuster Green Spots,#303E27,acrylic,matt,,,,,Figures

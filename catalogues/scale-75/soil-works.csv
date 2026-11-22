@@ -9,7 +9,7 @@ code,name,hex,type,finish,volume_ml,barcode,format,discontinued,tags
 ,Grease,#3E2D25,pigment,matt,,,,,
 ,Green Moss,#1C7C23,pigment,matt,,,,,
 ,Light Rust,#C1682C,pigment,matt,,,,,
-,Medium Wet,#FFFFFF,medium,matt,,,,,
+,Medium Wet,#FFFFFF,pigment,matt,,,,,
 ,Mid Ground / Earth,#C8AD7E,pigment,matt,,,,,
 ,Odorless Thinner,#DFDFDF,medium,matt,,,,,
 ,Pale Dust,#EAD1BB,pigment,matt,,,,,

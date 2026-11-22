@@ -215,3 +215,44 @@ def test_barcode_scan_flow(client, session):
     assert "8429551708821" in page
     assert client.get("/scan").status_code == 200
     assert client.get(f"/scan?link={p.id}").status_code == 200
+
+
+def test_water_and_flow_improver_dilute_not_tint(client, session):
+    blue = paint_by_code(session, "70.925")
+    yellow = paint_by_code(session, "70.915")
+    flow = session.scalar(
+        select(Paint).join(ProductLine).where(ProductLine.name == "Auxiliaries", Paint.name == "Flow Improver")
+    )
+    assert flow is not None and flow.type == "medium"
+    # thinners/mediums are findable for the mix lab
+    r = client.get("/api/search", params={"ptypes": "medium,varnish", "kinds": "paint"}).json()
+    assert any(x["name"] == "Flow Improver" for x in r)
+    # "Medium Green" style colour names are not mistaken for mediums
+    assert all("Medium Green" not in x["name"] for x in r)
+
+    plain = client.post("/api/mixes", json={"name": "Plain", "components": [
+        {"kind": "paint", "id": blue.id, "amount": 2}, {"kind": "paint", "id": yellow.id, "amount": 1}]}).json()
+    thinned = client.post("/api/mixes", json={"name": "Thinned", "components": [
+        {"kind": "paint", "id": blue.id, "amount": 2}, {"kind": "paint", "id": yellow.id, "amount": 1},
+        {"kind": "additive", "id": "water", "amount": 1}, {"kind": "paint", "id": flow.id, "amount": 1}]}).json()
+    assert thinned["estimated_hex"] == plain["estimated_hex"]
+    session.expire_all()
+    m = session.get(MixRecipe, thinned["id"])
+    assert m.ratio == "2 : 1 : 1 : 1"
+    assert abs(m.dilution - 0.4) < 1e-9
+    page = client.get(f"/mixes/{m.id}").text
+    assert "2 : 1 : 1 : 1" in page and "Water" in page and "40%" in page
+    # lab reloads the water component
+    assert '"kind": "additive"' in client.get(f"/mixes/lab?mix_id={m.id}").text.replace("&#34;", '"')
+    # water alone isn't a mix
+    r = client.post("/api/mixes", json={"name": "Just water", "components": [{"kind": "additive", "id": "water", "amount": 1}]})
+    assert r.status_code == 400
+    r = client.post("/api/mixes", json={"name": "Bad", "components": [
+        {"kind": "paint", "id": blue.id, "amount": 1}, {"kind": "additive", "id": "gin", "amount": 1}]})
+    assert r.status_code == 400
+
+
+def test_dashboard_mini_rack(client):
+    html = client.get("/").text
+    assert "mini-rack" in html and 'class="mc"' in html
+    assert "mini-rack" in client.get("/storage").text

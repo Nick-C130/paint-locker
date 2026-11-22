@@ -1,4 +1,4 @@
-{% extends "base.html" %}{% from "macros.html" import swatch, locations %}
+{% extends "base.html" %}{% from "macros.html" import swatch, locations, mini_rack %}
 {% block content %}
 <div class="row">
   <article class="stat"><b>{{ stats.bottles }}</b>bottles</article>
@@ -21,6 +21,7 @@
   {% set usable = u.cells|rejectattr('disabled')|list|length %}
   <article>
     <header><a href="/storage/{{ u.id }}"><b>{{ u.name }}</b></a> <span class="muted small">{{ u.rows }}×{{ u.cols }}</span></header>
+    {{ mini_rack(u) }}
     {{ used }} / {{ usable }} cells used
     <progress value="{{ used }}" max="{{ usable or 1 }}"></progress>
     <div class="small muted">{% for f in u.formats %}<span class="badge">{{ f.name }}</span> {% endfor %}{{ u.location }}</div>

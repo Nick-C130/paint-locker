@@ -19,6 +19,7 @@
 {% if warnings %}<p class="flash warn small">⚠️ Includes paints that don't mix like ordinary acrylics ({{ warnings|join(', ') }}); the preview is rough.</p>{% endif %}
 
 <h2>Recipe <span class="muted small">amounts in {{ mix.unit }}</span></h2>
+<p>Ratio <b>{{ mix.ratio }}</b>{% if dilution > 0 %} · {{ '%.0f' % (dilution * 100) }}% water/thinner/medium ({{ dilution_words }}){% endif %}</p>
 <form method="get" class="row" style="align-items:center">
   <label style="flex:0 0 auto">Scale to make</label>
   <input type="number" name="ml" value="{{ '%g' % ml }}" min="0.5" step="0.5" style="flex:0 0 6rem">
@@ -30,8 +31,9 @@
   <tbody>
   {% for c, s in rows %}
     <tr>
-      <td>{{ swatch(c.hex, 'sm') }}</td>
-      <td>{% if c.paint %}<a href="/paints/{{ c.paint_id }}">{{ c.paint.full_label }}</a>{% else %}<a href="/mixes/{{ c.sub_mix_id }}">Mix: {{ c.sub_mix.name }}</a>{% endif %}</td>
+      <td>{% if c.is_additive %}💧{% else %}{{ swatch(c.hex, 'sm') }}{% endif %}</td>
+      <td>{% if c.paint %}<a href="/paints/{{ c.paint_id }}">{{ c.paint.full_label }}</a>{% elif c.sub_mix %}<a href="/mixes/{{ c.sub_mix_id }}">Mix: {{ c.sub_mix.name }}</a>{% else %}{{ c.label }}{% endif %}
+        {% if c.is_additive %}<span class="badge">thins</span>{% endif %}</td>
       <td>{{ '%g' % c.amount }} {{ mix.unit }}</td>
       <td>{{ '%.0f' % (s.share * 100) }}%</td>
       <td>{{ '%.1f' % s.ml }} ml ≈ {{ '%.0f' % s.drops }} drops</td>
