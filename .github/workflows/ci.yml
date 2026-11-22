@@ -37,7 +37,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build test image (amd64)
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: .
           load: true
@@ -50,7 +50,7 @@ jobs:
           curl -fsS http://localhost:8080/ > /dev/null
           test -f /tmp/pl-data/paintlocker.db || (ls -la /tmp/pl-data; docker logs pl; exit 1)
           docker logs pl | tail -5
-      - uses: docker/build-push-action@v6
+      - uses: docker/build-push-action@v7
         with:
           context: .
           platforms: linux/amd64,linux/arm64
