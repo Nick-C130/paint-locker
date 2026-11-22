@@ -42,6 +42,9 @@ On first start the app runs its database migrations and imports the paint catalo
 | `PAINTLOCKER_MAX_UPLOAD_MB` | `15` | Photo upload limit |
 | `PUID` / `PGID` | `1000` | User and group the app runs as; `./data` is handed to them on start |
 | `TZ` | `UTC` | Container time zone (used for the backup hour) |
+| `LOG_LEVEL` | `info` | `debug` adds every request (including static files), query strings and migration detail; `warning` keeps only problems |
+| `PAINTLOCKER_PORT` | `8080` | Port the app listens on inside the container (change the compose `ports:` to match) |
+| `PAINTLOCKER_HOST` | `0.0.0.0` | Address it listens on inside the container; leave this alone in Docker |
 
 ### Updating
 
@@ -51,6 +54,32 @@ of `./data` before a big update never hurts.
 
 GitHub Actions builds a multi-arch (amd64 + arm64) image on every push to `main`, tagged `latest`
 and with the commit SHA (`ghcr.io/nick-c130/paint-locker:<sha>`) so you can pin or roll back.
+
+### Troubleshooting
+
+The container logs say what's happening (`docker compose logs -f paint-locker`, or Portainer →
+Containers → paint-locker → Logs). A healthy start looks like:
+
+```
+INFO    entrypoint: Paint Locker <version>; data folder /data; started as uid 0
+INFO    entrypoint: running as 1000:1000
+INFO    paintlocker: Paint Locker <version> starting: listening on http://0.0.0.0:8080 (inside the container), log level info
+INFO    paintlocker: Database migrated: new database -> 0004        (or: schema up to date)
+INFO    paintlocker: Ready in 1.2s: 4227 paints in the catalogue, 0 bottles
+INFO    uvicorn: Uvicorn running on http://0.0.0.0:8080
+INFO    paintlocker.request: 192.168.1.20 GET / 200 35ms
+```
+
+* **Browser says "unable to connect"**: if the log doesn't reach "Uvicorn running", read the last
+  lines for the error. If it does but there are no `paintlocker.request` lines when you load the page,
+  the request isn't reaching the container: check the published port (`8080:8080`, host side first),
+  use `http://` not `https://` unless you have a proxy, and check the host's firewall.
+* **"can't write to the data folder"**: the host folder isn't writable by uid 1000. Fix its owner, or
+  set `PUID`/`PGID` to the folder's owner. If ownership can't be changed (e.g. a NAS share) the app
+  falls back to running as root and says so.
+* `http://<server>:8080/health` shows the version, uptime and whether the database is readable.
+  Docker's health status (healthy/unhealthy in `docker ps` or Portainer) uses it too.
+* Set `LOG_LEVEL: debug` for more detail.
 
 ### Backups
 

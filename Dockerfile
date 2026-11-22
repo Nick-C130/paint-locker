@@ -5,9 +5,14 @@ LABEL org.opencontainers.image.title="Paint Locker" \
       org.opencontainers.image.source="https://github.com/Nick-C130/paint-locker" \
       org.opencontainers.image.licenses="MIT"
 
+ARG PAINTLOCKER_VERSION=dev
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
-    PAINTLOCKER_DATA_DIR=/data
+    PAINTLOCKER_DATA_DIR=/data \
+    PAINTLOCKER_HOST=0.0.0.0 \
+    PAINTLOCKER_PORT=8080 \
+    PAINTLOCKER_VERSION=$PAINTLOCKER_VERSION \
+    LOG_LEVEL=info
 
 WORKDIR /app
 COPY requirements.txt .
@@ -26,8 +31,8 @@ ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
 VOLUME ["/data"]
 EXPOSE 8080
-HEALTHCHECK --interval=30s --timeout=5s --start-period=20s \
-  CMD python -c "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:8080/healthz').status == 200 else 1)"
+HEALTHCHECK --interval=30s --timeout=5s --start-period=60s --retries=3 \
+  CMD python -c "import os,sys,urllib.request; sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:%s/health' % os.environ.get('PAINTLOCKER_PORT', '8080'), timeout=4).status == 200 else 1)"
 
-# One worker on purpose: SQLite + a single nightly-backup task.
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8080", "--proxy-headers", "--forwarded-allow-ips", "*"]
+# app.serve logs where it listens, then runs uvicorn (one worker on purpose: SQLite + one backup task).
+CMD ["python", "-m", "app.serve"]

@@ -5,6 +5,9 @@
 #   docker compose -f docker-compose.deploy.yml up -d
 #
 # (Or save it as docker-compose.yml and drop the -f flag.)
+# Check it started: `docker compose logs paint-locker` should end with
+# "Uvicorn running on http://0.0.0.0:8080", and http://<server>:8080/health returns {"status":"ok",...}.
+#
 # Update to the latest version:
 #
 #   docker compose -f docker-compose.deploy.yml pull
@@ -26,6 +29,7 @@ services:
       - ./data:/data           # database, photos and nightly backups; back this folder up
     environment:
       TZ: UTC                  # your zone, e.g. Australia/Sydney; sets the nightly backup hour
+      # LOG_LEVEL: debug                    # info (default), debug, warning, error
       # PUID: "1000"                        # user/group that owns ./data on the host
       # PGID: "1000"
       # PAINTLOCKER_PASSWORD: change-me     # optional shared password (HTTP basic auth)

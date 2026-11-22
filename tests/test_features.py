@@ -213,3 +213,8 @@ def test_import_xlsx(client, session):
     r = client.post("/import/collection", files={"file": ("p.xlsx", buf.getvalue(), "application/octet-stream")}, follow_redirects=False)
     page = client.get(r.headers["location"])
     assert page.status_code == 200 and "by code" in page.text
+
+
+def test_health_endpoint(client):
+    r = client.get("/health")
+    assert r.status_code == 200 and r.json()["status"] == "ok" and r.json()["database"] == "ok"

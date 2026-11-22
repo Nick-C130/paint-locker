@@ -11,6 +11,7 @@ services:
       - ./data:/data
     environment:
       TZ: UTC                              # set to your zone, e.g. Europe/London, for the backup hour
+      # LOG_LEVEL: debug                   # info (default), debug, warning, error
       # PAINTLOCKER_PASSWORD: change-me     # optional single shared password (HTTP basic auth)
       # PAINTLOCKER_BACKUP_HOUR: "3"        # nightly backup time (container local time)
       # PAINTLOCKER_BACKUP_KEEP: "14"       # how many nightly backups to keep

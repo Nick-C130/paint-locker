@@ -19,3 +19,9 @@ MAX_UPLOAD_MB = int(os.environ.get("PAINTLOCKER_MAX_UPLOAD_MB", "15"))
 def ensure_dirs() -> None:
     for d in (DATA_DIR, UPLOAD_DIR, BACKUP_DIR):
         d.mkdir(parents=True, exist_ok=True)
+
+# Server and logging
+HOST = os.environ.get("PAINTLOCKER_HOST", "0.0.0.0")
+PORT = int(os.environ.get("PAINTLOCKER_PORT", "8080"))
+LOG_LEVEL = (os.environ.get("LOG_LEVEL") or os.environ.get("PAINTLOCKER_LOG_LEVEL") or "info").lower()
+VERSION = os.environ.get("PAINTLOCKER_VERSION", "dev")
