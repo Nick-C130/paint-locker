@@ -19,11 +19,6 @@ docker compose up -d
 Open http://your-server:8080. Your data lives in `./data` next to the compose file (database,
 photos, backups). Set `TZ` in the file to your time zone so the nightly backup runs when you expect.
 
-> **While the repository is private** the image is private too. Log in once with a GitHub
-> [personal access token](https://github.com/settings/tokens) (classic) with the `read:packages` scope:
-> `echo <token> | docker login ghcr.io -u <github-username> --password-stdin`. The curl above also
-> needs the file copied by hand while private. Neither step is needed once the project is public.
-
 To build from source instead: `git clone https://github.com/Nick-C130/paint-locker.git && cd paint-locker && docker compose up -d --build`.
 
 On first start the app runs its database migrations and imports the paint catalogue (about
